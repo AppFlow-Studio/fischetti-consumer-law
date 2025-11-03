@@ -9,56 +9,19 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Phone, Mail, MapPin, Clock, Send, CheckCircle } from "lucide-react"
+import { Phone, Mail, MapPin, Clock, Send, CheckCircle, Scale, Trophy, Users } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useState } from "react"
 
-const contactSchema = z.object({
-    firstName: z.string().min(2, "First name must be at least 2 characters"),
-    lastName: z.string().min(2, "Last name must be at least 2 characters"),
-    email: z.string().email("Please enter a valid email address"),
-    phone: z.string().min(10, "Please enter a valid phone number"),
-    caseType: z.string().min(1, "Please select a case type"),
-    description: z.string().min(10, "Please provide more details about your case"),
-    urgency: z.string().min(1, "Please select urgency level"),
-    agreeToTerms: z.boolean().refine(val => val === true, "You must agree to the terms")
-})
-
-type ContactFormData = z.infer<typeof contactSchema>
-
-const caseTypes = [
-    "FCRA Violations",
-    "FDCPA Defense",
-    "TCPA Violations",
-    "Privacy & Data Breach",
-    "VPPA Violations",
-    "Fair Housing Act",
-    "Mass Arbitration",
-    "Other"
-]
-
-const urgencyLevels = [
-    "Immediate - Need help now",
-    "Urgent - Within a week",
-    "Moderate - Within a month",
-    "Not urgent - Just exploring options"
-]
+import { contactSchema, type ContactFormData, caseTypes, urgencyLevels, defaultContactValues } from "@/components/forms/contact-schema"
+import { ShineBorder } from "./shine-border"
 
 export default function ContactFormSection() {
     const [isSubmitted, setIsSubmitted] = useState(false)
 
     const form = useForm<ContactFormData>({
         resolver: zodResolver(contactSchema),
-        defaultValues: {
-            firstName: "",
-            lastName: "",
-            email: "",
-            phone: "",
-            caseType: "",
-            description: "",
-            urgency: "",
-            agreeToTerms: false
-        }
+        defaultValues: defaultContactValues
     })
 
     const onSubmit = (data: ContactFormData) => {
@@ -69,7 +32,7 @@ export default function ContactFormSection() {
 
     if (isSubmitted) {
         return (
-            <section className="w-full bg-gradient-to-br from-blue-50 to-teal-50 py-20">
+            <section className="w-full bg-linear-to-br from-blue-50 to-teal-50 py-20">
                 <div className="max-w-4xl mx-auto px-6">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
@@ -100,16 +63,17 @@ export default function ContactFormSection() {
     }
 
     return (
-        <section className="w-full bg-gradient-to-br from-blue-50 to-teal-50 py-20">
-            <div className="max-w-7xl mx-auto px-6">
+        <section className="w-full bg-linear-to-br from-blue-50 to-teal-50 py-20">
+            <div className="w-full max-w-[95%] xl:max-w-[1400px] mx-auto px-4 sm:px-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
 
                     {/* Left Side - Information */}
                     <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className="space-y-8"
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                        className="space-y-8 w-full"
                     >
                         <div>
                             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -124,8 +88,8 @@ export default function ContactFormSection() {
                         {/* Trust Indicators */}
                         <div className="space-y-6">
                             <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <span className="text-green-600 font-bold text-lg">✓</span>
+                                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center shrink-0">
+                                    <CheckCircle className="text-blue-600 w-6 h-6" />
                                 </div>
                                 <div>
                                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Free Consultation</h3>
@@ -136,8 +100,8 @@ export default function ContactFormSection() {
                             </div>
 
                             <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <span className="text-blue-600 font-bold text-lg">⚖️</span>
+                                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center shrink-0">
+                                    <Scale className="text-blue-600 w-6 h-6" />
                                 </div>
                                 <div>
                                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Expert Legal Team</h3>
@@ -148,13 +112,25 @@ export default function ContactFormSection() {
                             </div>
 
                             <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <span className="text-purple-600 font-bold text-lg">🏆</span>
+                                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center shrink-0">
+                                    <Trophy className="text-blue-600 w-6 h-6" />
                                 </div>
                                 <div>
                                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Proven Results</h3>
                                     <p className="text-gray-600">
                                         $30M+ recovered for clients across Florida.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="flex items-start gap-4">
+                                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center shrink-0">
+                                    <Users className="text-blue-600 w-6 h-6" />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">15,000+ Cases Served</h3>
+                                    <p className="text-gray-600">
+                                        Trusted by thousands of clients statewide.
                                     </p>
                                 </div>
                             </div>
@@ -166,7 +142,7 @@ export default function ContactFormSection() {
                             <div className="space-y-3">
                                 <div className="flex items-center gap-3 text-gray-600">
                                     <Phone className="h-5 w-5 text-blue-600" />
-                                    <span>(305) 555-0123</span>
+                                    <span>(833) 645-3247</span>
                                 </div>
                                 <div className="flex items-center gap-3 text-gray-600">
                                     <Mail className="h-5 w-5 text-blue-600" />
@@ -186,35 +162,39 @@ export default function ContactFormSection() {
 
                     {/* Right Side - Contact Form */}
                     <motion.div
-                        initial={{ opacity: 0, x: 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.6 }}
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                        className="w-full"
                     >
-                        <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
-                            <CardHeader className="text-center pb-6">
-                                <CardTitle className="text-2xl font-bold text-gray-900">
+                        <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm w-full">
+                            <ShineBorder shineColor={["#2563eb", "#3b82f6", "#60a5fa"]} />
+
+                            <CardHeader className="text-center pb-4 sm:pb-6 px-4 sm:px-6">
+                                <CardTitle className="text-xl sm:text-2xl font-bold text-gray-900">
                                     Tell Us About Your Case
                                 </CardTitle>
-                                <CardDescription className="text-gray-600">
+                                <CardDescription className="text-sm sm:text-base text-gray-600 mt-2">
                                     All information is confidential and protected by attorney-client privilege
                                 </CardDescription>
                             </CardHeader>
 
-                            <CardContent>
+                            <CardContent className="px-4 sm:px-6">
                                 <Form {...form}>
-                                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
                                         {/* Name Fields */}
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                                             <FormField
                                                 control={form.control}
                                                 name="firstName"
                                                 render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel>First Name *</FormLabel>
+                                                    <FormItem className="w-full">
+                                                        <FormLabel className="text-sm font-medium">First Name *</FormLabel>
                                                         <FormControl>
-                                                            <Input placeholder="John" {...field} />
+                                                            <Input placeholder="John" className="w-full" {...field} />
                                                         </FormControl>
-                                                        <FormMessage />
+                                                        <FormMessage className="text-xs" />
                                                     </FormItem>
                                                 )}
                                             />
@@ -222,29 +202,29 @@ export default function ContactFormSection() {
                                                 control={form.control}
                                                 name="lastName"
                                                 render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel>Last Name *</FormLabel>
+                                                    <FormItem className="w-full">
+                                                        <FormLabel className="text-sm font-medium">Last Name *</FormLabel>
                                                         <FormControl>
-                                                            <Input placeholder="Doe" {...field} />
+                                                            <Input placeholder="Doe" className="w-full" {...field} />
                                                         </FormControl>
-                                                        <FormMessage />
+                                                        <FormMessage className="text-xs" />
                                                     </FormItem>
                                                 )}
                                             />
                                         </div>
 
                                         {/* Contact Fields */}
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                                             <FormField
                                                 control={form.control}
                                                 name="email"
                                                 render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel>Email *</FormLabel>
+                                                    <FormItem className="w-full">
+                                                        <FormLabel className="text-sm font-medium">Email *</FormLabel>
                                                         <FormControl>
-                                                            <Input type="email" placeholder="john@example.com" {...field} />
+                                                            <Input type="email" placeholder="john@example.com" className="w-full" {...field} />
                                                         </FormControl>
-                                                        <FormMessage />
+                                                        <FormMessage className="text-xs" />
                                                     </FormItem>
                                                 )}
                                             />
@@ -252,12 +232,12 @@ export default function ContactFormSection() {
                                                 control={form.control}
                                                 name="phone"
                                                 render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel>Phone *</FormLabel>
+                                                    <FormItem className="w-full">
+                                                        <FormLabel className="text-sm font-medium">Phone *</FormLabel>
                                                         <FormControl>
-                                                            <Input type="tel" placeholder="(305) 555-0123" {...field} />
+                                                            <Input type="tel" placeholder="(833) 645-3247" className="w-full" {...field} />
                                                         </FormControl>
-                                                        <FormMessage />
+                                                        <FormMessage className="text-xs" />
                                                     </FormItem>
                                                 )}
                                             />
@@ -268,12 +248,12 @@ export default function ContactFormSection() {
                                             control={form.control}
                                             name="caseType"
                                             render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Type of Case *</FormLabel>
+                                                <FormItem className="w-full">
+                                                    <FormLabel className="text-sm font-medium">Type of Case *</FormLabel>
                                                     <FormControl>
                                                         <select
                                                             {...field}
-                                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
                                                         >
                                                             <option value="">Select a case type</option>
                                                             {caseTypes.map((type) => (
@@ -283,7 +263,7 @@ export default function ContactFormSection() {
                                                             ))}
                                                         </select>
                                                     </FormControl>
-                                                    <FormMessage />
+                                                    <FormMessage className="text-xs" />
                                                 </FormItem>
                                             )}
                                         />
@@ -293,12 +273,12 @@ export default function ContactFormSection() {
                                             control={form.control}
                                             name="urgency"
                                             render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>How urgent is your case? *</FormLabel>
+                                                <FormItem className="w-full">
+                                                    <FormLabel className="text-sm font-medium">How urgent is your case? *</FormLabel>
                                                     <FormControl>
                                                         <select
                                                             {...field}
-                                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
                                                         >
                                                             <option value="">Select urgency level</option>
                                                             {urgencyLevels.map((level) => (
@@ -308,7 +288,7 @@ export default function ContactFormSection() {
                                                             ))}
                                                         </select>
                                                     </FormControl>
-                                                    <FormMessage />
+                                                    <FormMessage className="text-xs" />
                                                 </FormItem>
                                             )}
                                         />
@@ -318,16 +298,16 @@ export default function ContactFormSection() {
                                             control={form.control}
                                             name="description"
                                             render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Case Details *</FormLabel>
+                                                <FormItem className="w-full">
+                                                    <FormLabel className="text-sm font-medium">Case Details *</FormLabel>
                                                     <FormControl>
                                                         <Textarea
                                                             placeholder="Please describe your situation in detail. Include dates, companies involved, and any documentation you have..."
-                                                            className="min-h-[120px]"
+                                                            className="w-full min-h-[100px] sm:min-h-[120px] resize-y"
                                                             {...field}
                                                         />
                                                     </FormControl>
-                                                    <FormMessage />
+                                                    <FormMessage className="text-xs" />
                                                 </FormItem>
                                             )}
                                         />
@@ -337,27 +317,27 @@ export default function ContactFormSection() {
                                             control={form.control}
                                             name="agreeToTerms"
                                             render={({ field }) => (
-                                                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                                <FormItem className="flex flex-row items-start space-x-3 space-y-0 ">
                                                     <FormControl>
                                                         <input
                                                             type="checkbox"
                                                             checked={field.value}
                                                             onChange={field.onChange}
-                                                            className="mt-1"
+                                                            className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                                                         />
                                                     </FormControl>
-                                                    <div className="space-y-1 leading-none">
-                                                        <FormLabel className="text-sm text-gray-600">
+                                                    <div className="space-y-1 leading-none flex-1">
+                                                        <FormLabel className="text-xs sm:text-sm text-gray-600 cursor-pointer">
                                                             I agree to the{" "}
-                                                            <a href="#terms" className="text-blue-600 hover:underline">
+                                                            <a href="/terms-of-service" className="text-blue-600 hover:underline">
                                                                 Terms of Service
                                                             </a>{" "}
                                                             and{" "}
-                                                            <a href="#privacy" className="text-blue-600 hover:underline">
+                                                            <a href="/privacy-policy" className="text-blue-600 hover:underline">
                                                                 Privacy Policy
                                                             </a>
                                                         </FormLabel>
-                                                        <FormMessage />
+                                                        <FormMessage className="text-xs" />
                                                     </div>
                                                 </FormItem>
                                             )}
@@ -366,9 +346,9 @@ export default function ContactFormSection() {
                                         {/* Submit Button */}
                                         <Button
                                             type="submit"
-                                            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-lg font-semibold rounded-xl transition-all duration-200 hover:scale-105"
+                                            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 sm:py-3 text-base sm:text-lg font-semibold rounded-xl transition-all duration-200 hover:scale-[1.02]"
                                         >
-                                            <Send className="w-5 h-5 mr-2" />
+                                            <Send className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                                             Get Free Case Review
                                         </Button>
                                     </form>

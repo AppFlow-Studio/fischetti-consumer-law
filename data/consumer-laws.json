@@ -1,0 +1,218 @@
+[
+    {
+        "slug": "fcra",
+        "title": "FCRA — Fair Credit Reporting Act",
+        "summary": "Your rights when credit bureaus and furnishers report inaccurate or incomplete information.",
+        "heroImage": "/fischettiheadshots.jpg",
+        "statutes": [
+            {
+                "code": "Fair Credit Reporting Act",
+                "citation": "15 U.S.C. § 1681 et seq."
+            }
+        ],
+        "whoIsProtected": "The FCRA protects consumers nationwide who are affected by inaccurate credit reporting. This includes victims of identity theft, job applicants denied employment based on background reports, and anyone whose credit report contains errors that impact their ability to obtain credit, housing, or employment.",
+        "commonViolations": "Credit bureaus and furnishers frequently violate the FCRA through mixed files (where someone else's information appears on your report), failure to conduct reasonable investigations of consumer disputes, reinserting deleted information without proper notice, continuing to report debts after bankruptcy discharge, and failing to provide required adverse action notices when credit is denied.",
+        "yourRights": "Under the FCRA, you have the right to dispute inaccurate information on your credit reports, access your credit reports annually from all three major bureaus at no cost, receive adverse action notices when you're denied credit or employment based on your report, and seek damages plus attorney's fees when your rights are violated.",
+        "whatToDoNext": "Start by pulling your credit reports from all three major bureaus (Equifax, Experian, and TransUnion). Dispute any inaccuracies in writing, including supporting evidence and documentation. Keep detailed records of all correspondence, including a timeline of when you sent disputes and received responses. If errors persist after your disputes or the bureaus fail to investigate properly, contact a consumer protection attorney immediately.",
+        "damagesAndRemedies": "Victims of FCRA violations can recover both statutory damages (set amounts per violation) and actual damages (for financial harm, emotional distress, and other losses). Courts can also award punitive damages when violations are willful or intentional. Most importantly, the FCRA requires defendants to pay your attorney's fees and costs, meaning you can often pursue claims at no out-of-pocket cost.",
+        "faq": [
+            {
+                "question": "How long do negative items stay on my credit report?",
+                "answer": "Most negative items remain on your credit report for seven years from the date of first delinquency. However, Chapter 7 bankruptcies can remain for up to 10 years, and some public records may have different timeframes. Positive information can generally remain indefinitely."
+            },
+            {
+                "question": "Will disputing items hurt my credit score?",
+                "answer": "No, the act of disputing items on your credit report does not hurt your credit score. The dispute process is your legal right and the bureaus cannot penalize you for exercising it."
+            },
+            {
+                "question": "What's the difference between a credit bureau and a furnisher?",
+                "answer": "Credit bureaus (like Equifax, Experian, and TransUnion) compile and maintain credit reports. Furnishers are the creditors, lenders, and collection agencies that provide information to the bureaus. Both can be liable under the FCRA for reporting inaccurate information."
+            }
+        ]
+    },
+    {
+        "slug": "fdcpa",
+        "title": "FDCPA — Fair Debt Collection Practices Act",
+        "summary": "Stops harassing calls, threats, lies, and unfair collection tactics by third‑party collectors.",
+        "heroImage": "/fischettiheadshots.jpg",
+        "statutes": [
+            {
+                "code": "Fair Debt Collection Practices Act",
+                "citation": "15 U.S.C. § 1692 et seq."
+            }
+        ],
+        "whoIsProtected": "The FDCPA protects consumers with personal, family, or household debts (not business debts) from abusive practices by third-party debt collectors. This includes people being contacted at work or at inconvenient hours, those facing lawsuits from debt buyers, and anyone experiencing harassment or deception from collection agencies.",
+        "commonViolations": "Debt collectors commonly violate the FDCPA by calling consumers before 8am or after 9pm in their local time zone, threatening arrest or legal action they cannot or will not take, continuing to contact consumers after being informed they have legal representation, discussing the debt with family members or employers, falsely claiming to be attorneys or law enforcement, adding unauthorized fees, and continuing collection efforts after receiving a written cease communication request.",
+        "yourRights": "You have the right to demand that debt collectors stop contacting you entirely through a written cease communication letter. You can request validation of the debt, requiring them to prove you owe it and that they have the right to collect. You can sue collectors who violate the FDCPA and recover damages. You also have the right to dispute the debt and have collection efforts paused until validation is provided.",
+        "whatToDoNext": "Document everything by saving voicemails, call logs with dates and times, and any written communications. Within 30 days of first contact, send a written request for debt validation requiring them to prove the debt is yours and valid. If harassment continues, send a cease communication letter via certified mail. Keep copies of all correspondence and consider recording calls if your state allows single-party consent recording.",
+        "damagesAndRemedies": "The FDCPA provides for statutory damages of up to $1,000 per lawsuit regardless of actual harm, plus actual damages for documented losses such as lost wages, medical bills for stress-related conditions, and emotional distress. Defendants must also pay your attorney's fees and costs, making it possible to pursue claims without upfront legal expenses.",
+        "faq": [
+            {
+                "question": "Can debt collectors call my workplace?",
+                "answer": "Debt collectors can initially call your workplace, but they must stop immediately if you tell them your employer prohibits such calls or if you request they stop contacting you at work. They cannot tell your employer about the debt."
+            },
+            {
+                "question": "What if the debt isn't mine?",
+                "answer": "Send a written dispute letter within 30 days of their initial contact. The collector must cease collection efforts until they provide validation proving the debt is yours. If they cannot validate it, they must stop collection and remove it from your credit report."
+            },
+            {
+                "question": "Can I still sue if I actually owe the debt?",
+                "answer": "Yes. Owing a debt does not give collectors the right to violate the FDCPA. Even if the underlying debt is valid, you can still sue for harassment, deception, or other violations of the law."
+            }
+        ]
+    },
+    {
+        "slug": "tcpa",
+        "title": "TCPA — Telephone Consumer Protection Act",
+        "summary": "Protects you from robocalls and spam texts made without consent.",
+        "heroImage": "/fischettiheadshots.jpg",
+        "statutes": [
+            {
+                "code": "Telephone Consumer Protection Act",
+                "citation": "47 U.S.C. § 227"
+            }
+        ],
+        "whoIsProtected": "The TCPA protects wireless phone subscribers and residential landline users from unwanted calls and texts. This includes people on the National Do Not Call Registry, individuals who have revoked consent to be contacted, and those receiving calls to wrong or reassigned numbers. The law applies regardless of whether you owe money or have a prior relationship with the caller.",
+        "commonViolations": "Common TCPA violations include using automatic telephone dialing systems (autodialers) or artificial/prerecorded voices to call cell phones without prior express consent, sending unsolicited marketing text messages, continuing to call after consent has been revoked, calling wrong or reassigned numbers without proper safeguards, telemarketing to people on the Do Not Call Registry, and failing to provide clear opt-out mechanisms in text messages.",
+        "yourRights": "You have the right to revoke consent to be contacted at any time through any reasonable means, including verbally or via text (such as replying STOP). You can recover damages for each illegal call or text you receive. You don't need to prove actual harm or damages—the statute provides for statutory damages per violation. You can file a lawsuit in small claims court or regular court, and the company making the calls is liable, not just the individual caller.",
+        "whatToDoNext": "Keep detailed records including screenshots of text messages showing sender information and content, call logs with dates, times, and phone numbers, and recordings of voicemails if available. Text STOP or clearly state you revoke consent and save proof of this communication. Document any calls that come after you've opted out. Note any robocalls or prerecorded messages. Keep your phone even if you want to change numbers, as you may need it as evidence. Consult with a TCPA attorney—many work on contingency.",
+        "damagesAndRemedies": "The TCPA provides for $500 in statutory damages for each violation (each illegal call or text). If the violation was knowing and willful, damages can be trebled up to $1,500 per violation. You don't need to prove actual damages or harm. With multiple calls or texts, these amounts can add up significantly. Courts can also award injunctive relief to stop future calls.",
+        "faq": [
+            {
+                "question": "What counts as consent under the TCPA?",
+                "answer": "For telemarketing calls to cell phones, consent must be in writing and clearly authorize calls using an autodialer or prerecorded voice. Simply providing your number isn't always enough. For informational calls (like appointment reminders), oral consent may suffice. Consent can be revoked at any time by any reasonable means."
+            },
+            {
+                "question": "What if I never gave them my number?",
+                "answer": "If you never provided consent and don't have a prior business relationship, calls or texts are likely illegal. This includes wrong numbers and reassigned numbers—callers have a duty to maintain do-not-call lists and honor opt-out requests."
+            },
+            {
+                "question": "Can I sue for calls from my bank or pharmacy?",
+                "answer": "It depends. There are exemptions for certain non-marketing calls, but many companies abuse these exemptions. If the calls are marketing in nature, use an autodialer, or continue after you've revoked consent, they may still violate the TCPA."
+            }
+        ]
+    },
+    {
+        "slug": "privacy",
+        "title": "Privacy & Data Breach",
+        "summary": "Holds companies accountable for leaking, mishandling, or selling your personal data.",
+        "heroImage": "/fischettiheadshots.jpg",
+        "statutes": [
+            {
+                "code": "Various federal and state privacy statutes including state data breach notification laws, CCPA, CPRA, and consumer protection acts"
+            }
+        ],
+        "whoIsProtected": "Privacy and data breach laws protect consumers whose personal information has been compromised through data breaches, patients whose medical records were exposed, subscribers and customers whose account information was mishandled, app users whose data was collected or shared without proper consent, and anyone whose sensitive information (Social Security numbers, financial data, biometric data) was leaked or sold without authorization.",
+        "commonViolations": "Companies violate privacy laws by failing to implement reasonable security measures to protect personal identifiable information (PII), improperly sharing or selling consumer data without proper consent or notice, providing late or inadequate breach notifications to affected consumers, failing to encrypt sensitive data, storing data longer than necessary, not honoring consumer requests to delete or correct data, and engaging in deceptive privacy practices that contradict their stated privacy policies.",
+        "yourRights": "When your data is breached or mishandled, you have the right to receive timely notice of the breach including what information was compromised. You can seek remedies for identity theft, financial losses, and the time spent mitigating the breach. Under various state laws, you may have the right to know what data companies have about you, request deletion of your data, opt out of the sale of your information, and sue for violations. Some statutes provide for statutory damages even without proving actual harm.",
+        "whatToDoNext": "If you're notified of a data breach, immediately freeze your credit with all three major bureaus to prevent fraudulent accounts from being opened. Change passwords for affected accounts and enable multi-factor authentication wherever possible. Monitor your bank and credit card statements closely for unauthorized transactions. Check your credit reports regularly for signs of identity theft. Document all time spent and expenses incurred responding to the breach. Consider identity theft monitoring services. Save all breach notification letters and communications. Consult with a consumer protection attorney about your rights, especially if you suffer identity theft or financial losses.",
+        "damagesAndRemedies": "Remedies for privacy violations and data breaches vary by statute but can include actual damages for out-of-pocket losses, time spent mitigating harm (often valued at an hourly rate), increased risk of identity theft, and emotional distress. Some statutes provide statutory damages per violation, allowing recovery even without proving specific monetary harm. Courts can order injunctive relief requiring companies to improve their security practices. Class actions are common in breach cases, allowing affected consumers to pool their claims.",
+        "faq": [
+            {
+                "question": "Do I need proof of identity theft to have a claim?",
+                "answer": "Not always. While actual identity theft strengthens your case, many privacy statutes recognize that data breaches create an increased risk of future harm and allow recovery for the time and expense of mitigation efforts, even if identity theft hasn't occurred yet. Some laws provide statutory damages regardless of actual harm."
+            },
+            {
+                "question": "How long do I have to file a claim after a breach?",
+                "answer": "Statutes of limitations vary by state and the specific law violated, typically ranging from 1-4 years. However, the clock may not start until you discover the breach or should have discovered it. It's important to consult an attorney promptly after learning of a breach."
+            },
+            {
+                "question": "Can I sue if I accepted a free credit monitoring offer?",
+                "answer": "Generally yes, unless you signed away your rights. Simply accepting free credit monitoring typically doesn't waive your right to sue. However, some settlement offers require you to release claims, so read the fine print carefully before accepting."
+            }
+        ]
+    },
+    {
+        "slug": "vppa",
+        "title": "VPPA — Video Privacy Protection Act",
+        "summary": "Prohibits sharing viewing history with third parties without consent.",
+        "heroImage": "/fischettiheadshots.jpg",
+        "statutes": [
+            {
+                "code": "Video Privacy Protection Act",
+                "citation": "18 U.S.C. § 2710"
+            }
+        ],
+        "whoIsProtected": "The VPPA protects consumers who watch video content on streaming services, websites, mobile apps, and other digital platforms. Originally passed to protect video rental records, the law has been interpreted to cover modern streaming services and applies to anyone whose video viewing information (what videos they watched, when, and for how long) has been shared with third parties like advertisers, social media platforms, or data brokers without proper consent.",
+        "commonViolations": "Streaming services and websites commonly violate the VPPA by sending detailed video viewing data to advertising networks and analytics platforms through tracking pixels or embedded code, sharing unique identifiers (like email addresses, device IDs, or account numbers) that can be linked back to specific individuals along with their viewing history, using Facebook pixels or similar tracking tools that transmit what videos users watch, and failing to obtain proper written consent before disclosing personally identifiable viewing information to third parties.",
+        "yourRights": "The VPPA gives you a private right of action, meaning you can sue companies that violate your video privacy rights directly. You can seek statutory damages for each violation without needing to prove actual harm or monetary loss. You're entitled to attorney's fees if you prevail, making it possible to pursue claims without upfront legal costs. The law also provides for punitive damages and equitable relief to stop ongoing violations.",
+        "whatToDoNext": "If you suspect a VPPA violation, take screenshots of the video service or website showing what videos you watched and any visible tracking technology. Use browser developer tools or privacy extensions to capture evidence of data being sent to third parties if you're technically inclined. Export your viewing history or account data if the platform allows. Save any privacy policy changes or terms of service you agreed to. Look for Facebook pixels, Google Analytics, or other tracking scripts on video pages. Document the frequency and types of videos you watched. Contact a consumer privacy attorney who has experience with VPPA cases, as these cases often involve technical evidence and expert analysis.",
+        "damagesAndRemedies": "The VPPA provides for liquidated damages of not less than $2,500 per violation. Courts have interpreted each disclosure of viewing information as a separate violation, so damages can accumulate quickly. You can also recover punitive damages if the violation was willful, as well as reasonable attorney's fees and costs. The law also allows for equitable relief, including injunctions to stop the unlawful disclosure of video viewing information.",
+        "faq": [
+            {
+                "question": "Does the VPPA apply to free streaming services?",
+                "answer": "Yes. The VPPA applies to any 'video tape service provider,' which courts have broadly interpreted to include free streaming services, websites with video content, and mobile apps. You don't need to pay for the service to be protected."
+            },
+            {
+                "question": "What kind of consent is required under the VPPA?",
+                "answer": "The VPPA requires informed, written consent that is given in a distinct, separate transaction from other agreements. Simply having a privacy policy or terms of service is typically not enough. The consent must be specific to sharing video viewing information."
+            },
+            {
+                "question": "How do I know if my viewing data was shared?",
+                "answer": "Evidence often requires technical investigation, but signs include seeing targeted ads for products related to videos you watched, privacy policy language about sharing data with 'partners,' or the presence of tracking pixels on video pages. An attorney can help investigate and gather evidence."
+            }
+        ]
+    },
+    {
+        "slug": "fha",
+        "title": "FHA — Fair Housing Act",
+        "summary": "Protects against housing discrimination in renting, selling, and lending.",
+        "heroImage": "/fischettiheadshots.jpg",
+        "statutes": [
+            {
+                "code": "Fair Housing Act",
+                "citation": "42 U.S.C. § 3601 et seq."
+            }
+        ],
+        "whoIsProtected": "The Fair Housing Act protects tenants and homebuyers from discrimination based on race, color, national origin, religion, sex (including sexual orientation and gender identity), familial status (families with children under 18 and pregnant women), and disability. State and local laws may provide additional protections for characteristics like source of income, veteran status, or age. The law covers nearly all housing transactions, including rentals, sales, mortgage lending, homeowners insurance, and housing advertising.",
+        "commonViolations": "Housing discrimination takes many forms, including refusing to rent or sell to people in protected classes, imposing different terms or conditions (higher rent, larger deposits) based on protected characteristics, steering people toward or away from certain neighborhoods, providing false information about availability, refusing reasonable accommodations for people with disabilities (like allowing service animals in no-pet buildings), failing to design and construct accessible housing as required, retaliating against tenants who assert their fair housing rights, and using discriminatory advertising language that expresses preferences or limitations based on protected classes.",
+        "yourRights": "If you experience housing discrimination, you have multiple avenues for relief. You can file a complaint with the U.S. Department of Housing and Urban Development (HUD) or your state's fair housing agency, which will investigate at no cost to you. You also have the right to file a lawsuit in federal or state court within two years of the discrimination. You can seek both compensatory damages for your losses and punitive damages to punish intentional discrimination. Courts can also issue injunctions to stop discriminatory practices and order policy changes.",
+        "whatToDoNext": "Document everything by saving all communications with landlords, sellers, or lenders, including emails, texts, letters, and notes from phone conversations with dates and times. Keep copies of rental or loan applications and any denials. Save advertisements, listings, or flyers that may contain discriminatory language. Note the names of anyone you interacted with and any witnesses to discriminatory conduct. Take photos of properties and neighborhoods if relevant to steering or misrepresentation claims. File a HUD complaint within one year (though you have two years to file a lawsuit). Consult with a fair housing attorney promptly, as they can guide you through both administrative and legal options.",
+        "damagesAndRemedies": "FHA remedies include compensatory damages for out-of-pocket costs (application fees, moving expenses, hotel costs), emotional distress, humiliation, and inconvenience. Courts can award punitive damages to punish intentional discrimination and deter future violations. You can obtain injunctive relief, such as requiring the landlord to rent to you or stopping discriminatory practices. Attorney's fees and costs are available to prevailing plaintiffs. HUD can also impose civil penalties separate from damages awarded in your case.",
+        "faq": [
+            {
+                "question": "What counts as a reasonable accommodation for a disability?",
+                "answer": "Reasonable accommodations are changes to rules, policies, practices, or services that may be necessary for a person with a disability to use and enjoy a dwelling. Examples include allowing a service or emotional support animal in a no-pets building, assigning an accessible parking space, or allowing a live-in aide. The accommodation must be reasonable and related to the disability, but housing providers cannot charge extra fees for reasonable accommodations."
+            },
+            {
+                "question": "Can a landlord ask about my disability?",
+                "answer": "Landlords can ask if you need an accommodation and may request documentation of disability-related need for the accommodation, but they cannot ask about the nature or extent of your disability. They cannot require medical records or detailed diagnoses."
+            },
+            {
+                "question": "Is it discrimination if a landlord just says the unit is no longer available?",
+                "answer": "It can be. This is called 'pretextual denial' and is a common form of discrimination. If you suspect discrimination, consider having someone from a different protected class (or not in a protected class) inquire about the same property. If they're told it's available, that's strong evidence of discrimination."
+            }
+        ]
+    },
+    {
+        "slug": "mass-arbitration",
+        "title": "Mass Arbitration",
+        "summary": "Strategic filing of many individual arbitration claims against a company enforcing forced arbitration.",
+        "heroImage": "/fischettiheadshots.jpg",
+        "statutes": [
+            {
+                "code": "Federal Arbitration Act",
+                "citation": "9 U.S.C. § 1 et seq."
+            }
+        ],
+        "whoIsProtected": "Mass arbitration serves as a strategic tool for consumers who are bound by forced arbitration clauses in their contracts with companies. These clauses, found in terms of service for apps, websites, credit cards, phone services, and many other consumer products, typically waive your right to sue in court or join class actions. However, when hundreds or thousands of consumers file individual arbitration demands simultaneously, the company must pay substantial filing fees for each case, creating leverage for settlement even when individual claims might be small.",
+        "commonViolations": "Companies violate arbitration agreements and consumer rights by imposing arbitration clauses with unlawful provisions like prohibitive fees, inadequate discovery rights, or shortened statutes of limitations. They may refuse to pay required arbitration filing fees when consumers actually demand arbitration. Some companies use arbitration clauses to shield themselves from accountability while engaging in systemic violations like privacy breaches, illegal charges, or consumer protection violations. When faced with mass arbitration, some companies refuse to follow through with the arbitration process they demanded or attempt to invalidate the arbitration agreements retroactively.",
+        "yourRights": "If you're bound by an arbitration clause, you still have rights. The company must abide by the terms of the arbitration agreement, including paying required fees. You can band together with other affected consumers to file many individual arbitrations simultaneously, creating financial pressure. Courts can compel arbitration and enforce the arbitration agreement's terms. Many arbitration rules and some contracts provide for fee shifting, meaning the company pays your attorney's fees if you prevail. You can still seek public injunctive relief in some jurisdictions even with an arbitration clause.",
+        "whatToDoNext": "Save copies of all terms of service, user agreements, and arbitration clauses you've agreed to, including dated versions if possible. Preserve all evidence of the underlying violation, including account statements, communications, screenshots, and transaction records. Document your damages and the time you've spent dealing with the issue. If many consumers are affected by the same issue, organize or join efforts to coordinate mass arbitration filings. Consult with attorneys experienced in mass arbitration campaigns who can evaluate whether your situation is suitable for this strategy and coordinate with other claimants.",
+        "damagesAndRemedies": "Remedies in arbitration depend on the underlying claims and can include compensatory damages for actual losses, statutory damages under consumer protection laws, punitive damages if allowed by the applicable statute, injunctive relief to stop unlawful practices, and attorney's fees under fee-shifting statutes or arbitration rules. The strategic value of mass arbitration often lies in the filing fees companies must pay (often $200-$1,500+ per case), which can quickly exceed millions of dollars, creating strong settlement incentives even for small individual claims.",
+        "faq": [
+            {
+                "question": "Isn't arbitration bad for consumers?",
+                "answer": "Forced arbitration typically favors companies by preventing class actions and public trials. However, mass arbitration flips this dynamic by using the company's own arbitration clause against them. When thousands of consumers each file arbitration demands, companies must pay enormous filing fees, creating leverage that wouldn't exist in individual cases or that was eliminated by the arbitration clause."
+            },
+            {
+                "question": "Do I need to pay to file arbitration?",
+                "answer": "Most consumer arbitration agreements require the company to pay all or most filing fees for claims below a certain amount. Many attorneys handling mass arbitration work on contingency, meaning you don't pay unless you recover. Always review your specific arbitration clause and discuss fees with your attorney."
+            },
+            {
+                "question": "Can companies change their arbitration clauses to avoid mass arbitration?",
+                "answer": "Companies can change future agreements, but they generally cannot retroactively eliminate arbitration rights for past conduct. If your claim arose before a new arbitration clause took effect, the old clause typically governs. Some companies have tried to add 'mass arbitration' limitations, but these provisions may be unenforceable."
+            }
+        ]
+    }
+]

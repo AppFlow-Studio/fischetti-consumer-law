@@ -33,7 +33,7 @@ export default function Footer() {
         { name: "Case Results", href: "#results" },
         { name: "Free Consultation", href: "#consultation" },
         { name: "Contact Us", href: "#contact" },
-        { name: "Privacy Policy", href: "#privacy-policy" },
+        { name: "Privacy Policy", href: "/privacy-policy" },
     ]
 
     const socialLinks = [
@@ -44,7 +44,7 @@ export default function Footer() {
     ]
 
     return (
-        <footer className="bg-white text-gray-900 border-t border-gray-200">
+        <footer className="bg-white text-gray-900 border-t border-gray-200 ">
             {/* Main Footer Content */}
             <div className="max-w-7xl mx-auto px-6 py-16">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -63,7 +63,7 @@ export default function Footer() {
                         <div className="space-y-3">
                             <div className="flex items-center gap-3 text-gray-600">
                                 <Phone className="h-4 w-4 text-blue-600" />
-                                <span className="text-sm">(305) 555-0123</span>
+                                <span className="text-sm">(833) 645-3247</span>
                             </div>
                             <div className="flex items-center gap-3 text-gray-600">
                                 <Mail className="h-4 w-4 text-blue-600" />
@@ -116,7 +116,7 @@ export default function Footer() {
 
                     {/* Newsletter & Social */}
                     <div className="space-y-6">
-                        <div>
+                        {/* <div>
                             <h4 className="text-lg font-semibold text-gray-900 mb-4">Stay Updated</h4>
                             <p className="text-gray-600 text-sm mb-4">
                                 Get the latest consumer law updates and case results.
@@ -131,7 +131,7 @@ export default function Footer() {
                                     Subscribe
                                 </button>
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* Social Links */}
                         <div>
@@ -163,10 +163,10 @@ export default function Footer() {
                         </div>
 
                         <div className="flex gap-6 text-sm">
-                            <Link href="#terms" className="text-gray-500 hover:text-blue-600 transition-colors">
+                            <Link href="/terms-of-service" className="text-gray-500 hover:text-blue-600 transition-colors">
                                 Terms of Service
                             </Link>
-                            <Link href="#privacy" className="text-gray-500 hover:text-blue-600 transition-colors">
+                            <Link href="/privacy-policy" className="text-gray-500 hover:text-blue-600 transition-colors">
                                 Privacy Policy
                             </Link>
                             <Link href="#disclaimer" className="text-gray-500 hover:text-blue-600 transition-colors">
@@ -177,29 +177,7 @@ export default function Footer() {
                 </div>
             </div>
 
-            {/* Trust Badges */}
-            <div className="bg-gray-50 border-t border-gray-200">
-                <div className="max-w-7xl mx-auto px-6 py-4">
-                    <div className="flex flex-wrap justify-center items-center gap-8 text-gray-600 text-sm">
-                        <div className="flex items-center gap-2">
-                            <span className="text-green-600">✓</span>
-                            <span>Licensed in Florida</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <span className="text-blue-600">⚖️</span>
-                            <span>No Win, No Fee</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <span className="text-yellow-600">⭐</span>
-                            <span>4.9/5 Client Rating</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <span className="text-purple-600">🏆</span>
-                            <span>$30M+ Recovered</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </footer>
     )
 }

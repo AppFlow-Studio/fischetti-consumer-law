@@ -10,94 +10,66 @@ import ConsumerLaws from "@/components/ui/consumer-laws";
 import Footer from "@/components/ui/footer";
 import { Marquee } from "@/components/ui/marquee";
 import ProfileCard from "@/components/ui/profile-card";
+import LocationsSection from "@/components/ui/locations";
+import Testimonials from "@/components/ui/testimonials";
+import WhyFischetti from "@/components/ui/why-fischetti";
 import Image from "next/image";
+import { MorphingText } from "@/components/ui/morphing-text";
+import ConsumerLawSection from "@/components/ui/consumer-law-section";
+const texts = [
+  "Available 24/7.",
+  "We Make Them Pay.",
+  "No Win, No Fee.",
+  "$30M+ Recovered.",
+]
 // [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,black_6rem),linear-gradient(to_left,transparent,black_6rem),linear-gradient(to_bottom,transparent,black_6rem),linear-gradient(to_top,transparent,black_6rem)]
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full flex-col items-center justify-start bg-white dark:bg-black sm:items-center">
-        {/* Hero Section */}
+    <main className="min-h-full w-full  min-w-screen bg-white justify-center items-center font-sans dark:bg-black overflow-x-hidden">
+      {/* Hero Section */}
+      <section className="w-full h-full ">
         <section
           style={{
-            backgroundImage: "url('/miamicity.jpg')",
+            backgroundImage: "radial-gradient(circle, #051937, #002b60, #003e8d, #0052bb, #1265eb)",
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
           }}
-          className="relative w-full min-h-screen overflow-hidden">
-          {/* Background Video */}
-          {/* <video
-            className="absolute inset-0 size-full object-cover"
-            src="/herovideo.mp4"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-          /> */}
-
-          {/* Overlay */}
-          {/* <div
-            className="absolute inset-0"
-            style={{
-              background: "linear-gradient(to bottom, rgba(20,20,20,0.55) 80%, transparent 100%)"
-            }} */}
+          className="relative w-full h-full  min-w-screen lg:pt-0 pt-10 lg:min-h-[840px] xl:min-h-[980px] flex sm:items-end  sm:justify-end  justify-start items-start overflow-visible">
           <div
-            className="absolute inset-0 h-full min-h-screen"
+            className="absolute inset-0 w-full h-full lg:min-h-[840px] xl:min-h-[980px]"
             style={{
               background: "linear-gradient(to bottom, rgba(30,30,32,0.7) 80%, transparent 120%)"
             }}
           />
 
-
-          {/* Content */}
-          {/* <div className="relative z-[1] mx-auto flex max-w-6xl flex-col items-center px-6 pt-32 pb-20 text-center md:pt-40">
-            <h1 className="text-4xl font-bold tracking-tight text-white drop-shadow sm:text-5xl md:text-6xl">
-              Consumer Law Advocates in Florida
-            </h1>
-            <p className="mt-4 max-w-2xl text-base text-white/85 sm:text-lg">
-              Protecting your rights against fraud, unfair practices, and abusive collections.
-              Experienced guidance from first call to final resolution.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <a
-                href="#consultation"
-                className="inline-flex items-center justify-center rounded-xl bg-white/95 px-5 py-3 text-sm font-semibold text-neutral-900 shadow-md shadow-black/20 transition hover:bg-white"
-              >
-                Free Consultation
-              </a>
-              <a
-                href="#practice-areas"
-                className="inline-flex items-center justify-center rounded-xl bg-white/10 px-5 py-3 text-sm font-semibold text-white ring-1 ring-inset ring-white/30 backdrop-blur transition hover:bg-white/15"
-              >
-                Explore Consumer Laws
-              </a>
-            </div>
-          </div> */}
-          <section className="flex absolute inset-0 items-center justify-between min-h-screen w-full px-8">
-            <div className="w-[50%] py-20">
-              <div className="max-w-4xl ">
+          <section className="relative flex items-stretch justify-between h-full flex-1 w-full px-4 sm:px-4 lg:px-8 ">
+            <div className="w-full lg:w-1/2 sm:pt-12 pt-12 lg:py-12 h-full flex">
+              <div className="w-full max-w-4xl xl:max-w-5xl ">
                 {/* Top Stat */}
-                <p className="text-lg flex items-center gap-2 sm:text-xl font-semibold uppercase text-sky-600 mb-6 tracking-wider">
+                <p className="text-sm md:text-base xl:text-xl flex items-center gap-2  font-semibold uppercase text-sky-600 mb-2 tracking-wider">
                   {/* <AvatarGroup /> Trusted by 10,000+ consumers */}
-                  over $30 million recovered for clients
+                  over <span className="italic">$30 million</span> recovered for clients
                 </p>
 
                 {/* Main Headline */}
-                <div className="space-y-2 mb-8">
-                  <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
+                <div className="space-y-2 mb-4 xl:mb-8 text-start">
+                  <h1 className="text-5xl md:text-6xl xl:text-7xl font-bold text-white leading-tight">
                     Big Companies Play Unfair.
                   </h1>
-                  <h1 className="text-6xl md:text-7xl lg:text-8xl italic font-bold text-[#007BFF] leading-tight">
-                    We Make Them Pay.
-                  </h1>
+                  {/* <h1 className="text-6xl md:text-7xl xl:text-8xl italic font-bold text-[#439cfc] leading-tight">
+            We Make Them Pay.
+          </h1> */}
+                  <div className="rounded-xl text-start items-start justify-start w-full ">
+                    <MorphingText texts={texts} className="text-[2rem] md:text-[3rem] xl:text-[4rem] self-start italic font-bold text-[#439cfc]  text-start leading-tight" />
+                  </div>
                 </div>
 
                 {/* Trust Indicators Marquee */}
-                <div className="mb-8 w-full pr-8">
-                  <Marquee className="backdrop-blur-sm rounded-lg py-3 [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,black_6rem),linear-gradient(to_left,transparent,black_6rem)]" pauseOnHover={true}>
+                <div className="mb-4 xl:mb-8 w-full pr-8">
+                  <Marquee className="backdrop-blur-sm rounded-xl py-3 [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,black_6rem),linear-gradient(to_left,transparent,black_6rem)]" pauseOnHover={true}>
                     <div className="flex items-center gap-2 text-gray-200 text-sm font-medium px-4">
-                      <span>4.9/5 from 500+ reviews</span>
+                      <span>5/5 from 500+ reviews</span>
                     </div>
                     <p className="text-white">•</p>
                     <div className="flex items-center gap-2 text-gray-200 text-sm font-medium px-4">
@@ -116,120 +88,98 @@ export default function Home() {
                       <span>Confidential consultations</span>
                     </div>
                     <p className="text-white">•</p>
+                    <div className="flex items-center gap-2 text-gray-200 text-sm font-medium px-4">
+                      <span>15,000+ cases served</span>
+                    </div>
+                    <p className="text-white">•</p>
+
                   </Marquee>
 
                 </div>
 
                 {/* Description */}
-                <p className="text-xl md:text-2xl text-gray-200 leading-relaxed max-w-3xl mb-12">
-                  Fishetti Law Group recovers what you're owed—compensation, refunds, and justice. You breathe easy while we handle everything.
-                </p>
+                <div className="flex sm:flex-row h-full flex-col items-start justify-start  w-full gap-4 lg:max-h-fit sm:max-h-100 max-h-140 lg:mb-4 overflow-hidden">
+                  <div className="text-sm sm:text-base xl:text-xl backdrop-blur-sm p-4 rounded-xl text-gray-200 leading-relaxed lg:w-full sm:w-1/2 w-full sm:h-100 h-fit lg:h-fit">
+                    <p className=" md:mb-0 sm:mb-12 mb-2 w-full" >
+                      Fischetti Law Group is your go-to Florida consumer protection lawyer—trusted, aggressive, and top-rated. We help consumers across Miami, Fort Lauderdale, West Palm Beach, and statewide recover what you're owed under the FDCPA, FCRA, TCPA, and other federal laws. No fees unless we win. Get the best Florida consumer lawyer fighting for you while you breathe easy—we handle everything.
+                    </p>
+                    <div className="sm:flex flex-col sm:flex-row gap-4 hidden lg:hidden lg:mt-0 mt-12">
+                      <a
+                        href="#consultation"
+                        className="inline-flex items-center justify-center rounded-xl bg-[#007BFF] px-8 py-4 text-xl font-semibold text-white shadow-xl hover:bg-blue-700 transition-colors"
+                      >
+                        Get Free Consultation
+                      </a>
+                    </div>
+                  </div>
+                  {/* <div className="w-full md:w-1/2 sm:h-104 h-80 border border-red-500 relative lg:hidden flex  items-end justify-end sm:mx-auto overflow-hidden">
+                    <Image src="/fischettiheadshot5.png" alt="Micheal Fischetti Headshot" fill className="rounded-xl w-full h-full  sm:mt-6 object-[50%_50%] sm:object-cover" priority />
+                    <a
+                      href="#consultation"
+                      className="absolute bottom-4 left-1/2 -translate-x-1/2 sm:hidden inline-flex items-center justify-center rounded-xl bg-[#007BFF] px-6 py-3 text-lg font-semibold text-white shadow-2xl hover:bg-blue-700 transition-colors z-10 w-[80%]"
+                    >
+                      Get Free Consultation
+                    </a>
+                  </div> */}
+                  <div className="w-full md:w-1/2 sm:h-104 h-80 relative lg:hidden flex  items-end justify-end sm:mx-auto overflow-hidden">
+                    <Image
+                      src="/fischettiheadshot5.png"
+                      alt="Micheal Fischetti Headshot"
+                      fill
+                      priority
+                      className="rounded-xl object-cover object-[50%_25%]"
+                    // Try object-[50%_20%] or object-[50%_25%] if 30% is still too low
+                    />
+
+                    {/* Button overlay on image for small mobile screens only */}
+                    <a
+                      href="#consultation"
+                      className="absolute bottom-4 left-1/2 -translate-x-1/2 sm:hidden inline-flex items-center justify-center rounded-xl bg-[#007BFF] px-6 py-3 text-lg font-semibold text-white shadow-2xl hover:bg-blue-700 transition-colors z-10 w-[80%]"
+                    >
+                      Get Free Consultation
+                    </a>
+                  </div>
+                </div>
 
                 {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex-col sm:flex-row gap-4 lg:flex hidden">
                   <a
                     href="#consultation"
-                    className="inline-flex items-center justify-center rounded-xl bg-[#007BFF] px-8 py-4 text-lg font-semibold text-white shadow-lg hover:bg-blue-700 transition-colors"
+                    className="inline-flex items-center justify-center rounded-xl bg-[#007BFF] px-8 py-4 text-xl font-semibold text-white shadow-xl hover:bg-blue-700 transition-colors"
                   >
                     Get Free Consultation
                   </a>
-
                 </div>
               </div>
             </div>
-            <div className="w-[50%] px-20 relative min-h-screen  items-end justify-center flex">
-              <Image src="/fischettiheadshot1.png" alt="Rays Fishetti Headshot" width={750} height={500} className="rounded-xl object-cover" />
+
+            <div className="w-0 lg:w-1/2 px-8 xl:px-20 relative hidden lg:block items-end justify-end ">
+              <Image src="/fischettiheadshot5.png" alt="Rays Fishetti Headshot" fill className="rounded-xl object-cover object-[50%_33%]" priority />
               {/* <ContactForm backgroundcolor="white" header="Book an Appointment" buttonText="Book an Appointment" /> */}
             </div>
           </section>
-
         </section>
         <HeroBarTrans />
+      </section>
 
-        {/* Practice Areas Section */}
-        <section id="practice-areas" className="w-full bg-gray-50">
-          <div className="max-w-8xl mx-auto px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              {/* Left Side - Header and Description */}
-              <div className="space-y-8">
-                <div className="space-y-4">
-                  <h2 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
-                    Our Consumer Law
-                    <span className="text-blue-600"> Expertise</span>
-                  </h2>
-                  <p className="text-xl text-gray-600 leading-relaxed">
-                    Fishetti Law Group specializes in protecting consumer rights across seven key areas of federal law.
-                    We fight for individuals who have been wronged by unfair business practices, aggressive debt collection,
-                    privacy violations, and more.
-                  </p>
-                </div>
 
-                <div className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-blue-600 font-bold text-lg">✓</span>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">Proven Track Record</h3>
-                      <p className="text-gray-600">
-                        Over $30 million recovered for clients through successful settlements and verdicts.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-green-600 font-bold text-lg">⚖️</span>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">No Win, No Fee</h3>
-                      <p className="text-gray-600">
-                        We only get paid when you win. No upfront costs, no hidden fees.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-purple-600 font-bold text-lg">🛡️</span>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">Federal Law Specialists</h3>
-                      <p className="text-gray-600">
-                        Deep expertise in FCRA, FDCPA, TCPA, and other consumer protection statutes.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-4">
-                  <a
-                    href="#consultation"
-                    className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-lg hover:bg-blue-700 transition-colors"
-                  >
-                    Get Your Free Case Review
-                  </a>
-                </div>
-              </div>
-
-              {/* Right Side - Consumer Laws Component */}
-              <div className="">
-                <ConsumerLaws />
-              </div>
-            </div>
-          </div>
-        </section>
-        {/* Case Results Section */}
+      <div className="max-w-8xl mx-auto">
         <CaseResults />
 
+        {/* Practice Areas Section */}
+        {/* <ConsumerLawSection /> */}
+        <WhyFischetti />
+        {/* Case Results Section */}
 
 
-        <div className="my-12">
+
+        <div className="mb-12 w-full flex flex-col xl:flex-row items-center mt-12 justify-center mx-auto px-4 xl:px-8">
           <ProfileCard
             headline="A WINNING CONSUMER LAWYER"
-            name="Meet Micheal J. Fishetti"
+            name="Meet Micheal J. Fischetti"
             description="Courtroom warrior from day one
-Michael founded Fischetti Law Group in 2016 after years of watching big firms prioritize profits over people. His philosophy? Listen first, fight hard, communicate always. Whether you're facing fraud, deceptive business practices, or corporate misconduct, Michael brings the same aggressive advocacy he learned defending clients in packed courtrooms—except now, he's fighting to get YOU paid."
+  Michael began his career as a defense attorney at the Broward County Public Defender’s Office, where he led busy misdemeanor divisions and tried cases from day one. He later transitioned to civil and consumer litigation, bringing that trial‑tested intensity to fight corporations and collectors on behalf of everyday people.
+  Michael founded Fischetti Law Group in 2016 after years of watching big firms prioritize profits over people. His philosophy? Listen first, fight hard, communicate always. Whether you're facing fraud, deceptive business practices, or corporate misconduct, Michael brings the same aggressive advocacy he learned defending clients in packed courtrooms—except now, he's fighting to get YOU paid."
             primaryButtonText="Book a consultation"
             secondaryButtonText="View Profile"
             accentColor="blue"
@@ -243,12 +193,17 @@ Michael founded Fischetti Law Group in 2016 after years of watching big firms pr
           />
         </div>
 
-        <div className="w-full "><StoriesScroller />        </div>
-        {/* Contact Form Section */}
+
+        <LocationsSection />
+        <div className="w-full mx-auto pb-22">
+          <StoriesScroller />
+        </div>
+
         <ContactFormSection />
-      </main>
 
+        <Testimonials />
 
-    </div>
+      </div>
+    </main>
   );
 }
