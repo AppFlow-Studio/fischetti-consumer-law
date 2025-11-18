@@ -187,7 +187,7 @@ export default function ProfileCard({
                                     transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
                                 },
                             }}
-                            className="text-gray-700 text-lg leading-relaxed"
+                            className="text-gray-700 sm:text-lg text-sm leading-relaxed"
                         >
                             {description}
                         </motion.p>
@@ -225,16 +225,16 @@ export default function ProfileCard({
                                             <Image
                                                 src={affiliation.logo}
                                                 alt={affiliation.logoAlt || affiliation.name}
-                                                width={index === 0 ? 110 : index === 1 ? 210 : 100}
+                                                width={index === 0 ? 110 : index === 1 ? 210 : 90}
                                                 height={120}
-                                                className="rounded-full grayscale aspect-auto object-cove sm sm:block hidden"
+                                                className=" grayscale aspect-auto object-cove sm sm:block hidden"
                                             />
                                             <Image
                                                 src={affiliation.logo}
                                                 alt={affiliation.logoAlt || affiliation.name}
                                                 width={index === 0 ? 90 : index === 1 ? 120 : 90}
                                                 height={120}
-                                                className="rounded-full grayscale aspect-auto object-cover sm:hidden block"
+                                                className=" grayscale aspect-auto object-cover sm:hidden block"
                                             />
                                         </>
                                     ) : (
@@ -250,27 +250,27 @@ export default function ProfileCard({
                                 </motion.div>
                             ))}
                         </motion.div>
-                        <Marquee duration={5} className="backdrop-blur-sm sm:hidden flex rounded-xl py-3 [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,black_6rem),linear-gradient(to_left,transparent,black_6rem)]" >
+                        <Marquee duration={5} className="backdrop-blur-sm sm:hidden flex items-center  justify-center rounded-xl py-3 [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,black_6rem),linear-gradient(to_left,transparent,black_6rem)]" >
                             {affiliations.map((affiliation, index) => (
                                 <div>
                                     {
                                         affiliation.logo ? (
-                                            <>
+                                            <div className="flex items-center justify-center h-full">
                                                 <Image
                                                     src={affiliation.logo}
                                                     alt={affiliation.logoAlt || affiliation.name}
                                                     width={index === 0 ? 110 : index === 1 ? 210 : 100}
                                                     height={120}
-                                                    className="rounded-full grayscale aspect-auto object-cove sm sm:block hidden"
+                                                    className=" grayscale aspect-auto object-cover sm:block hidden"
                                                 />
                                                 <Image
                                                     src={affiliation.logo}
                                                     alt={affiliation.logoAlt || affiliation.name}
                                                     width={index === 0 ? 90 : index === 1 ? 120 : 90}
                                                     height={120}
-                                                    className="rounded-full grayscale aspect-auto object-cover sm:hidden block"
+                                                    className=" grayscale aspect-auto object-cover sm:hidden self-center"
                                                 />
-                                            </>
+                                            </div>
                                         ) : (
                                             <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
                                                 <span className="text-xs font-bold text-gray-600">

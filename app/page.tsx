@@ -61,7 +61,7 @@ export default function Home() {
             We Make Them Pay.
           </h1> */}
                   <div className="rounded-xl text-start items-start justify-start w-full ">
-                    <MorphingText texts={texts} className="text-[2rem] md:text-[3rem] xl:text-[3.5rem] self-start italic font-bold text-[#439cfc]  text-start leading-tight" />
+                    <MorphingText texts={texts} className="text-[2rem] md:text-[3rem] xl:text-[4rem] self-start italic font-bold text-[#439cfc]  text-start leading-tight" />
                   </div>
                 </div>
 
