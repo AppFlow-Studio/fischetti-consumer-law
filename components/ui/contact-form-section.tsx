@@ -9,12 +9,14 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Phone, Mail, MapPin, Clock, Send, CheckCircle, Scale, Trophy, Users } from "lucide-react"
+import { Phone, Mail, MapPin, Clock, Send, CheckCircle, Scale, Trophy, Users, Shield } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useState } from "react"
 
 import { contactSchema, type ContactFormData, caseTypes, urgencyLevels, defaultContactValues } from "@/components/forms/contact-schema"
 import { ShineBorder } from "./shine-border"
+import SimpleContactForm from "./simple-contact-form"
+import { BorderBeam } from "./border-beam"
 
 export default function ContactFormSection() {
     const [isSubmitted, setIsSubmitted] = useState(false)
@@ -150,7 +152,7 @@ export default function ContactFormSection() {
                                 </div>
                                 <div className="flex items-center gap-3 text-gray-600">
                                     <MapPin className="h-5 w-5 text-blue-600" />
-                                    <span>Miami, FL</span>
+                                    <span>7593 Boynton Beach Blvd, Suite 110, Boynton Beach, FL <span className="text-gray-400 text-sm">(Main Office)</span></span>
                                 </div>
                                 <div className="flex items-center gap-3 text-gray-600">
                                     <Clock className="h-5 w-5 text-blue-600" />
@@ -166,195 +168,73 @@ export default function ContactFormSection() {
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true, margin: "-100px" }}
                         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                        className="w-full"
+                        className="w-full relative"
                     >
-                        <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm w-full">
-                            <ShineBorder shineColor={["#2563eb", "#3b82f6", "#60a5fa"]} />
+                        <div className="shadow-2xl w-full relative rounded-2xl  ">
+                            {/* SVG Filter Definition */}
+                            <svg style={{ display: 'none' }}>
+                                <filter id="displacementFilter">
+                                    <feTurbulence
+                                        type="turbulence"
+                                        baseFrequency="0.01"
+                                        numOctaves="2"
+                                        result="turbulence"
+                                    />
+                                    <feDisplacementMap
+                                        in="SourceGraphic"
+                                        in2="turbulence"
+                                        scale="200"
+                                        xChannelSelector="R"
+                                        yChannelSelector="G"
+                                    />
+                                </filter>
+                            </svg>
 
-                            <CardHeader className="text-center pb-4 sm:pb-6 px-4 sm:px-6">
-                                <CardTitle className="text-xl sm:text-2xl font-bold text-gray-900">
-                                    Tell Us About Your Case
-                                </CardTitle>
-                                <CardDescription className="text-sm sm:text-base text-gray-600 mt-2">
-                                    All information is confidential and protected by attorney-client privilege
-                                </CardDescription>
-                            </CardHeader>
+                            {/* Liquid Glass Background */}
+                            <div
+                                className="absolute inset-0 w-full h-full rounded-3xl overflow-hidden"
+                                style={{
+                                    filter: 'drop-shadow(-8px -10px 46px #0000005f)',
+                                    backdropFilter: 'brightness(1.1) blur(2px)',
+                                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                                }}
+                            >
+                                <div
+                                    className="absolute inset-0 rounded-3xl"
+                                    style={{
+                                        boxShadow: 'inset 6px 6px 0px -6px rgba(255, 255, 255, 0.7), inset 0 0 8px 1px rgba(255, 255, 255, 0.7)',
+                                    }}
+                                />
+                            </div>
 
-                            <CardContent className="px-4 sm:px-6">
-                                <Form {...form}>
-                                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
-                                        {/* Name Fields */}
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                                            <FormField
-                                                control={form.control}
-                                                name="firstName"
-                                                render={({ field }) => (
-                                                    <FormItem className="w-full">
-                                                        <FormLabel className="text-sm font-medium">First Name *</FormLabel>
-                                                        <FormControl>
-                                                            <Input placeholder="John" className="w-full" {...field} />
-                                                        </FormControl>
-                                                        <FormMessage className="text-xs" />
-                                                    </FormItem>
-                                                )}
-                                            />
-                                            <FormField
-                                                control={form.control}
-                                                name="lastName"
-                                                render={({ field }) => (
-                                                    <FormItem className="w-full">
-                                                        <FormLabel className="text-sm font-medium">Last Name *</FormLabel>
-                                                        <FormControl>
-                                                            <Input placeholder="Doe" className="w-full" {...field} />
-                                                        </FormControl>
-                                                        <FormMessage className="text-xs" />
-                                                    </FormItem>
-                                                )}
-                                            />
-                                        </div>
+                            <div className="relative z-20 rounded-2xl p-6 md:p-8 bg-linear-to-br from-teal-50 to-blue-50">
+                                <BorderBeam colorFrom="#2563eb" colorTo="#3b82f6" duration={20} className="rounded-2xl" />
 
-                                        {/* Contact Fields */}
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                                            <FormField
-                                                control={form.control}
-                                                name="email"
-                                                render={({ field }) => (
-                                                    <FormItem className="w-full">
-                                                        <FormLabel className="text-sm font-medium">Email *</FormLabel>
-                                                        <FormControl>
-                                                            <Input type="email" placeholder="john@example.com" className="w-full" {...field} />
-                                                        </FormControl>
-                                                        <FormMessage className="text-xs" />
-                                                    </FormItem>
-                                                )}
-                                            />
-                                            <FormField
-                                                control={form.control}
-                                                name="phone"
-                                                render={({ field }) => (
-                                                    <FormItem className="w-full">
-                                                        <FormLabel className="text-sm font-medium">Phone *</FormLabel>
-                                                        <FormControl>
-                                                            <Input type="tel" placeholder="(833) 645-3247" className="w-full" {...field} />
-                                                        </FormControl>
-                                                        <FormMessage className="text-xs" />
-                                                    </FormItem>
-                                                )}
-                                            />
-                                        </div>
+                                <div className="flex items-center gap-3 mb-4 bg-transparent">
+                                    <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                                        <Shield className="w-6 h-6 text-blue-600" />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-2xl font-bold text-gray-900">Free Case Review</h2>
+                                        <p className="text-sm text-gray-600">Get started in minutes</p>
+                                    </div>
+                                </div>
 
-                                        {/* Case Type */}
-                                        <FormField
-                                            control={form.control}
-                                            name="caseType"
-                                            render={({ field }) => (
-                                                <FormItem className="w-full">
-                                                    <FormLabel className="text-sm font-medium">Type of Case *</FormLabel>
-                                                    <FormControl>
-                                                        <select
-                                                            {...field}
-                                                            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                                                        >
-                                                            <option value="">Select a case type</option>
-                                                            {caseTypes.map((type) => (
-                                                                <option key={type} value={type}>
-                                                                    {type}
-                                                                </option>
-                                                            ))}
-                                                        </select>
-                                                    </FormControl>
-                                                    <FormMessage className="text-xs" />
-                                                </FormItem>
-                                            )}
-                                        />
+                                <p className="text-gray-600 mb-6 leading-relaxed">
+                                    Tell us about your situation. Our experienced consumer law attorneys will review your case at no cost. <strong className="text-white">No fees unless we win.</strong>
+                                </p>
 
-                                        {/* Urgency */}
-                                        <FormField
-                                            control={form.control}
-                                            name="urgency"
-                                            render={({ field }) => (
-                                                <FormItem className="w-full">
-                                                    <FormLabel className="text-sm font-medium">How urgent is your case? *</FormLabel>
-                                                    <FormControl>
-                                                        <select
-                                                            {...field}
-                                                            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                                                        >
-                                                            <option value="">Select urgency level</option>
-                                                            {urgencyLevels.map((level) => (
-                                                                <option key={level} value={level}>
-                                                                    {level}
-                                                                </option>
-                                                            ))}
-                                                        </select>
-                                                    </FormControl>
-                                                    <FormMessage className="text-xs" />
-                                                </FormItem>
-                                            )}
-                                        />
+                                <SimpleContactForm darkMode={true} />
 
-                                        {/* Description */}
-                                        <FormField
-                                            control={form.control}
-                                            name="description"
-                                            render={({ field }) => (
-                                                <FormItem className="w-full">
-                                                    <FormLabel className="text-sm font-medium">Case Details *</FormLabel>
-                                                    <FormControl>
-                                                        <Textarea
-                                                            placeholder="Please describe your situation in detail. Include dates, companies involved, and any documentation you have..."
-                                                            className="w-full min-h-[100px] sm:min-h-[120px] resize-y"
-                                                            {...field}
-                                                        />
-                                                    </FormControl>
-                                                    <FormMessage className="text-xs" />
-                                                </FormItem>
-                                            )}
-                                        />
+                                <div className="mt-6 pt-6 border-t border-white/20">
+                                    <div className="flex items-center gap-3 text-sm text-gray-600">
+                                        <Phone className="w-4 h-4 text-blue-600" />
+                                        <span>Prefer to talk? Call <a href="tel:8336453247" className="text-blue-600 hover:underline font-semibold">(833) 645-3247</a></span>
+                                    </div>
+                                </div>
+                            </div>
 
-                                        {/* Terms Agreement */}
-                                        <FormField
-                                            control={form.control}
-                                            name="agreeToTerms"
-                                            render={({ field }) => (
-                                                <FormItem className="flex flex-row items-start space-x-3 space-y-0 ">
-                                                    <FormControl>
-                                                        <input
-                                                            type="checkbox"
-                                                            checked={field.value}
-                                                            onChange={field.onChange}
-                                                            className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                                                        />
-                                                    </FormControl>
-                                                    <div className="space-y-1 leading-none flex-1">
-                                                        <FormLabel className="text-xs sm:text-sm text-gray-600 cursor-pointer">
-                                                            I agree to the{" "}
-                                                            <a href="/terms-of-service" className="text-blue-600 hover:underline">
-                                                                Terms of Service
-                                                            </a>{" "}
-                                                            and{" "}
-                                                            <a href="/privacy-policy" className="text-blue-600 hover:underline">
-                                                                Privacy Policy
-                                                            </a>
-                                                        </FormLabel>
-                                                        <FormMessage className="text-xs" />
-                                                    </div>
-                                                </FormItem>
-                                            )}
-                                        />
-
-                                        {/* Submit Button */}
-                                        <Button
-                                            type="submit"
-                                            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 sm:py-3 text-base sm:text-lg font-semibold rounded-xl transition-all duration-200 hover:scale-[1.02]"
-                                        >
-                                            <Send className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                                            Get Free Case Review
-                                        </Button>
-                                    </form>
-                                </Form>
-                            </CardContent>
-                        </Card>
+                        </div>
                     </motion.div>
                 </div>
             </div>

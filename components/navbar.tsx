@@ -11,6 +11,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import FreeCaseReviewDialog from "./free-case-review-dialog"
 import { usePathname, useRouter } from "next/navigation"
 import { officeLocations } from "@/data/office-locations"
+import { useUIState } from "@/providers/ui-state-provider"
 
 // Animated Hamburger Icon Component
 const HamburgerIcon = ({ open }: { open: boolean }) => (
@@ -58,30 +59,53 @@ type NavbarProps = {
 
 export default function Navbar({ className }: NavbarProps) {
     const [scrolled, setScrolled] = useState(false)
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+    const { isSidebarOpen, setIsSidebarOpen } = useUIState()
     const pathname = usePathname()
     const isHome = pathname === "/"
+    const isConsumerLawPage = pathname?.startsWith("/consumer-law/")
     const router = useRouter()
     const [openMenu, setOpenMenu] = useState<null | "laws" | "about" | "locations" | "testimonials">(null)
     const hoverTimer = useRef<NodeJS.Timeout | null>(null)
 
     useEffect(() => {
-        if (!isHome) {
-            // Non-home pages use dark logo and black text by default
+        if (!isHome && !isConsumerLawPage) {
+            // Other pages (not home, not consumer law) use dark logo and black text by default
             setScrolled(true)
             return
         }
+
         const onScroll = () => {
-            const threshold = typeof window !== 'undefined' ? window.innerHeight * 0.85 : 0
-            setScrolled(window.scrollY > threshold)
+            if (isHome) {
+                // Home page: transition at 85% of viewport height
+                const threshold = typeof window !== 'undefined' ? window.innerHeight * 0.85 : 0
+                setScrolled(window.scrollY > threshold)
+            } else if (isConsumerLawPage) {
+                // Consumer law pages: find the hero section and transition after it
+                const heroSection = document.getElementById('consumer-law-hero')
+                if (heroSection) {
+                    // Calculate the bottom of the hero section including the HeroBarTrans transition
+                    const heroBottom = heroSection.offsetTop + heroSection.offsetHeight
+                    // Find HeroBarTrans component (it's a div after the hero section)
+                    const heroBarTrans = heroSection.nextElementSibling as HTMLElement | null
+                    const transitionHeight = heroBarTrans ? heroBarTrans.offsetHeight : 0
+                    // Transition when scrolled past the hero section + transition bar (with small buffer)
+                    const threshold = heroBottom + transitionHeight - 50
+                    setScrolled(window.scrollY > threshold)
+                } else {
+                    // Fallback: use viewport height if hero section not found
+                    const threshold = typeof window !== 'undefined' ? window.innerHeight * 0.85 : 0
+                    setScrolled(window.scrollY > threshold)
+                }
+            }
         }
+
         onScroll()
         window.addEventListener('scroll', onScroll, { passive: true })
         return () => window.removeEventListener('scroll', onScroll)
-    }, [isHome])
+    }, [isHome, isConsumerLawPage])
 
     const linkClass = scrolled ? "text-black/90 hover:text-black font-medium text-[15px] leading-[140%] tracking-[-0.15px] hover:opacity-80 transition-all duration-[250ms] ease-[cubic-bezier(0.4,0,0.2,1)] font-af " : "text-white/90 hover:text-white font-medium text-[15px] leading-[140%] tracking-[-0.15px] hover:opacity-80 transition-all duration-[250ms] ease-[cubic-bezier(0.4,0,0.2,1)] font-af "
-    const toggleSidebar = () => setIsSidebarOpen((v) => !v)
+    const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen)
     const closeSidebar = () => setIsSidebarOpen(false)
 
     // iOS-like sidebar animation variants
@@ -125,7 +149,7 @@ export default function Navbar({ className }: NavbarProps) {
         <>
             <nav
                 className={cn(
-                    "fixed top-0 left-0 right-0 lg:top-4 lg:left-1/2 lg:-translate-x-1/2 lg:right-auto z-[112] w-full lg:w-[85%] mx-auto lg:rounded-[12px] transition-all duration-[250ms] ease-[cubic-bezier(0.4,0,0.2,1)] will-change-[background-color,border-color,box-shadow,backdrop-filter] bg-linear-to-r from-[rgba(249,250,247,0.12)] to-[rgba(249,250,247,0.18)] backdrop-blur-[12px] lg:shadow-[0_2px_6px_0_rgba(0,0,0,0.15)]",
+                    "fixed top-0 left-0 right-0 lg:top-4 lg:left-1/2 lg:-translate-x-1/2 lg:right-auto z-50 w-full lg:w-[85%] mx-auto lg:rounded-[12px] transition-all duration-[250ms] ease-[cubic-bezier(0.4,0,0.2,1)] will-change-[background-color,border-color,box-shadow,backdrop-filter] bg-linear-to-r from-[rgba(249,250,247,0.12)] to-[rgba(249,250,247,0.18)] backdrop-blur-[12px] lg:shadow-[0_2px_6px_0_rgba(0,0,0,0.15)]",
                     className
                 )}
                 role="navigation"
@@ -178,7 +202,7 @@ export default function Navbar({ className }: NavbarProps) {
                                 hoverTimer.current = setTimeout(() => setOpenMenu(null), 120)
                             }}
                         >
-                            <Link href="#consumer-law" onClick={(e) => scrollToSection(e, 'consumer-law')} className={cn(linkClass, "transition-colors text-lg")}>Consumer Laws</Link>
+                            <Link href="#consumer-law" onClick={(e) => scrollToSection(e, 'consumer-law')} className={cn(linkClass, "transition-colors text-lg")}>Consumer Protection Laws</Link>
                             <div className={cn(
                                 "absolute left-0 top-full mt-3 z-[200] w-100 rounded-2xl bg-white/95 shadow-xl ring-1 ring-black/5 transition duration-200",
                                 openMenu === "laws" ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-1 pointer-events-none"

@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/ui/footer";
 import FreeCaseReviewFAB from "@/components/free-case-review-fab";
 import { MapProvider } from "@/providers/map-provider";
+import { UIStateProvider } from "@/providers/ui-state-provider";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 
 const openSans = Open_Sans({
@@ -35,11 +36,13 @@ export default function RootLayout({
       <body
         className={`${openSans.variable} ${playfairDisplay.variable} antialiased w-full h-full overflow-x-hidden  flex flex-col`}
       >
-        <MapProvider >
+        <MapProvider>
+          <UIStateProvider>
           <Navbar />
           {children}
           <Footer />
           <FreeCaseReviewFAB />
+          </UIStateProvider>
         </MapProvider>
       </body>
     </html>

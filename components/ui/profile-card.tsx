@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { Marquee } from "./marquee"
 
 interface ProfileCardProps {
     className?: string
@@ -203,7 +204,7 @@ export default function ProfileCard({
                                     },
                                 },
                             }}
-                            className="flex flex-wrap items-center gap-12"
+                            className="flex-wrap sm:flex hidden items-center gap-12"
                         >
                             {affiliations.map((affiliation, index) => (
                                 <motion.div
@@ -249,6 +250,38 @@ export default function ProfileCard({
                                 </motion.div>
                             ))}
                         </motion.div>
+                        <Marquee duration={5} className="backdrop-blur-sm sm:hidden flex rounded-xl py-3 [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,black_6rem),linear-gradient(to_left,transparent,black_6rem)]" >
+                            {affiliations.map((affiliation, index) => (
+                                <div>
+                                    {
+                                        affiliation.logo ? (
+                                            <>
+                                                <Image
+                                                    src={affiliation.logo}
+                                                    alt={affiliation.logoAlt || affiliation.name}
+                                                    width={index === 0 ? 110 : index === 1 ? 210 : 100}
+                                                    height={120}
+                                                    className="rounded-full grayscale aspect-auto object-cove sm sm:block hidden"
+                                                />
+                                                <Image
+                                                    src={affiliation.logo}
+                                                    alt={affiliation.logoAlt || affiliation.name}
+                                                    width={index === 0 ? 90 : index === 1 ? 120 : 90}
+                                                    height={120}
+                                                    className="rounded-full grayscale aspect-auto object-cover sm:hidden block"
+                                                />
+                                            </>
+                                        ) : (
+                                            <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                                                <span className="text-xs font-bold text-gray-600">
+                                                    {affiliation.name.charAt(0)}
+                                                </span>
+                                            </div>
+                                        )
+                                    }
+                                </div>
+                            ))}
+                        </Marquee>
                     </motion.div>
 
                     {/* Action Buttons */}

@@ -2,13 +2,21 @@
 
 import FreeCaseReviewDialog from "@/components/free-case-review-dialog"
 import { Phone, Sparkles } from "lucide-react"
+import { useUIState } from "@/providers/ui-state-provider"
+import { cn } from "@/lib/utils"
 
 export default function FreeCaseReviewFAB() {
+    const { isSidebarOpen, isDialogOpen } = useUIState()
+    const shouldHide = isSidebarOpen || isDialogOpen
+
     return (
         <FreeCaseReviewDialog>
             <button
                 aria-label="Free Case Review"
-                className="fixed bottom-6 right-6 z-[130] inline-flex items-center gap-2 rounded-full bg-blue-600 px-5 py-3 text-white shadow-[0_10px_30px_-10px_rgba(2,132,199,0.7)] ring-1 ring-blue-500/50 transition-all duration-200 hover:translate-y-[-2px] hover:shadow-[0_18px_40px_-12px_rgba(2,132,199,0.75)] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={cn(
+                    "fixed bottom-6 right-6 z-[130] inline-flex items-center gap-2 rounded-full bg-blue-600 px-5 py-3 text-white shadow-[0_10px_30px_-10px_rgba(2,132,199,0.7)] ring-1 ring-blue-500/50 transition-all duration-200 hover:translate-y-[-2px] hover:shadow-[0_18px_40px_-12px_rgba(2,132,199,0.75)] focus:outline-none focus:ring-2 focus:ring-blue-500",
+                    shouldHide && "opacity-0 pointer-events-none scale-95"
+                )}
             >
                 <span className="relative inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15">
                     <Phone className="h-4 w-4" />

@@ -80,37 +80,9 @@ export default function ConsumerLawDetails({
     faq = [],
 }: ConsumerLawDetailsProps) {
     return (
-        <main className="w-full bg-white overflow-x-hidden">
-            {/* Hero */}
-            <section className="max-w-7xl mx-auto px-6">
-                <nav className="text-sm text-gray-600 mb-3">
-                    <Link href="/" className="hover:text-blue-600">Home</Link>
-                    <span className="mx-2">/</span>
-                    <Link href="/consumer-law" className="hover:text-blue-600">Consumer Law</Link>
-                    <span className="mx-2">/</span>
-                    <span className="text-blue-600">{title}</span>
-                </nav>
-
-                <div className="grid grid-cols-1 gap-8 items-start">
-                    <div>
-                        <h1 className="text-4xl md:text-5xl font-[--font-playfair-display] text-gray-900 mb-4">{title}</h1>
-                        <p className="text-lg md:text-xl text-gray-700 leading-relaxed">{summary}</p>
-                        <div className="mt-6 flex flex-wrap gap-3">
-                            <a href="#consultation" className="inline-flex items-center rounded-xl bg-blue-600 px-6 py-3 text-white font-semibold shadow hover:bg-blue-700 transition-colors">Free Case Review</a>
-
-                            <Link href="#testimonials" className="inline-flex items-center rounded-xl border border-gray-300 px-6 py-3 text-gray-800 hover:border-gray-400 transition-colors">See Results</Link>
-                        </div>
-                    </div>
-                    {/* <div className="relative aspect-video rounded-2xl overflow-hidden bg-gray-100">
-                        {heroImage ? (
-                            <Image src={heroImage} alt={`${title} illustration`} fill className="object-cover" />
-                        ) : null}
-                    </div> */}
-                </div>
-            </section>
-
+        <div className="w-full bg-white overflow-x-hidden">
             {/* Content Blocks */}
-            <section className="max-w-7xl mx-auto px-6 py-12">
+            <section className="w-full">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 leading-relaxed">
                     {!!statutes.length && (
                         <div>
@@ -162,7 +134,7 @@ export default function ConsumerLawDetails({
 
             {/* FAQ */}
             {!!faq.length && (
-                <section className="max-w-7xl mx-auto px-6 pb-16">
+                <section className="max-w-8xl mx-auto  pb-16 pt-12">
                     <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-6">Frequently Asked Questions</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {faq.map((f, i) => (
@@ -187,7 +159,7 @@ export default function ConsumerLawDetails({
                     </Button>
                 </Card>
             </section>
-        </main>
+        </div>
     )
 }
 

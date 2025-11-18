@@ -44,16 +44,18 @@ export default function Footer() {
     ]
 
     return (
-        <footer className="bg-white text-gray-900 border-t border-gray-200 ">
+        <footer className="text-white border-t border-white/20" style={{ backgroundColor: '#0974a4' }}>
             {/* Main Footer Content */}
-            <div className="max-w-7xl mx-auto px-6 py-16">
+            <div className="max-w-7xl mx-auto px-6 sm:py-16 py-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
 
                     {/* Company Info */}
                     <div className="space-y-6">
                         <div className="flex flex-col items-center justify-center relative">
-                            <div className="relative w-full h-24"><Image src="/fischettilogo.png" alt="Fischetti Law Group Logo" fill className="rounded-xl object-cover mb-4" /></div>
-                            <p className="text-gray-600 text-sm leading-relaxed">
+                            <div className="relative w-full lg:h-24 h-32 flex items-start justify-center mb-4">
+                                <Image src="/fischettiwhite-logo.png" alt="Fischetti Law Group Logo" fill className="rounded-xl object-fill" />
+                            </div>
+                            <p className="text-white/90 text-sm leading-relaxed">
                                 Fighting for consumer rights across Florida. We recover what you're owed
                                 through aggressive advocacy and proven legal strategies.
                             </p>
@@ -61,20 +63,20 @@ export default function Footer() {
 
                         {/* Contact Info */}
                         <div className="space-y-3">
-                            <div className="flex items-center gap-3 text-gray-600">
-                                <Phone className="h-4 w-4 text-blue-600" />
+                            <div className="flex items-center gap-3 text-white">
+                                <Phone className="h-4 w-4 text-white" />
                                 <span className="text-sm">(833) 645-3247</span>
                             </div>
-                            <div className="flex items-center gap-3 text-gray-600">
-                                <Mail className="h-4 w-4 text-blue-600" />
+                            <div className="flex items-center gap-3 text-white">
+                                <Mail className="h-4 w-4 text-white" />
                                 <span className="text-sm">info@fischettilaw.com</span>
                             </div>
-                            <div className="flex items-center gap-3 text-gray-600">
-                                <MapPin className="h-4 w-4 text-blue-600" />
+                            <div className="flex items-center gap-3 text-white">
+                                <MapPin className="h-4 w-4 text-white" />
                                 <span className="text-sm">Miami, FL</span>
                             </div>
-                            <div className="flex items-center gap-3 text-gray-600">
-                                <Clock className="h-4 w-4 text-blue-600" />
+                            <div className="flex items-center gap-3 text-white">
+                                <Clock className="h-4 w-4 text-white" />
                                 <span className="text-sm">Available 24/7</span>
                             </div>
                         </div>
@@ -82,13 +84,13 @@ export default function Footer() {
 
                     {/* Practice Areas */}
                     <div className="space-y-6">
-                        <h4 className="text-lg font-semibold text-gray-900">Practice Areas</h4>
+                        <h4 className="text-lg font-semibold text-white">Practice Areas</h4>
                         <ul className="space-y-2">
                             {practiceAreas.map((area, index) => (
                                 <li key={index}>
                                     <Link
                                         href={area.href}
-                                        className="text-gray-600 hover:text-blue-600 transition-colors text-sm"
+                                        className="text-white/90 hover:text-white transition-colors text-sm"
                                     >
                                         {area.name}
                                     </Link>
@@ -99,13 +101,13 @@ export default function Footer() {
 
                     {/* Quick Links */}
                     <div className="space-y-6">
-                        <h4 className="text-lg font-semibold text-gray-900">Quick Links</h4>
+                        <h4 className="text-lg font-semibold text-white">Quick Links</h4>
                         <ul className="space-y-2">
                             {quickLinks.map((link, index) => (
                                 <li key={index}>
                                     <Link
                                         href={link.href}
-                                        className="text-gray-600 hover:text-blue-600 transition-colors text-sm"
+                                        className="text-white/90 hover:text-white transition-colors text-sm"
                                     >
                                         {link.name}
                                     </Link>
@@ -117,17 +119,17 @@ export default function Footer() {
                     {/* Newsletter & Social */}
                     <div className="space-y-6">
                         {/* <div>
-                            <h4 className="text-lg font-semibold text-gray-900 mb-4">Stay Updated</h4>
-                            <p className="text-gray-600 text-sm mb-4">
+                            <h4 className="text-lg font-semibold text-white mb-4">Stay Updated</h4>
+                            <p className="text-white/90 text-sm mb-4">
                                 Get the latest consumer law updates and case results.
                             </p>
                             <div className="flex gap-2">
                                 <input
                                     type="email"
                                     placeholder="Enter your email"
-                                    className="flex-1 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                                    className="flex-1 px-3 py-2 bg-white/20 border border-white/30 rounded-lg text-sm text-white placeholder-white/60 focus:outline-none focus:border-white focus:ring-1 focus:ring-white"
                                 />
-                                <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium text-white transition-colors">
+                                <button className="px-4 py-2 bg-white hover:bg-white/90 text-[#0974a4] rounded-lg text-sm font-medium transition-colors">
                                     Subscribe
                                 </button>
                             </div>
@@ -135,17 +137,17 @@ export default function Footer() {
 
                         {/* Social Links */}
                         <div>
-                            <h4 className="text-lg font-semibold text-gray-900 mb-4">Follow Us</h4>
+                            <h4 className="text-lg font-semibold text-white mb-4">Follow Us</h4>
                             <div className="flex gap-3">
                                 {socialLinks.map((social, index) => (
                                     <motion.a
                                         key={index}
                                         href={social.href}
-                                        className="w-10 h-10 bg-gray-100 hover:bg-blue-600 rounded-lg flex items-center justify-center transition-colors"
+                                        className="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition-colors"
                                         whileHover={{ scale: 1.1 }}
                                         whileTap={{ scale: 0.95 }}
                                     >
-                                        <social.icon className="h-4 w-4 text-gray-600 hover:text-white" />
+                                        <social.icon className="h-4 w-4 text-white" />
                                     </motion.a>
                                 ))}
                             </div>
@@ -155,21 +157,21 @@ export default function Footer() {
             </div>
 
             {/* Bottom Bar */}
-            <div className="border-t border-gray-200">
+            <div className="border-t border-white/20">
                 <div className="max-w-7xl mx-auto px-6 py-6">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-                        <div className="text-gray-500 text-sm">
+                        <div className="text-white/80 text-sm">
                             © {currentYear} Fishetti Law Group. All rights reserved.
                         </div>
 
                         <div className="flex gap-6 text-sm">
-                            <Link href="/terms-of-service" className="text-gray-500 hover:text-blue-600 transition-colors">
+                            <Link href="/terms-of-service" className="text-white/80 hover:text-white transition-colors">
                                 Terms of Service
                             </Link>
-                            <Link href="/privacy-policy" className="text-gray-500 hover:text-blue-600 transition-colors">
+                            <Link href="/privacy-policy" className="text-white/80 hover:text-white transition-colors">
                                 Privacy Policy
                             </Link>
-                            <Link href="#disclaimer" className="text-gray-500 hover:text-blue-600 transition-colors">
+                            <Link href="/legal-disclaimer" className="text-white/80 hover:text-white transition-colors">
                                 Legal Disclaimer
                             </Link>
                         </div>
@@ -177,7 +179,7 @@ export default function Footer() {
                 </div>
             </div>
 
-
+       
         </footer>
     )
 }

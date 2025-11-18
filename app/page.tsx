@@ -61,7 +61,7 @@ export default function Home() {
             We Make Them Pay.
           </h1> */}
                   <div className="rounded-xl text-start items-start justify-start w-full ">
-                    <MorphingText texts={texts} className="text-[2rem] md:text-[3rem] xl:text-[4rem] self-start italic font-bold text-[#439cfc]  text-start leading-tight" />
+                    <MorphingText texts={texts} className="text-[2rem] md:text-[3rem] xl:text-[3.5rem] self-start italic font-bold text-[#439cfc]  text-start leading-tight" />
                   </div>
                 </div>
 
@@ -92,16 +92,19 @@ export default function Home() {
                       <span>15,000+ cases served</span>
                     </div>
                     <p className="text-white">•</p>
-
+                    <div className="flex items-center gap-2 text-gray-200 text-sm font-medium px-4">
+                      <span>Stopping harassment in its tracks.</span>
+                    </div>
+                    <p className="text-white">•</p>
                   </Marquee>
 
                 </div>
 
                 {/* Description */}
                 <div className="flex sm:flex-row h-full flex-col items-start justify-start  w-full gap-4 lg:max-h-fit sm:max-h-100 max-h-140 lg:mb-4 overflow-hidden">
-                  <div className="text-sm sm:text-base xl:text-xl backdrop-blur-sm p-4 rounded-xl text-gray-200 leading-relaxed lg:w-full sm:w-1/2 w-full sm:h-100 h-fit lg:h-fit">
+                  <div className="text-sm sm:text-base xl:text-xl backdrop-blur-sm sm:p-4 rounded-xl text-gray-200 leading-relaxed lg:w-full sm:w-1/2 w-full sm:h-100 h-fit lg:h-fit">
                     <p className=" md:mb-0 sm:mb-12 mb-2 w-full" >
-                      Fischetti Law Group is your go-to Florida consumer protection lawyer—trusted, aggressive, and top-rated. We help consumers across Miami, Fort Lauderdale, West Palm Beach, and statewide recover what you're owed under the FDCPA, FCRA, TCPA, and other federal laws. No fees unless we win. Get the best Florida consumer lawyer fighting for you while you breathe easy—we handle everything.
+                      Fischetti Law Group is your go-to Florida consumer protection lawyer—trusted, aggressive, and top-rated. We help consumers across Miami, Fort Lauderdale, West Palm Beach, and statewide recover what you're owed under the FDCPA, FCRA, TCPA, and other federal laws. No fees unless we win. Get the best Florida consumer lawyer fighting for you while you breathe easy—we handle everything. We always pick up your call.
                     </p>
                     <div className="sm:flex flex-col sm:flex-row gap-4 hidden lg:hidden lg:mt-0 mt-12">
                       <a
@@ -167,9 +170,7 @@ export default function Home() {
         <CaseResults />
 
         {/* Practice Areas Section */}
-        {/* <ConsumerLawSection /> */}
         <WhyFischetti />
-        {/* Case Results Section */}
 
 
 
@@ -177,16 +178,19 @@ export default function Home() {
           <ProfileCard
             headline="A WINNING CONSUMER LAWYER"
             name="Meet Micheal J. Fischetti"
-            description="Courtroom warrior from day one
-  Michael began his career as a defense attorney at the Broward County Public Defender’s Office, where he led busy misdemeanor divisions and tried cases from day one. He later transitioned to civil and consumer litigation, bringing that trial‑tested intensity to fight corporations and collectors on behalf of everyday people.
-  Michael founded Fischetti Law Group in 2016 after years of watching big firms prioritize profits over people. His philosophy? Listen first, fight hard, communicate always. Whether you're facing fraud, deceptive business practices, or corporate misconduct, Michael brings the same aggressive advocacy he learned defending clients in packed courtrooms—except now, he's fighting to get YOU paid."
+            description="Courtroom warrior from day one.
+  Michael began his career as a defense attorney at the Broward County Public Defender's Office, where he handled both misdemeanor and felony cases, led busy misdemeanor divisions, and tried cases from day one. He later transitioned to civil and consumer litigation, bringing that trial-tested intensity to fight corporations and collectors on behalf of everyday people.
+
+Michael founded Fischetti Law Group after years of watching big firms prioritize profits over people. His philosophy? Listen first, fight hard, communicate always. Whether you're facing fraud, deceptive business practices, or corporate misconduct, Michael brings the same aggressive advocacy he learned defending clients in packed courtrooms—except now, he's fighting to get YOU paid.
+
+Recognized for excellence, Michael holds an A+ rating from the Better Business Bureau, a Trust badge for Attorney At Law, and is featured on Elite Lawyer—testaments to his commitment to client success and ethical practice."
             primaryButtonText="Book a consultation"
             secondaryButtonText="View Profile"
             accentColor="blue"
             imageUrl="/fischettiheadshots.jpg"
             imageAlt="Micheal Fischetti Headshot"
             affiliations={[
-              { name: "The Florida Bar", logo: "/floridabar.png" },
+              { name: "Better Business Bureau", logo: "/bbba.png" },
               { name: "American Trial Lawyers Association", logo: "/atla.png" },
               { name: 'Elite Trial Lawyers', logo: "/elite-lawyer.png" }
             ]}

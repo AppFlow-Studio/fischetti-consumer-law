@@ -77,10 +77,10 @@ export default function LocationsSection() {
                             transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
                         >
                             <Card className="relative rounded-xl border border-gray-100 overflow-hidden shadow-lg min-h-[360px] lg:min-h-[500px]">
-                                <Image src="/floridaeverglades2.png" alt="Map" fill draggable={false} className="w-full h-full object-cover" />
+                            <Image src="/floridaeverglades2.png" alt="Map" fill draggable={false} className="w-full h-full object-cover" />
 
-                                {/* Pins overlay */}
-                                <div className="absolute inset-0 pointer-events-none">
+                            {/* Pins overlay */}
+                            <div className="absolute inset-0 pointer-events-none">
                                     {locationPins.map((location, index) => (
                                         <motion.div
                                             key={location.id}
@@ -107,7 +107,7 @@ export default function LocationsSection() {
                                                 <span>{location.address2}</span>
                                                 <span className="inline-flex items-center gap-1 text-gray-200">
                                                     <Clock className="h-3.5 w-3.5" /> 24 Hours
-                                                </span>
+                                        </span>
                                             </motion.div>
                                             <motion.span
                                                 className="relative inline-flex"
@@ -120,15 +120,15 @@ export default function LocationsSection() {
                                                     ease: [0.34, 1.56, 0.64, 1],
                                                 }}
                                             >
-                                                <span className="absolute inline-flex h-8 w-8 rounded-full bg-blue-400 opacity-75 animate-ping" />
-                                                <span className="relative inline-flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white shadow-md">
-                                                    <MapPin className="h-5 w-5" />
-                                                </span>
+                                        <span className="absolute inline-flex h-8 w-8 rounded-full bg-blue-400 opacity-75 animate-ping" />
+                                        <span className="relative inline-flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white shadow-md">
+                                            <MapPin className="h-5 w-5" />
+                                        </span>
                                             </motion.span>
                                         </motion.div>
                                     ))}
-                                </div>
-                            </Card>
+                            </div>
+                        </Card>
                         </motion.div>
                         {/* <OfficeLocationsMap /> */}
 
@@ -167,7 +167,7 @@ export default function LocationsSection() {
                                             {location.name}
                                         </h3>
                                         <p className="text-gray-600 leading-relaxed">{location.address}</p>
-                                        <div className="flex flex-wrap items-center gap-4 text-gray-700 text-sm">
+                                    <div className="flex flex-wrap items-center gap-4 text-gray-700 text-sm">
                                             <span className="inline-flex items-center gap-2">
                                                 <Phone className="w-4 h-4" />
                                                 {location.phone}
@@ -178,9 +178,9 @@ export default function LocationsSection() {
                                         </div>
                                     </motion.div>
                                 ))}
-                            </div>
+                                    </div>
                         </motion.div>
-                    </div>
+                                </div>
 
                     {/* Below XL: show only cards grid */}
                     <div className="block xl:hidden">
@@ -210,7 +210,7 @@ export default function LocationsSection() {
                                         <div>
                                             <div className="text-sm font-medium text-gray-500 mb-1 inline-flex items-center gap-2"><Clock className="w-4 h-4" /> Working /h</div>
                                             <div className="text-base">{loc.hours}</div>
-                                        </div>
+                                </div>
                                     </div>
                                 </Card>
                             ))}

@@ -44,10 +44,15 @@ export default function CaseResults() {
             <div className="w-full max-w-[95%] mx-auto px-4 sm:px-6 py-6 ">
                 {/* Section Header */}
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    transition={{
+                        type: "spring",
+                        stiffness: 80,
+                        damping: 25,
+                        mass: 1
+                    }}
                     className="text-start w-full flex flex-row lg:items-start items-center justify-between lg:mb-16 mb-4"
                 >
                     <div className="w-full">
@@ -100,36 +105,126 @@ export default function CaseResults() {
                 <div className="mb-16">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                         {/* Left Side - Case Details */}
-                        <div className="space-y-6 w-full">
+                        <motion.div
+                            className="space-y-6 w-full"
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, amount: 0.3 }}
+                            variants={{
+                                hidden: { opacity: 0 },
+                                visible: {
+                                    opacity: 1,
+                                    transition: {
+                                        staggerChildren: 0.15,
+                                        delayChildren: 0.1
+                                    }
+                                }
+                            }}
+                        >
                             <motion.div
-                                initial={{ opacity: 0 }}
-                                whileInView={{ opacity: 1 }}
-                                viewport={{ once: true, amount: 0.3 }}
-                                transition={{ duration: 0.7, ease: [0.21, 1.11, 0.81, 0.99] }}
+                                variants={{
+                                    hidden: { opacity: 0, x: -30 },
+                                    visible: {
+                                        opacity: 1,
+                                        x: 0,
+                                        transition: {
+                                            type: "spring",
+                                            stiffness: 80,
+                                            damping: 25,
+                                            mass: 1
+                                        }
+                                    }
+                                }}
                                 className="space-y-4 w-full"
                             >
-                                <div className="text-6xl md:text-7xl font-bold text-gray-900 leading-none">
+                                <motion.div
+                                    className="text-6xl md:text-7xl font-bold text-gray-900 leading-none"
+                                    variants={{
+                                        hidden: { opacity: 0, scale: 0.9 },
+                                        visible: {
+                                            opacity: 1,
+                                            scale: 1,
+                                            transition: {
+                                                type: "spring",
+                                                stiffness: 100,
+                                                damping: 28,
+                                                mass: 0.8
+                                            }
+                                        }
+                                    }}
+                                >
                                     <span className="text-4xl md:text-5xl">$</span>4.5 <span className="italic">MILLION</span>
+                                </motion.div>
+                                <div className="flex flex-row items-center justify-start gap-x-2">
+                                    <motion.div
+                                        className="border-b-2 border-gray-300 w-24"
+                                        initial={{ opacity: 0, scaleX: 0 }}
+                                        whileInView={{ opacity: 1, scaleX: 1 }}
+                                        viewport={{ once: true }}
+                                        transition={{
+                                            type: "spring",
+                                            stiffness: 120,
+                                            damping: 25,
+                                            delay: 0.3
+                                        }}
+                                    />
+                                    <span className="text-gray-700 text-base italic font-[--font-playfair-display]">collected for our clients</span>
                                 </div>
-                                <div className="border-b-2 border-gray-300 w-24"></div>
-                                <h3 className="text-2xl font-bold text-gray-700 uppercase tracking-wide">
+                                <motion.h3
+                                    className="text-2xl font-bold text-gray-700 uppercase tracking-wide"
+                                    variants={{
+                                        hidden: { opacity: 0, y: 15 },
+                                        visible: {
+                                            opacity: 1,
+                                            y: 0,
+                                            transition: {
+                                                type: "spring",
+                                                stiffness: 80,
+                                                damping: 25
+                                            }
+                                        }
+                                    }}
+                                >
                                     FCRA Violation
-                                </h3>
-                                <p className="text-gray-600 leading-relaxed text-lg">
+                                </motion.h3>
+                                <motion.p
+                                    className="text-gray-600 leading-relaxed text-lg"
+                                    variants={{
+                                        hidden: { opacity: 0, y: 15 },
+                                        visible: {
+                                            opacity: 1,
+                                            y: 0,
+                                            transition: {
+                                                type: "spring",
+                                                stiffness: 80,
+                                                damping: 25
+                                            }
+                                        }
+                                    }}
+                                >
                                     Credit reporting agency mixed up our client's file with another person's, causing wrongful denials for loans, apartments, and employment opportunities. The client suffered severe financial and emotional distress due to the bureau's negligence in maintaining accurate records.
-                                </p>
+                                </motion.p>
                             </motion.div>
-                        </div>
+                        </motion.div>
 
                         {/* Right Side - Video */}
                         <motion.div
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
+                            initial={{ opacity: 0, x: 30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true, amount: 0.3 }}
-                            transition={{ duration: 0.7, ease: [0.21, 1.11, 0.81, 0.99] }}
+                            transition={{
+                                type: "spring",
+                                stiffness: 80,
+                                damping: 25,
+                                mass: 1
+                            }}
                             className="relative w-full"
                         >
-                            <div className="relative aspect-video rounded-xl overflow-hidden shadow-2xl">
+                            <motion.div
+                                className="relative aspect-video rounded-xl overflow-hidden shadow-2xl"
+                                whileHover={{ scale: 1.01 }}
+                                transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                            >
                                 <iframe
                                     className="absolute inset-0 w-full h-full"
                                     src="https://www.youtube.com/embed/IxgxIeLjHBA"
@@ -138,23 +233,47 @@ export default function CaseResults() {
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     allowFullScreen
                                 />
-                            </div>
+                            </motion.div>
                         </motion.div>
                     </div>
                 </div>
 
                 {/* Additional Case Results Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <motion.div
+                    className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.2 }}
+                    variants={{
+                        hidden: { opacity: 0 },
+                        visible: {
+                            opacity: 1,
+                            transition: {
+                                staggerChildren: 0.15,
+                                delayChildren: 0.2
+                            }
+                        }
+                    }}
+                >
                     {caseResults.slice(1).map((caseResult, index) => (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            viewport={{ once: true, amount: 0.2 }}
-                            transition={{
-                                duration: 0.6,
-                                delay: index * 0.15,
-                                ease: [0.21, 1.11, 0.81, 0.99]
+                            variants={{
+                                hidden: { opacity: 0, y: 30 },
+                                visible: {
+                                    opacity: 1,
+                                    y: 0,
+                                    transition: {
+                                        type: "spring",
+                                        stiffness: 80,
+                                        damping: 25,
+                                        mass: 1
+                                    }
+                                }
+                            }}
+                            whileHover={{
+                                y: -4,
+                                transition: { type: "spring", stiffness: 200, damping: 25 }
                             }}
                             className="bg-white border border-gray-200 rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow w-full"
                         >
@@ -162,7 +281,21 @@ export default function CaseResults() {
                                 <div className="text-4xl md:text-5xl font-bold text-gray-900 leading-none">
                                     <span className="text-3xl md:text-4xl"></span>{caseResult.amount}
                                 </div>
-                                <div className="border-b-2 border-gray-300 w-16"></div>
+                                <div className="flex flex-row items-center justify-start gap-x-2">
+                                    <motion.div
+                                        className="border-b-2 border-gray-300 w-16"
+                                        initial={{ opacity: 0, scaleX: 0 }}
+                                        whileInView={{ opacity: 1, scaleX: 1 }}
+                                        viewport={{ once: true }}
+                                        transition={{
+                                            type: "spring",
+                                            stiffness: 120,
+                                            damping: 25,
+                                            delay: 0.3
+                                        }}
+                                    />
+                                    <span className="text-gray-700 text-base italic font-[--font-playfair-display]">collected for our clients</span>
+                                </div>
                                 <h3 className="text-xl font-bold text-gray-700 uppercase tracking-wide">
                                     {caseResult.category}
                                 </h3>
@@ -172,20 +305,37 @@ export default function CaseResults() {
                             </div>
                         </motion.div>
                     ))}
-                </div>
+                </motion.div>
 
                 {/* Trust Indicators */}
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.2 }}
                     transition={{
-                        duration: 0.7,
-                        ease: [0.21, 1.11, 0.81, 0.99]
+                        type: "spring",
+                        stiffness: 80,
+                        damping: 25,
+                        mass: 1
                     }}
                     className="mt-16 bg-gray-50 rounded-2xl p-8 w-full"
                 >
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <motion.div
+                        className="grid grid-cols-2 md:grid-cols-4 gap-8"
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={{
+                            hidden: { opacity: 0 },
+                            visible: {
+                                opacity: 1,
+                                transition: {
+                                    staggerChildren: 0.1,
+                                    delayChildren: 0.2
+                                }
+                            }
+                        }}
+                    >
                         {/* <div className="text-center">
                             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <span className="text-green-600 text-2xl font-bold">✓</span>
@@ -202,24 +352,35 @@ export default function CaseResults() {
                         ].map((item, index) => (
                             <motion.div
                                 key={index}
-                                initial={{ opacity: 0 }}
-                                whileInView={{ opacity: 1 }}
-                                viewport={{ once: true, amount: 0.3 }}
-                                transition={{
-                                    duration: 0.5,
-                                    delay: index * 0.1,
-                                    ease: [0.21, 1.11, 0.81, 0.99]
+                                variants={{
+                                    hidden: { opacity: 0, y: 20 },
+                                    visible: {
+                                        opacity: 1,
+                                        y: 0,
+                                        transition: {
+                                            type: "spring",
+                                            stiffness: 80,
+                                            damping: 25,
+                                            mass: 1
+                                        }
+                                    }
                                 }}
-                                className="text-center hover:ring-2 hover:ring-blue-500 p-2 hover:shadow-xl hover:scale-105 rounded-xl transition-all duration-300"
+
+                                className="text-center hover:ring-1 hover:ring-blue-500 p-2 hover:shadow-sm hover:scale-105 hover:translate-y-[-5px] rounded-xl transition-all duration-300"
                             >
                                 <motion.div
-                                    initial={{ opacity: 0 }}
-                                    whileInView={{ opacity: 1 }}
-                                    viewport={{ once: true }}
-                                    transition={{
-                                        duration: 0.5,
-                                        delay: index * 0.1 + 0.2,
-                                        ease: [0.21, 1.11, 0.81, 0.99]
+                                    variants={{
+                                        hidden: { opacity: 0, scale: 0.8 },
+                                        visible: {
+                                            opacity: 1,
+                                            scale: 1,
+                                            transition: {
+                                                type: "spring",
+                                                stiffness: 100,
+                                                damping: 28,
+                                                mass: 0.8
+                                            }
+                                        }
                                     }}
                                     className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4"
                                 >
@@ -229,17 +390,19 @@ export default function CaseResults() {
                                 <p className="text-gray-600 text-sm">{item.description}</p>
                             </motion.div>
                         ))}
-                    </div>
+                    </motion.div>
                 </motion.div>
 
                 {/* Call to Action */}
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.2 }}
                     transition={{
-                        duration: 0.7,
-                        ease: [0.21, 1.11, 0.81, 0.99]
+                        type: "spring",
+                        stiffness: 80,
+                        damping: 25,
+                        mass: 1
                     }}
                     className="text-center mt-12 bg-[#096bad] rounded-xl p-8 w-full"
                 >
@@ -249,20 +412,54 @@ export default function CaseResults() {
                     <p className="text-gray-200 mb-8 max-w-2xl mx-auto">
                         Don't let unfair business practices go unpunished. Get your free case evaluation today.
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <a
+                    <motion.div
+                        className="flex flex-col sm:flex-row gap-4 justify-center"
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={{
+                            hidden: { opacity: 0 },
+                            visible: {
+                                opacity: 1,
+                                transition: {
+                                    staggerChildren: 0.1,
+                                    delayChildren: 0.3
+                                }
+                            }
+                        }}
+                    >
+                        <motion.a
                             href="#consultation"
+                            variants={{
+                                hidden: { opacity: 0, y: 15 },
+                                visible: {
+                                    opacity: 1,
+                                    y: 0,
+                                    transition: {
+                                        type: "spring",
+                                        stiffness: 100,
+                                        damping: 28,
+                                        mass: 0.8
+                                    }
+                                }
+                            }}
+                            whileHover={{
+                                scale: 1.03,
+                                y: -2,
+                                transition: { type: "spring", stiffness: 200, damping: 25 }
+                            }}
+                            whileTap={{ scale: 0.98 }}
                             className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-lg hover:bg-blue-700 transition-colors"
                         >
                             Get Free Case Review
-                        </a>
+                        </motion.a>
                         {/* <a
                             href="#results"
                             className="inline-flex items-center justify-center rounded-xl border-2 border-gray-300 px-8 py-4 text-lg font-semibold text-gray-700 hover:border-gray-400 transition-colors"
                         >
                             View More Results
                         </a> */}
-                    </div>
+                    </motion.div>
                 </motion.div>
             </div>
         </section>

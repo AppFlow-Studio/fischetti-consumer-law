@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { useUIState } from "@/providers/ui-state-provider"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
@@ -19,7 +20,12 @@ type FreeCaseReviewDialogProps = {
 export default function FreeCaseReviewDialog({ children, defaultOpen = false }: FreeCaseReviewDialogProps) {
     const [open, setOpen] = useState(defaultOpen)
     const [submitting, setSubmitting] = useState(false)
+    const { setIsDialogOpen } = useUIState()
     const form = useForm<ContactFormData>({ resolver: zodResolver(contactSchema), defaultValues: defaultContactValues })
+
+    useEffect(() => {
+        setIsDialogOpen(open)
+    }, [open, setIsDialogOpen])
 
     const onSubmit = async (values: ContactFormData) => {
         setSubmitting(true)
