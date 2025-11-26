@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     description: "Florida's premier consumer protection law firm. Fight debt collectors, fix credit errors, stop robocalls. Serving Miami, Fort Lauderdale, Tampa, Orlando. No win, no fee. $30M+ recovered.",
     images: [
       {
-        url: "/fischettiheadshot5.png",
+        url: "/opengraphhome.png",
         width: 1200,
         height: 630,
         alt: "Michael J. Fischetti - Florida Consumer Protection Lawyer",
@@ -79,7 +79,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Fischetti Law Group | Florida Consumer Protection Lawyers",
     description: "Florida's premier consumer protection law firm. Fight debt collectors, fix credit errors, stop robocalls. No win, no fee. $30M+ recovered.",
-    images: ["/fischettiheadshot5.png"],
+    images: ["/opengraphhome.png"],
     creator: "@FischettiLaw",
   },
   alternates: {
