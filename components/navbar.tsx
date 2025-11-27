@@ -419,8 +419,12 @@ export default function Navbar({ className }: NavbarProps) {
                     <motion.aside
                         key="mobile-sidebar"
                         id="mobile-sidebar"
-                        className="fixed top-0 left-0 h-screen w-[75%] bg-white rounded-r-2xl shadow-2xl z-[130] xl:hidden overflow-y-auto overscroll-contain"
-                        style={{ WebkitOverflowScrolling: 'touch' as any }}
+                        className="fixed top-0 left-0 h-[100dvh] w-[75%] bg-white rounded-r-2xl shadow-2xl z-[130] xl:hidden overflow-y-auto overscroll-contain"
+                        style={{
+                            WebkitOverflowScrolling: 'touch' as any,
+                            maxHeight: '100dvh',
+                            paddingBottom: 'env(safe-area-inset-bottom, 0px)'
+                        }}
                         variants={sidebarVariants}
                         initial="hidden"
                         animate="visible"
@@ -438,7 +442,7 @@ export default function Navbar({ className }: NavbarProps) {
 
                         {/* Sidebar Navigation Links */}
                         <motion.nav
-                            className="pt-24 flex flex-col space-y-4 px-6 pb-6 overflow-y-auto"
+                            className="pt-24 flex flex-col space-y-4 px-6 pb-24 min-h-full"
                             variants={listVariants}
                             initial="hidden"
                             animate="visible"
@@ -522,6 +526,7 @@ export default function Navbar({ className }: NavbarProps) {
                             >
                                 Call (833) 645-3247
                             </motion.a>
+                            <div className="relative w-full h-32"><Image src="/fischettilogo.png" alt="Navbar Background" width={1000} height={1000} className="absolute bottom-0 left-0 w-full h-full object-cover" /></div>
                         </motion.nav>
                     </motion.aside>
                 )}
