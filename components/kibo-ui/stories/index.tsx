@@ -64,6 +64,8 @@ const tRegex = /t=(\d+(?:\.\d+)?)/;
 export const StoryVideo = ({ className, ...props }: StoryVideoProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const initialTimeRef = useRef<number>(0);
+  const isPlayingRef = useRef<boolean>(false);
+  const touchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Parse the initial time from the src attribute (e.g., #t=20)
   useEffect(() => {
@@ -83,27 +85,100 @@ export const StoryVideo = ({ className, ...props }: StoryVideoProps) => {
     initialTimeRef.current = initialTime;
   }, [props.src]);
 
+  // Load video on mount for mobile devices
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Load video on mobile devices
+    const loadVideo = () => {
+      if (video.readyState < 2) {
+        video.load();
+      }
+    };
+
+    // Try to load video after a short delay to ensure DOM is ready
+    const timeoutId = setTimeout(loadVideo, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
+  const playVideo = async () => {
+    const video = videoRef.current;
+    if (!video || isPlayingRef.current) return;
+
+    try {
+      await video.play();
+      isPlayingRef.current = true;
+    } catch (error) {
+      // Autoplay was prevented, which is expected on mobile
+      console.debug("Video autoplay prevented:", error);
+    }
+  };
+
+  const pauseVideo = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.pause();
+    video.currentTime = initialTimeRef.current;
+    isPlayingRef.current = false;
+  };
+
   const handleMouseOver = () => {
-    videoRef.current?.play();
+    playVideo();
   };
 
   const handleMouseOut = () => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = initialTimeRef.current;
+    pauseVideo();
+  };
+
+  // Touch events for mobile devices
+  const handleTouchStart = () => {
+    // Clear any existing timeout
+    if (touchTimeoutRef.current) {
+      clearTimeout(touchTimeoutRef.current);
+    }
+    playVideo();
+  };
+
+  const handleTouchEnd = () => {
+    // Delay pause slightly to allow for tap interactions
+    touchTimeoutRef.current = setTimeout(() => {
+      pauseVideo();
+    }, 300);
+  };
+
+  // Click handler as fallback for mobile
+  const handleClick = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (video.paused) {
+      playVideo();
+    } else {
+      pauseVideo();
     }
   };
 
   const handleFocus = () => {
-    videoRef.current?.play();
+    playVideo();
   };
 
   const handleBlur = () => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = initialTimeRef.current;
-    }
+    pauseVideo();
   };
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (touchTimeoutRef.current) {
+        clearTimeout(touchTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <video
@@ -113,13 +188,17 @@ export const StoryVideo = ({ className, ...props }: StoryVideoProps) => {
         "group-hover:opacity-90",
         className
       )}
+      playsInline
       loop
       muted
       onBlur={handleBlur}
+      onClick={handleClick}
       onFocus={handleFocus}
       onMouseOut={handleMouseOut}
       onMouseOver={handleMouseOver}
-      preload="metadata"
+      onTouchEnd={handleTouchEnd}
+      onTouchStart={handleTouchStart}
+      preload="auto"
       ref={videoRef}
       tabIndex={0}
       {...props}
