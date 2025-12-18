@@ -252,7 +252,7 @@ export default function ProfileCard({
                         </motion.div>
                         <Marquee duration={5} className="backdrop-blur-sm sm:hidden flex items-center  justify-center rounded-xl py-3 [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,black_6rem),linear-gradient(to_left,transparent,black_6rem)]" >
                             {affiliations.map((affiliation, index) => (
-                                <div>
+                                <div key={index}>
                                     {
                                         affiliation.logo ? (
                                             <div className="flex items-center justify-center h-full">

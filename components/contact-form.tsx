@@ -23,9 +23,11 @@ import { redirect } from "next/navigation"
 import { BorderBeam } from "@/components/ui/border-beam";
 // import { persistEC, pushEC, pushEvent } from "@/utils/enhancedConversions"
 import { formatPhone, validatePhoneNumber, formatPhoneInput } from "@/lib/phone-formatter"
+import { pushEnhancedConversion } from "@/lib/enhanced-conversions"
 
 const formSchema = z.object({
-    name: z.string().min(2, "name must be at least 2 characters"),
+    firstName: z.string().min(2, "First name must be at least 2 characters"),
+    lastName: z.string().min(2, "Last name must be at least 2 characters"),
     middleName: z.string().optional(),
     email: z.string().email("Invalid email address"),
     phone: z.string()
@@ -33,6 +35,10 @@ const formSchema = z.object({
         .refine(validatePhoneNumber, {
             message: "Please enter a valid 10-digit American phone number"
         }),
+    zip: z.string()
+        .min(5, "ZIP code must be at least 5 digits")
+        .max(10, "ZIP code must be 10 characters or less")
+        .regex(/^\d{5}(-\d{4})?$/, "Please enter a valid ZIP code (e.g., 12345 or 12345-6789)"),
     reason: z.string().min(2),
     bestTime: z.string().min(1, "Please provide more detail about your consultation needs"),
     insuranceCardFront: z.instanceof(File).optional().or(z.null()),
@@ -80,9 +86,11 @@ export function ContactForm({ backgroundcolor = 'white', header = 'Book an Appoi
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
+            firstName: "",
+            lastName: "",
             email: "",
             phone: "",
+            zip: "",
             reason: "",
             bestTime: ""
         },
@@ -150,14 +158,29 @@ export function ContactForm({ backgroundcolor = 'white', header = 'Book an Appoi
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setDisabled(true)
+        
+        // Track form attempt
+        if (typeof window !== 'undefined') {
+            window.dataLayer = window.dataLayer || []
+            window.dataLayer.push({
+                event: "lead_form_attempt",
+                form_name: "contact_form",
+                page_path: window.location.pathname,
+                method: "web_form"
+            })
+        }
+        
         if (values.middleName && values.middleName !== '') {
+            setDisabled(false)
             return
         }
         // Handle file uploads - create FormData for files
         const formData = new FormData()
-        formData.append('name', values.name)
+        formData.append('firstName', values.firstName)
+        formData.append('lastName', values.lastName)
         formData.append('email', values.email)
         formData.append('phone', values.phone)
+        formData.append('zip', values.zip)
         formData.append('reason', values.reason)
         formData.append('bestTime', values.bestTime)
 
@@ -188,6 +211,15 @@ export function ContactForm({ backgroundcolor = 'white', header = 'Book an Appoi
         // persistEC({ email: values.email, phone: values.phone, firstName: values.name, lastName: '' });
         // pushEC({ email: values.email, phone: values.phone, firstName: values.name, lastName: '' });
         // pushEvent('lead_form_submit', { form_name: 'ContactForm' });
+
+        // Track successful submit with enhanced conversions
+        pushEnhancedConversion("contact_form", {
+            email: values.email,
+            phone: values.phone,
+            firstName: values.firstName,
+            lastName: values.lastName,
+            zip: values.zip
+        })
 
         setDisabled(false)
         // if (data) {
@@ -410,51 +442,63 @@ export function ContactForm({ backgroundcolor = 'white', header = 'Book an Appoi
                                         <div className="w-full  space-y-6"
                                         >
 
-                                            {/* Name Fields */}
-                                            <div className="grid grid-cols-1  gap-6">
+                                            {/* Name Fields - Same row on desktop, stacked on mobile */}
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6">
                                                 <FormField
                                                     control={form.control}
-                                                    name="name"
-
+                                                    name="firstName"
                                                     render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel className="text-sm text-white font-semibold ">Full Name</FormLabel>
+                                                            <FormLabel className="text-sm text-white font-semibold">First Name</FormLabel>
                                                             <FormControl>
-                                                                <Input placeholder="Name" startIcon={User} className="h-10 text-lg border-[#DCDEE1]  bg-[#FAFAFA]" {...field} />
+                                                                <Input placeholder="Jane" startIcon={User} className="h-10 text-lg border-[#DCDEE1] bg-[#FAFAFA]" {...field} />
                                                             </FormControl>
                                                             <FormMessage />
                                                         </FormItem>
                                                     )}
                                                 />
-
+                                                <FormField
+                                                    control={form.control}
+                                                    name="lastName"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel className="text-sm text-white font-semibold">Last Name</FormLabel>
+                                                            <FormControl>
+                                                                <Input placeholder="Doe" startIcon={User} className="h-10 text-lg border-[#DCDEE1] bg-[#FAFAFA]" {...field} />
+                                                            </FormControl>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
                                             </div>
 
-                                            {/* Contact Fields */}
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                                <FormField
-                                                    control={form.control}
-                                                    name="email"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>
-                                                                <span
-                                                                    style={{
-                                                                        fontFamily: 'var(--font-public-sans)',
-                                                                        fontWeight: 500,
-                                                                    }}
-                                                                    className='text-white sm:text-md text-sm'
-                                                                >
-                                                                    Email Address
-                                                                </span>
-                                                            </FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="Enter your email" startIcon={Mail} className="h-10 text-lg border-[#DCDEE1]  bg-[#FAFAFA]" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
+                                            {/* Email Field - Full Width */}
+                                            <FormField
+                                                control={form.control}
+                                                name="email"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>
+                                                            <span
+                                                                style={{
+                                                                    fontFamily: 'var(--font-public-sans)',
+                                                                    fontWeight: 500,
+                                                                }}
+                                                                className='text-white sm:text-md text-sm'
+                                                            >
+                                                                Email Address
+                                                            </span>
+                                                        </FormLabel>
+                                                        <FormControl>
+                                                            <Input placeholder="Enter your email" startIcon={Mail} className="h-10 text-lg border-[#DCDEE1]  bg-[#FAFAFA]" {...field} />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
 
+                                            {/* Phone and ZIP Code - Same row on desktop, stacked on mobile */}
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6">
                                                 <FormField
                                                     control={form.control}
                                                     name="phone"
@@ -470,7 +514,6 @@ export function ContactForm({ backgroundcolor = 'white', header = 'Book an Appoi
                                                                 >
                                                                     Phone Number
                                                                 </span>
-
                                                             </FormLabel>
                                                             <FormControl>
                                                                 <Input
@@ -482,6 +525,36 @@ export function ContactForm({ backgroundcolor = 'white', header = 'Book an Appoi
                                                                         const formatted = formatPhoneInput(e.target.value);
                                                                         field.onChange(formatted);
                                                                     }}
+                                                                />
+                                                            </FormControl>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                                <FormField
+                                                    control={form.control}
+                                                    name="zip"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel>
+                                                                <span
+                                                                    style={{
+                                                                        fontFamily: 'var(--font-public-sans)',
+                                                                        fontWeight: 500,
+                                                                    }}
+                                                                    className='text-white sm:text-md text-sm'
+                                                                >
+                                                                    ZIP Code
+                                                                </span>
+                                                            </FormLabel>
+                                                            <FormControl>
+                                                                <Input
+                                                                    type="text"
+                                                                    inputMode="numeric"
+                                                                    placeholder="12345 or 12345-6789"
+                                                                    className="h-10 text-lg border-[#DCDEE1] bg-[#FAFAFA]"
+                                                                    maxLength={10}
+                                                                    {...field}
                                                                 />
                                                             </FormControl>
                                                             <FormMessage />

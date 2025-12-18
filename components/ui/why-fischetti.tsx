@@ -25,7 +25,7 @@ const reasons: Reason[] = [
         id: "247",
         title: "Available 24/7",
         description:
-            "Fischetti Law Group in Boynton Beach, FL, offers round‑the‑clock availability for clients, ensuring immediate assistance and support in personal injury and consumer law cases. Trust our unwavering commitment for your legal needs.",
+            "Fischetti Law Group offers round‑the‑clock availability for clients, ensuring immediate assistance and support in consumer law cases. Trust our unwavering commitment for your legal needs.",
         icon: Clock,
     },
     {
@@ -107,7 +107,7 @@ export default function WhyFischetti() {
             <div className="w-full max-w-[95%] xl:max-w-[1400px] mx-auto px-4 sm:px-6">
                 <div className="text-center mb-12">
                     <h2 className="text-4xl font-[--font-playfair-display] md:text-5xl text-gray-900">
-                        Why <span className="text-blue-600 italic">Fischetti Law Group</span>
+                        Why <span className="text-blue-600 italic">Consumer Law Florida</span>
                     </h2>
                     <p className="mt-3 text-gray-600 max-w-3xl mx-auto">
                         You'll get the best possible representation with Fischetti Law Group.

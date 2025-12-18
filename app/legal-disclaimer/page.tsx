@@ -1,10 +1,31 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AlertTriangle, Scale, FileWarning, Info, Gavel, Mail } from "lucide-react";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-    title: "Legal Disclaimer | Fischetti Law Group",
-    description: "Legal Disclaimer for Fischetti Law Group. Important information about our website content and legal services.",
+    title: "Legal Disclaimer",
+    description: "Legal disclaimer for Consumer Law Florida. Important information about our website content and consumer protection legal services.",
+    alternates: {
+        canonical: "/legal-disclaimer",
+    },
+    openGraph: {
+        title: "Legal Disclaimer | Consumer Law Florida",
+        description: "Legal disclaimer for Consumer Law Florida. Important information about our website content and consumer protection legal services.",
+        url: `${SITE_URL}/legal-disclaimer`,
+        images: [{
+            url: "/opengraph-default.png",
+            width: 1200,
+            height: 630,
+            alt: "Consumer Law Florida"
+        }],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Legal Disclaimer | Consumer Law Florida",
+        description: "Legal disclaimer for Consumer Law Florida. Important information about our website content and consumer protection legal services.",
+        images: ["/opengraph-default.png"],
+    },
 };
 
 export default function LegalDisclaimerPage() {

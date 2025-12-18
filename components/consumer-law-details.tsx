@@ -4,6 +4,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { SITE_URL, SITE_NAME } from "@/lib/site"
+import { renderBoldText } from "@/lib/renderBoldText"
 
 export type FAQItem = { question: string; answer: string }
 
@@ -13,6 +15,7 @@ export type ConsumerLawDetailsProps = {
     summary: string
     heroImage?: string
     statutes?: { code: string; citation?: string }[]
+    keyStatutes?: string[]
     whoIsProtected?: string
     commonViolations?: string
     yourRights?: string
@@ -24,24 +27,49 @@ export type ConsumerLawDetailsProps = {
 // JSON-LD blocks for rich results (LegalService + FAQPage)
 export function ConsumerLawJsonLd({
     data,
-    siteUrl,
+    offerCatalog,
 }: {
     data: ConsumerLawDetailsProps
-    siteUrl: string
+    offerCatalog?: {
+        "@type": "OfferCatalog"
+        "name": string
+        "itemListElement": Array<{
+            "@type": "Offer"
+            "name": string
+            "availability": string
+            "areaServed": { "@type": "AdministrativeArea"; "name": string }
+            "seller": { "@type": "LegalService"; "name": string }
+        }>
+    } | null
 }) {
-    const legalService = {
+    const legalService: {
+        '@context': string
+        '@type': string
+        name: string
+        url: string
+        areaServed: { '@type': string; name: string }
+        provider: { '@type': string; name: string; url: string }
+        description: string
+        serviceType: string
+        hasOfferCatalog?: typeof offerCatalog
+    } = {
         '@context': 'https://schema.org',
         '@type': 'LegalService',
-        name: `${data.title} – Fischetti Law Group`,
-        url: `${siteUrl}/consumer-law/${data.slug}`,
+        name: `${data.title} – ${SITE_NAME}`,
+        url: `${SITE_URL}/consumer-law/${data.slug}`,
         areaServed: { '@type': 'AdministrativeArea', name: 'Florida' },
         provider: {
             '@type': 'LegalService',
-            name: 'Fischetti Law Group',
-            url: siteUrl,
+            name: SITE_NAME,
+            url: SITE_URL,
         },
         description: data.summary,
         serviceType: data.title,
+    }
+
+    // Add hasOfferCatalog only if offerCatalog is provided
+    if (offerCatalog) {
+        legalService.hasOfferCatalog = offerCatalog
     }
 
     const faqLd = data.faq && data.faq.length
@@ -72,6 +100,7 @@ export default function ConsumerLawDetails({
     summary,
     heroImage,
     statutes = [],
+    keyStatutes = [],
     whoIsProtected,
     commonViolations,
     yourRights,
@@ -79,76 +108,83 @@ export default function ConsumerLawDetails({
     damagesAndRemedies,
     faq = [],
 }: ConsumerLawDetailsProps) {
+    // Determine which statutes format to use (prefer keyStatutes if available)
+    const hasKeyStatutes = keyStatutes.length > 0
+    const hasLegacyStatutes = statutes.length > 0
+
     return (
         <div className="w-full bg-white overflow-x-hidden">
             {/* Content Blocks */}
             <section className="w-full">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 leading-relaxed">
-                    {!!statutes.length && (
-                        <div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 leading-relaxed items-start">
+                    {(hasKeyStatutes || hasLegacyStatutes) && (
+                        <div className="min-h-fit">
                             <h2 className="text-2xl font-semibold tracking-tight text-gray-900">Key Statutes</h2>
-                            <ul className="mt-3 list-disc pl-5 space-y-2 text-[15px] text-gray-700 marker:text-blue-600">
-                                {statutes.map((s, i) => (
-                                    <li key={`${s.code}-${i}`}>{s.code}{s.citation ? ` – ${s.citation}` : ''}</li>
-                                ))}
-                            </ul>
+                            {hasKeyStatutes ? (
+                                <ul className="mt-3 list-disc pl-5 space-y-2 text-[15px] text-gray-700 marker:text-blue-600">
+                                    {keyStatutes.map((statute, i) => (
+                                        <li key={`key-statute-${i}`}>{renderBoldText(statute)}</li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <ul className="mt-3 list-disc pl-5 space-y-2 text-[15px] text-gray-700 marker:text-blue-600">
+                                    {statutes.map((s, i) => (
+                                        <li key={`statute-${i}`}>{s.code}{s.citation ? ` – ${s.citation}` : ''}</li>
+                                    ))}
+                                </ul>
+                            )}
                         </div>
                     )}
 
                     {!!whoIsProtected && (
-                        <div>
+                        <div className="min-h-fit">
                             <h2 className="text-2xl font-semibold tracking-tight text-gray-900">Who Is Protected</h2>
-                            <p className="mt-3 text-[15px] text-gray-700 leading-relaxed whitespace-pre-line">{whoIsProtected}</p>
+                            <p className="mt-3 text-[15px] text-gray-700 leading-relaxed whitespace-pre-line">
+                                {renderBoldText(whoIsProtected)}
+                            </p>
                         </div>
                     )}
 
                     {!!commonViolations && (
-                        <div>
+                        <div className="min-h-fit">
                             <h2 className="text-2xl font-semibold tracking-tight text-gray-900">Common Violations</h2>
-                            <p className="mt-3 text-[15px] text-gray-700 leading-relaxed whitespace-pre-line">{commonViolations}</p>
+                            <p className="mt-3 text-[15px] text-gray-700 leading-relaxed whitespace-pre-line">
+                                {renderBoldText(commonViolations)}
+                            </p>
                         </div>
                     )}
 
                     {!!yourRights && (
-                        <div>
+                        <div className="min-h-fit">
                             <h2 className="text-2xl font-semibold tracking-tight text-gray-900">Your Rights</h2>
-                            <p className="mt-3 text-[15px] text-gray-700 leading-relaxed whitespace-pre-line">{yourRights}</p>
+                            <p className="mt-3 text-[15px] text-gray-700 leading-relaxed whitespace-pre-line">
+                                {renderBoldText(yourRights)}
+                            </p>
                         </div>
                     )}
 
                     {!!whatToDoNext && (
-                        <div>
+                        <div className="min-h-fit">
                             <h2 className="text-2xl font-semibold tracking-tight text-gray-900">What To Do Next</h2>
-                            <p className="mt-3 text-[15px] text-gray-700 leading-relaxed whitespace-pre-line">{whatToDoNext}</p>
+                            <p className="mt-3 text-[15px] text-gray-700 leading-relaxed whitespace-pre-line">
+                                {renderBoldText(whatToDoNext)}
+                            </p>
                         </div>
                     )}
 
                     {!!damagesAndRemedies && (
-                        <div>
+                        <div className="min-h-fit">
                             <h2 className="text-2xl font-semibold tracking-tight text-gray-900">Damages & Remedies</h2>
-                            <p className="mt-3 text-[15px] text-gray-700 leading-relaxed whitespace-pre-line">{damagesAndRemedies}</p>
+                            <p className="mt-3 text-[15px] text-gray-700 leading-relaxed whitespace-pre-line">
+                                {renderBoldText(damagesAndRemedies)}
+                            </p>
                         </div>
                     )}
                 </div>
             </section>
 
-            {/* FAQ */}
-            {!!faq.length && (
-                <section className="max-w-8xl mx-auto  pb-16 pt-12">
-                    <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-6">Frequently Asked Questions</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {faq.map((f, i) => (
-                            <Card key={`faq-${i}`} className="p-5 rounded-2xl border">
-                                <h3 className="text-lg font-semibold text-gray-900">{f.question}</h3>
-                                <p className="mt-2 text-gray-700 leading-relaxed">{f.answer}</p>
-                            </Card>
-                        ))}
-                    </div>
-                </section>
-            )}
-
-            {/* CTA Footer */}
-            <section className="max-w-7xl mx-auto px-6 pb-20">
+            {/* CTA Footer - Centered and evenly spaced from content above */}
+            <section className="w-full max-w-[95%] xl:max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-10 mb-0">
                 <Card className="flex flex-col md:flex-row items-center justify-between gap-4 p-6 rounded-2xl border bg-blue-600 text-white">
                     <div>
                         <h3 className="text-xl font-semibold">Think your {title.toLowerCase()} rights were violated?</h3>

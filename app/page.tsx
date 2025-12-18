@@ -6,6 +6,7 @@ import StoriesScroller from "@/components/stories";
 import Stories from "@/components/stories";
 import { Avatar } from "@/components/ui/avatar";
 import CaseResults from "@/components/ui/case-results";
+import CaseResultsCards from "@/components/ui/case-results-cards";
 import ConsumerLaws from "@/components/ui/consumer-laws";
 import Footer from "@/components/ui/footer";
 import { Marquee } from "@/components/ui/marquee";
@@ -15,7 +16,8 @@ import Testimonials from "@/components/ui/testimonials";
 import WhyFischetti from "@/components/ui/why-fischetti";
 import Image from "next/image";
 import { MorphingText } from "@/components/ui/morphing-text";
-import ConsumerLawSection from "@/components/ui/consumer-law-section";
+import ConsumerLawSection from "@/components/ui/consumer-law-section"
+import SeoInsightBlock from "@/components/sections/SeoInsightBlock";
 const texts = [
   "Available 24/7.",
   "We Make Them Pay.",
@@ -54,9 +56,12 @@ export default function Home() {
 
                 {/* Main Headline */}
                 <div className="space-y-2 mb-4 xl:mb-8 text-start">
-                  <h1 className="text-5xl md:text-6xl xl:text-7xl font-bold text-white leading-tight">
+                  {/* Hidden H1 for SEO - visually hidden but accessible to screen readers and search engines */}
+                  <h1 className="sr-only">Florida Consumer Lawyer</h1>
+                  {/* Visual headline */}
+                  <div className="text-5xl md:text-6xl xl:text-7xl font-bold text-white leading-tight">
                     Big Companies Play Unfair.
-                  </h1>
+                  </div>
                   {/* <h1 className="text-6xl md:text-7xl xl:text-8xl italic font-bold text-[#439cfc] leading-tight">
             We Make Them Pay.
           </h1> */}
@@ -104,7 +109,7 @@ export default function Home() {
                 <div className="flex sm:flex-row h-full flex-col items-start justify-start  w-full gap-4 lg:max-h-fit sm:max-h-100 max-h-140 lg:mb-4 overflow-hidden">
                   <div className="text-sm sm:text-base xl:text-xl backdrop-blur-sm sm:p-4 rounded-xl text-gray-200 leading-relaxed lg:w-full sm:w-1/2 w-full sm:h-100 h-fit lg:h-fit">
                     <p className=" md:mb-0 sm:mb-12 mb-2 w-full" >
-                      Fischetti Law Group is your go-to Florida consumer protection lawyer—trusted, aggressive, and top-rated. We help consumers across Miami, Fort Lauderdale, West Palm Beach, and statewide recover what you're owed under the FDCPA, FCRA, TCPA, and other federal laws. No fees unless we win. Get the best Florida consumer lawyer fighting for you while you breathe easy—we handle everything. We always pick up your call.
+                      Consumer Law Florida is your go-to Florida consumer protection lawyer—trusted, aggressive, and top-rated. We help consumers across Miami, Fort Lauderdale, West Palm Beach, and statewide recover what you're owed under the FDCPA, FCRA, TCPA, and other federal laws. No fees unless we win. Get the best Florida consumer lawyer fighting for you while you breathe easy—we handle everything. We always pick up your call.
                     </p>
                     <div className="sm:flex flex-col sm:flex-row gap-4 hidden lg:hidden lg:mt-0 mt-12">
                       <a
@@ -131,7 +136,6 @@ export default function Home() {
                       fill
                       priority
                       className="rounded-xl object-cover object-[50%_25%]"
-                    // Try object-[50%_20%] or object-[50%_25%] if 30% is still too low
                     />
 
                     {/* Button overlay on image for small mobile screens only */}
@@ -157,7 +161,7 @@ export default function Home() {
             </div>
 
             <div className="w-0 lg:w-1/2 px-8 xl:px-20 relative hidden lg:block items-end justify-end ">
-              <Image src="/fischettiheadshot5.png" alt="Rays Fishetti Headshot" fill className="rounded-xl object-cover object-[50%_33%]" priority />
+              <Image src="/fischettiheadshot5.png" alt="Rays Fishetti Headshot" fill className="rounded-xl object-cover object-[50%_25%]" priority />
               {/* <ContactForm backgroundcolor="white" header="Book an Appointment" buttonText="Book an Appointment" /> */}
             </div>
           </section>
@@ -165,11 +169,45 @@ export default function Home() {
         <HeroBarTrans />
       </section>
 
+      {/* SEO/CRO Insight Sections */}
+      <section className="w-full py-16 bg-white">
+        <div className="w-full max-w-[95%] xl:max-w-[1400px] mx-auto px-4 sm:px-6">
+          <div className="space-y-8">
+            {/* 1. Why Consumer Protection Laws Exist */}
+            <SeoInsightBlock
+              variant="policy"
+              title="Why Consumer Protection Laws Exist"
+              content={{
+                text: "Consumer protection laws exist to address the power imbalance between large corporations and individual consumers. These laws prevent abuse, hold companies accountable for unfair practices, and ensure consumers have legal recourse when their rights are violated. Federal statutes like the FCRA, FDCPA, and TCPA provide essential safeguards against deceptive business practices.",
+              }}
+            />
+
+            {/* 2. Do I Have a Case? */}
+            <SeoInsightBlock
+              variant="qualification"
+              title="Do I Have a Case?"
+              content={{
+                items: [
+                  "Repeated calls or texts after asking them to stop",
+                  "Credit report errors not corrected",
+                  "Background check cost a job or housing",
+                  "Personal data shared without consent",
+                  "Housing accommodation was refused",
+                ],
+              }}
+            />
+          </div>
+        </div>
+      </section>
 
       <div className="max-w-8xl mx-auto">
+        {/* Money Cards Section - Separated and moved above video section for CRO */}
+        <CaseResultsCards />
+
+        {/* Case Results Section with Header and Video */}
         <CaseResults />
 
-        {/* Practice Areas Section */}
+        {/* Trust Badges Section - Moved here for CRO */}
         <WhyFischetti />
 
 
@@ -178,12 +216,7 @@ export default function Home() {
           <ProfileCard
             headline="A WINNING CONSUMER LAWYER"
             name="Meet Micheal J. Fischetti"
-            description="Courtroom warrior from day one.
-  Michael began his career as a defense attorney at the Broward County Public Defender's Office, where he handled both misdemeanor and felony cases, led busy misdemeanor divisions, and tried cases from day one. He later transitioned to civil and consumer litigation, bringing that trial-tested intensity to fight corporations and collectors on behalf of everyday people.
-
-Michael founded Fischetti Law Group after years of watching big firms prioritize profits over people. His philosophy? Listen first, fight hard, communicate always. Whether you're facing fraud, deceptive business practices, or corporate misconduct, Michael brings the same aggressive advocacy he learned defending clients in packed courtrooms—except now, he's fighting to get YOU paid.
-
-Recognized for excellence, Michael holds an A+ rating from the Better Business Bureau, a Trust badge for Attorney At Law, and is featured on Elite Lawyer—testaments to his commitment to client success and ethical practice."
+            description="Courtroom warrior from day one. Michael began his career as a defense attorney at the Broward County Public Defender's Office, where he handled both misdemeanor and felony cases, led busy misdemeanor divisions, and tried cases from day one. He later transitioned to civil and consumer litigation, bringing that trial-tested intensity to fight corporations and collectors on behalf of everyday people. Michael founded Fischetti Law Group after years of watching big firms prioritize profits over people. His philosophy? Listen first, fight hard, communicate always. Whether you're facing fraud, deceptive business practices, or corporate misconduct, Michael brings the same aggressive advocacy he learned defending clients in packed courtrooms—except now, he's fighting to get YOU paid. Recognized for excellence, Michael holds an A+ rating from the Better Business Bureau, a Trust badge for Attorney At Law, and is featured on Elite Lawyer—testaments to his commitment to client success and ethical practice."
             primaryButtonText="Book a consultation"
             secondaryButtonText="View Profile"
             accentColor="blue"
