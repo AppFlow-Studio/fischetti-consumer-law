@@ -119,6 +119,15 @@ export default function RootLayout({
     url: SITE_URL,
     telephone: PRIMARY_PHONE,
     email: PRIMARY_EMAIL,
+    image: `${SITE_URL}/fischettilogo.png`,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "111 N Orange Ave, suite 800",
+      addressLocality: "Orlando",
+      addressRegion: "FL",
+      postalCode: "32801",
+      addressCountry: "US",
+    },
     areaServed: {
       "@type": "State",
       name: STATE_SERVE,
@@ -133,6 +142,15 @@ export default function RootLayout({
     url: SITE_URL,
     telephone: PRIMARY_PHONE,
     email: PRIMARY_EMAIL,
+    image: `${SITE_URL}/fischettilogo.png`,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "111 N Orange Ave, suite 800",
+      addressLocality: "Orlando",
+      addressRegion: "FL",
+      postalCode: "32801",
+      addressCountry: "US",
+    },
     serviceType: "Consumer Law",
     areaServed: {
       "@type": "State",

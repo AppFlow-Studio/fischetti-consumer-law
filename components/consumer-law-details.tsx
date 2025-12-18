@@ -4,7 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { SITE_URL, SITE_NAME } from "@/lib/site"
+import { SITE_URL, SITE_NAME, PRIMARY_PHONE, PRIMARY_EMAIL } from "@/lib/site"
 import { renderBoldText } from "@/lib/renderBoldText"
 
 export type FAQItem = { question: string; answer: string }
@@ -47,6 +47,17 @@ export function ConsumerLawJsonLd({
         '@type': string
         name: string
         url: string
+        telephone: string
+        email: string
+        image: string
+        address: {
+            '@type': string
+            streetAddress: string
+            addressLocality: string
+            addressRegion: string
+            postalCode: string
+            addressCountry: string
+        }
         areaServed: { '@type': string; name: string }
         provider: { '@type': string; name: string; url: string }
         description: string
@@ -57,6 +68,17 @@ export function ConsumerLawJsonLd({
         '@type': 'LegalService',
         name: `${data.title} – ${SITE_NAME}`,
         url: `${SITE_URL}/consumer-law/${data.slug}`,
+        telephone: PRIMARY_PHONE,
+        email: PRIMARY_EMAIL,
+        image: `${SITE_URL}/fischettilogo.png`,
+        address: {
+            '@type': 'PostalAddress',
+            streetAddress: '111 N Orange Ave, suite 800',
+            addressLocality: 'Orlando',
+            addressRegion: 'FL',
+            postalCode: '32801',
+            addressCountry: 'US',
+        },
         areaServed: { '@type': 'AdministrativeArea', name: 'Florida' },
         provider: {
             '@type': 'LegalService',
