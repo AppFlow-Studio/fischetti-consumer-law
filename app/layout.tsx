@@ -166,6 +166,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','${GTM_ID}');`,
           }}
         />
+        {/* Google tag (gtag.js) - GA4 */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-2PL17PC8C5"
+          strategy="afterInteractive"
+        />
+        <Script
+          id="ga4"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-2PL17PC8C5');
+            `,
+          }}
+        />
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe
