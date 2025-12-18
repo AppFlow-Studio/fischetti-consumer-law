@@ -63,20 +63,22 @@ export default function Navbar({ className }: NavbarProps) {
     const { isSidebarOpen, setIsSidebarOpen } = useUIState()
     const pathname = usePathname()
     const isHome = pathname === "/"
+    const isLocationsIndexPage = pathname === "/locations"
     const isConsumerLawPage = pathname?.startsWith("/consumer-law/")
+    const isLocationsPage = pathname?.startsWith("/locations/")
     const router = useRouter()
     const [openMenu, setOpenMenu] = useState<null | "laws" | "about" | "locations" | "testimonials">(null)
     const hoverTimer = useRef<NodeJS.Timeout | null>(null)
 
     useEffect(() => {
-        if (!isHome && !isConsumerLawPage) {
-            // Other pages (not home, not consumer law) use dark logo and black text by default
+        if (!isHome && !isConsumerLawPage && !isLocationsIndexPage) {
+            // Other pages (not home, not consumer law, not locations) use dark logo and black text by default
             setScrolled(true)
             return
         }
 
         const onScroll = () => {
-            if (isHome) {
+            if (isHome || isLocationsIndexPage) {
                 // Home page: transition at 85% of viewport height
                 const threshold = typeof window !== 'undefined' ? window.innerHeight * 0.85 : 0
                 setScrolled(window.scrollY > threshold)
@@ -97,13 +99,30 @@ export default function Navbar({ className }: NavbarProps) {
                     const threshold = typeof window !== 'undefined' ? window.innerHeight * 0.85 : 0
                     setScrolled(window.scrollY > threshold)
                 }
+            } else if (isLocationsPage) {
+                // Locations pages: find the hero section and transition after it
+                const heroSection = document.getElementById('locations-hero')
+                if (heroSection) {
+                    // Calculate the bottom of the hero section including the HeroBarTrans transition
+                    const heroBottom = heroSection.offsetTop + heroSection.offsetHeight
+                    // Find HeroBarTrans component (it's a div after the hero section)
+                    const heroBarTrans = heroSection.nextElementSibling as HTMLElement | null
+                    const transitionHeight = heroBarTrans ? heroBarTrans.offsetHeight : 0
+                    // Transition when scrolled past the hero section + transition bar (with small buffer)
+                    const threshold = heroBottom + transitionHeight - 50
+                    setScrolled(window.scrollY > threshold)
+                } else {
+                    // Fallback: use viewport height if hero section not found
+                    const threshold = typeof window !== 'undefined' ? window.innerHeight * 0.85 : 0
+                    setScrolled(window.scrollY > threshold)
+                }
             }
         }
 
         onScroll()
         window.addEventListener('scroll', onScroll, { passive: true })
         return () => window.removeEventListener('scroll', onScroll)
-    }, [isHome, isConsumerLawPage])
+    }, [isHome, isConsumerLawPage, isLocationsPage])
 
     const linkClass = scrolled ? "text-black/90 hover:text-black font-medium text-[15px] leading-[140%] tracking-[-0.15px] hover:opacity-80 transition-all duration-[250ms] ease-[cubic-bezier(0.4,0,0.2,1)] font-af " : "text-white/90 hover:text-white font-medium text-[15px] leading-[140%] tracking-[-0.15px] hover:opacity-80 transition-all duration-[250ms] ease-[cubic-bezier(0.4,0,0.2,1)] font-af "
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen)

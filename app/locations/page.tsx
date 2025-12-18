@@ -90,8 +90,9 @@ export default function LocationsPage() {
             />
             <main className="min-h-screen bg-white overflow-x-hidden">
                 {/* Hero Section */}
-                <section className="w-full h-full">
+                <section className="w-full h-full" >
                     <section
+                        id="locations-hero"
                         style={{
                             backgroundImage: "radial-gradient(circle, #051937, #002b60, #003e8d, #0052bb, #1265eb)",
                             backgroundSize: "cover",
@@ -110,10 +111,10 @@ export default function LocationsPage() {
                             <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start lg:items-center">
                                 {/* Left Column - Content */}
                                 <div className="w-full lg:w-1/2 flex flex-col">
-                                    <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight mb-6 text-left">
+                                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-[--font-playfair-display] font-bold text-white leading-tight mb-6 text-left">
                                         Florida Consumer Rights Lawyers
                                     </h1>
-                                    <p className="text-lg md:text-xl lg:text-2xl text-white/90 leading-relaxed mb-8 text-left">
+                                    <p className="text-lg md:text-xl  text-white/90 leading-relaxed mb-8 text-left">
                                         {SITE_NAME} represents individuals across the entire state of Florida in consumer protection cases involving credit reporting errors, debt collection harassment, robocalls, privacy violations, and housing discrimination. We handle cases statewide through phone and video consultations, making it easy to get help no matter where you live.
                                     </p>
 
@@ -134,10 +135,10 @@ export default function LocationsPage() {
                                     </div>
 
                                     {/* CTA Buttons */}
-                                    <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-start">
-                                        <div className="w-full sm:w-[260px]">
+                                    <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-start items-stretch">
+                                        <div className="">
                                             <FreeCaseReviewDialog>
-                                                <FreeCaseReview className="w-full rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 text-lg font-semibold shadow-xl" />
+                                                <FreeCaseReview className="w-full sm:w-[260px] h-full hover:cursor-pointer rounded-xl bg-blue-600 hover:bg-blue-700 text-white  text-lg font-semibold shadow-xl " />
                                             </FreeCaseReviewDialog>
                                         </div>
                                         <a

@@ -31,7 +31,7 @@ const FreeCaseReview = React.forwardRef<
       {...restProps}
     >
       <BorderBeam colorFrom="blue" colorTo="blue-500" />
-      <span className="mr-8 text-white transition-opacity duration-300 group-hover:opacity-0">
+      <span className="mr-12 text-white transition-opacity duration-300 group-hover:opacity-0">
         {children}
       </span>
       <span

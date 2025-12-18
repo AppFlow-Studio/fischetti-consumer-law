@@ -324,8 +324,9 @@ export default async function CityPage({ params }: Props) {
             )}
             <main className="min-h-screen bg-white overflow-x-hidden">
                 {/* Hero Section */}
-                <section className="w-full h-full">
+                <section className="w-full h-full" >
                     <section
+                        id="locations-hero"
                         style={{
                             backgroundImage: "radial-gradient(circle, #051937, #002b60, #003e8d, #0052bb, #1265eb)",
                             backgroundSize: "cover",
