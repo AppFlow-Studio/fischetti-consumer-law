@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { contactSchema, defaultContactValues, caseTypes, urgencyLevels, type ContactFormData } from "@/components/forms/contact-schema"
+import { pushEnhancedConversion } from "@/lib/enhanced-conversions"
 
 type FreeCaseReviewDialogProps = {
     children: React.ReactNode
@@ -31,6 +32,16 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
         setSubmitting(true)
         try {
             console.log("Free Case Review:", values)
+            
+            // Track successful submit with enhanced conversions
+            pushEnhancedConversion("free_case_review_dialog", {
+                email: values.email,
+                phone: values.phone,
+                firstName: values.firstName,
+                lastName: values.lastName,
+                zip: values.zip
+            })
+            
             setTimeout(() => setOpen(false), 300)
             form.reset()
         } finally {
@@ -74,21 +85,40 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                             )} />
                         </div>
 
+                        {/* Email Field - Full Width */}
+                        <FormField control={form.control} name="email" render={({ field }) => (
+                            <FormItem className="w-full">
+                                <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">Email *</FormLabel>
+                                <FormControl>
+                                    <Input type="email" placeholder="jane@example.com" className="w-full text-sm" {...field} />
+                                </FormControl>
+                                <FormMessage className="text-xs" />
+                            </FormItem>
+                        )} />
+
+                        {/* Phone and ZIP Code - Same row on desktop, stacked on mobile */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <FormField control={form.control} name="email" render={({ field }) => (
-                                <FormItem className="w-full">
-                                    <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">Email *</FormLabel>
-                                    <FormControl>
-                                        <Input type="email" placeholder="jane@example.com" className="w-full text-sm" {...field} />
-                                    </FormControl>
-                                    <FormMessage className="text-xs" />
-                                </FormItem>
-                            )} />
                             <FormField control={form.control} name="phone" render={({ field }) => (
                                 <FormItem className="w-full">
                                     <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">Phone *</FormLabel>
                                     <FormControl>
                                         <Input type="tel" placeholder="(833) 645-3247" className="w-full text-sm" {...field} />
+                                    </FormControl>
+                                    <FormMessage className="text-xs" />
+                                </FormItem>
+                            )} />
+                            <FormField control={form.control} name="zip" render={({ field }) => (
+                                <FormItem className="w-full">
+                                    <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">ZIP Code *</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="text"
+                                            inputMode="numeric"
+                                            placeholder="12345 or 12345-6789"
+                                            className="w-full text-sm"
+                                            maxLength={10}
+                                            {...field}
+                                        />
                                     </FormControl>
                                     <FormMessage className="text-xs" />
                                 </FormItem>

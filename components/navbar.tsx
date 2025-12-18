@@ -5,12 +5,13 @@ import { cn } from "@/lib/utils"
 import { AnimatedThemeToggler } from "./ui/animated-theme-toggler"
 import Image from "next/image"
 import FreeCaseReview from "./free-case-review-button"
-import { Phone, Menu, X, Info, Users, MapPin as MapPinIcon, Star, Quote, Shield, FileText, MessageSquareWarning, PhoneCall, Video, Home, Gavel } from "lucide-react"
+import { Phone, Menu, X, Info, Users, MapPin as MapPinIcon, Star, Quote, Shield, FileText, MessageSquareWarning, PhoneCall, Video, Home, Gavel, HelpCircle, Building2 } from "lucide-react"
 import { useEffect, useState, useRef } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import FreeCaseReviewDialog from "./free-case-review-dialog"
 import { usePathname, useRouter } from "next/navigation"
 import { officeLocations } from "@/data/office-locations"
+import { firms } from "@/data/firms"
 import { useUIState } from "@/providers/ui-state-provider"
 
 // Animated Hamburger Icon Component
@@ -285,6 +286,15 @@ export default function Navbar({ className }: NavbarProps) {
                                             </div>
                                         </Link>
                                     </li>
+                                    <li>
+                                        <Link href="/faqs" className="flex items-start gap-3 px-4 py-2.5 text-[15px] text-gray-900 hover:bg-blue-50 rounded-xl mx-1">
+                                            <HelpCircle className="w-4 h-4 mt-0.5 text-blue-600" />
+                                            <div>
+                                                <span className="block font-medium">FAQs</span>
+                                                <span className="block text-gray-600 text-[13px]">Common questions answered.</span>
+                                            </div>
+                                        </Link>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -295,20 +305,29 @@ export default function Navbar({ className }: NavbarProps) {
                             onMouseEnter={() => { if (hoverTimer.current) clearTimeout(hoverTimer.current); setOpenMenu("locations") }}
                             onMouseLeave={() => { if (hoverTimer.current) clearTimeout(hoverTimer.current); hoverTimer.current = setTimeout(() => setOpenMenu(null), 120) }}
                         >
-                            <Link href="#locations" onClick={(e) => scrollToSection(e, 'locations')} className={cn(linkClass, "transition-colors text-lg")}>Locations</Link>
+                            <Link href="/locations" className={cn(linkClass, "transition-colors text-lg")}>Locations</Link>
                             <div className={cn(
                                 "absolute left-0 top-full mt-3 z-[200] w-[320px] rounded-2xl  bg-white/95 shadow-xl ring-1 ring-black/5 transition duration-200",
                                 openMenu === "locations" ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-1 pointer-events-none"
                             )}>
                                 <ul className="py-2">
+                                    <li>
+                                        <Link href="/locations" className="flex items-start gap-3 px-4 py-2.5 text-[15px] text-gray-900 hover:bg-blue-50 rounded-xl mx-1">
+                                            <MapPinIcon className="w-4 h-4 mt-0.5 text-blue-600" />
+                                            <div>
+                                                <span className="block font-medium">All Locations</span>
+                                                <span className="block text-gray-600 text-[13px]">View all office locations.</span>
+                                            </div>
+                                        </Link>
+                                    </li>
                                     {
-                                        officeLocations.map((location) => (
-                                            <li key={location.name}>
-                                                <Link href="/#locations" onClick={(e) => scrollToSection(e, 'locations')} className="flex items-start gap-3 px-4 py-2.5 text-[15px] text-gray-900 hover:bg-blue-50 rounded-xl mx-1">
-                                                    <MapPinIcon className="w-4 h-4 mt-0.5 text-blue-600" />
+                                        firms.map((firm) => (
+                                            <li key={firm.slug}>
+                                                <Link href={`/locations/${firm.slug}`} className="flex items-start gap-3 px-4 py-2.5 text-[15px] text-gray-900 hover:bg-blue-50 rounded-xl mx-1">
+                                                    <Building2 className="w-4 h-4 mt-0.5 text-blue-600" />
                                                     <div>
-                                                        <span className="block font-medium">{location.name}</span>
-                                                        <span className="block text-gray-600 text-sm">{location.address}</span>
+                                                        <span className="block font-medium">{firm.cityDisplay}</span>
+                                                        <span className="block text-gray-600 text-[13px]">{firm.addressLine1} {firm.addressLine2}</span>
                                                     </div>
                                                 </Link>
                                             </li>
@@ -480,22 +499,24 @@ export default function Navbar({ className }: NavbarProps) {
                                 <div className="mt-1 ml-2 grid grid-cols-1 gap-1 text-[14px] text-gray-700">
                                     <Link href="/#about" onClick={closeSidebar} className="py-1 flex items-center gap-2"><Info className="w-4 h-4 text-blue-600" /> Who we are</Link>
                                     <Link href="/#profile" onClick={closeSidebar} className="py-1 flex items-center gap-2"><Users className="w-4 h-4 text-blue-600" /> Meet Michael</Link>
+                                    <Link href="/faqs" onClick={closeSidebar} className="py-1 flex items-center gap-2"><HelpCircle className="w-4 h-4 text-blue-600" /> FAQs</Link>
                                 </div>
                             </motion.div>
 
                             {/* Locations quick links */}
                             <motion.div variants={itemVariants}>
                                 <Link
-                                    href="#locations"
-                                    onClick={(e) => { scrollToSection(e, 'locations'); closeSidebar() }}
+                                    href="/locations"
+                                    onClick={closeSidebar}
                                     className="text-gray-900 text-lg font-semibold hover:text-blue-600 transition-colors block"
                                 >
                                     Locations
                                 </Link>
                                 <div className="mt-1 ml-2 grid grid-cols-1 gap-1 text-[14px] text-gray-700">
+                                    <Link href="/locations" onClick={closeSidebar} className="py-1 flex items-center gap-2"><MapPinIcon className="w-4 h-4 text-blue-600" /> All Locations</Link>
                                     {
-                                        officeLocations.map((location) => (
-                                            <Link key={location.name} href={`/#${location.name}`} onClick={closeSidebar} className="py-1 flex items-center gap-2"><MapPinIcon className="w-4 h-4 text-blue-600" /> {location.name} • {location.address} </Link>
+                                        firms.map((firm) => (
+                                            <Link key={firm.slug} href={`/locations/${firm.slug}`} onClick={closeSidebar} className="py-1 flex items-center gap-2"><Building2 className="w-4 h-4 text-blue-600" /> {firm.cityDisplay}</Link>
                                         ))
                                     }
                                 </div>

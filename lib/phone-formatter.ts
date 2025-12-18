@@ -198,3 +198,21 @@ export function validatePhoneNumber(phone: string): boolean {
     const result = formatPhone(phone);
     return result.isValid && !result.isBot;
 }
+
+/**
+ * Converts phone number to E.164 format for enhanced conversions
+ * Input: Any phone format (e.g., "(833) 645-3247" or "8336453247")
+ * Output: "+18336453247" or empty string if invalid
+ */
+export function formatPhoneToE164(phone: string): string {
+    const digits = extractDigits(phone);
+    
+    // Must be 10 digits for US numbers
+    if (digits.length !== 10) return '';
+    
+    // Validate using existing isValidAmericanPhone
+    if (!isValidAmericanPhone(phone)) return '';
+    
+    // Return E.164 format: +1 + 10 digits
+    return `+1${digits}`;
+}

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Home, Scale, FileText, Phone, ArrowRight, Search } from "lucide-react";
 
 export const metadata: Metadata = {
-    title: "404 - Page Not Found | Fischetti Law Group",
+    title: "404 - Page Not Found",
     description: "The page you're looking for doesn't exist. Navigate back to our homepage, explore our consumer law services, or contact us for a free consultation.",
     robots: {
         index: false,

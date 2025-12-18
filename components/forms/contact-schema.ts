@@ -7,6 +7,10 @@ export const contactSchema = z.object({
     lastName: z.string().min(2, "Last name must be at least 2 characters"),
     email: z.string().email("Please enter a valid email address"),
     phone: z.string().min(10, "Please enter a valid phone number"),
+    zip: z.string()
+        .min(5, "ZIP code must be at least 5 digits")
+        .max(10, "ZIP code must be 10 characters or less")
+        .regex(/^\d{5}(-\d{4})?$/, "Please enter a valid ZIP code (e.g., 12345 or 12345-6789)"),
     caseType: z.string().min(1, "Please select a case type"),
     description: z.string().min(10, "Please provide more details about your case"),
     urgency: z.string().min(1, "Please select urgency level"),
@@ -20,6 +24,7 @@ export const defaultContactValues: ContactFormData = {
     lastName: "",
     email: "",
     phone: "",
+    zip: "",
     caseType: "",
     description: "",
     urgency: "",

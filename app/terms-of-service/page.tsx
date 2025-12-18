@@ -1,10 +1,31 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FileText, Scale, AlertCircle, CheckCircle, Mail, Gavel } from "lucide-react";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-    title: "Terms of Service | Fischetti Law Group",
-    description: "Terms of Service for Fischetti Law Group. Please read our terms and conditions before using our services.",
+    title: "Terms of Service",
+    description: "Terms of service for Consumer Law Florida. Please read our terms and conditions before using our consumer protection legal services.",
+    alternates: {
+        canonical: "/terms-of-service",
+    },
+    openGraph: {
+        title: "Terms of Service | Consumer Law Florida",
+        description: "Terms of service for Consumer Law Florida. Please read our terms and conditions before using our consumer protection legal services.",
+        url: `${SITE_URL}/terms-of-service`,
+        images: [{
+            url: "/opengraph-default.png",
+            width: 1200,
+            height: 630,
+            alt: "Consumer Law Florida"
+        }],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Terms of Service | Consumer Law Florida",
+        description: "Terms of service for Consumer Law Florida. Please read our terms and conditions before using our consumer protection legal services.",
+        images: ["/opengraph-default.png"],
+    },
 };
 
 export default function TermsOfServicePage() {

@@ -1,10 +1,31 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Shield, Lock, Eye, FileText, Mail } from "lucide-react";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-    title: "Privacy Policy | Fischetti Law Group",
-    description: "Privacy Policy for Fischetti Law Group. Learn how we collect, use, and protect your personal information.",
+    title: "Privacy Policy",
+    description: "Privacy policy for Consumer Law Florida. Learn how we collect, use, and protect your personal information when you use our consumer protection legal services.",
+    alternates: {
+        canonical: "/privacy-policy",
+    },
+    openGraph: {
+        title: "Privacy Policy | Consumer Law Florida",
+        description: "Privacy policy for Consumer Law Florida. Learn how we collect, use, and protect your personal information when you use our consumer protection legal services.",
+        url: `${SITE_URL}/privacy-policy`,
+        images: [{
+            url: "/opengraph-default.png",
+            width: 1200,
+            height: 630,
+            alt: "Consumer Law Florida"
+        }],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Privacy Policy | Consumer Law Florida",
+        description: "Privacy policy for Consumer Law Florida. Learn how we collect, use, and protect your personal information when you use our consumer protection legal services.",
+        images: ["/opengraph-default.png"],
+    },
 };
 
 export default function PrivacyPolicyPage() {
