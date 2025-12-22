@@ -17,16 +17,20 @@
         "damagesAndRemedies": "Victims of FCRA violations can recover both statutory damages (set amounts per violation) and actual damages (for financial harm, emotional distress, and other losses). Courts can also award punitive damages when violations are willful or intentional. Most importantly, the FCRA requires defendants to pay your attorney's fees and costs, meaning you can often pursue claims at no out-of-pocket cost.",
         "faq": [
             {
-                "question": "How long do negative items stay on my credit report?",
-                "answer": "Most negative items remain on your credit report for seven years from the date of first delinquency. However, Chapter 7 bankruptcies can remain for up to 10 years, and some public records may have different timeframes. Positive information can generally remain indefinitely."
+                "question": "What is a credit report error?",
+                "answer": "A credit report error is inaccurate or incomplete information listed on your credit report, such as accounts that do not belong to you, incorrect balances, late payments reported incorrectly, or debts that should have been removed. Credit report errors can lower your credit score and lead to loan denials. The Fair Credit Reporting Act (FCRA) requires credit bureaus to investigate and correct these errors."
             },
             {
-                "question": "Will disputing items hurt my credit score?",
-                "answer": "No, the act of disputing items on your credit report does not hurt your credit score. The dispute process is your legal right and the bureaus cannot penalize you for exercising it."
+                "question": "What is an unauthorized credit inquiry?",
+                "answer": "An unauthorized credit inquiry occurs when a company checks your credit report without your permission or a valid legal reason. Unauthorized credit inquiries can damage your credit score and may violate the FCRA. Consumers have the right to dispute unauthorized inquiries and may sue if credit bureaus fail to remove them."
             },
             {
-                "question": "What's the difference between a credit bureau and a furnisher?",
-                "answer": "Credit bureaus (like Equifax, Experian, and TransUnion) compile and maintain credit reports. Furnishers are the creditors, lenders, and collection agencies that provide information to the bureaus. Both can be liable under the FCRA for reporting inaccurate information."
+                "question": "How do I file an FCRA complaint?",
+                "answer": "To file an FCRA complaint, start by disputing the inaccurate information directly with the credit bureau in writing. If the bureau fails to conduct a reasonable investigation or does not correct the error, you may file a legal claim under the FCRA. Successful claims can result in compensation and attorney's fees paid by the credit bureau."
+            },
+            {
+                "question": "Can I sue Experian for credit report errors?",
+                "answer": "Yes, you can sue Experian for credit report errors if Experian fails to correct inaccurate information after you dispute it. The FCRA allows consumers to recover damages when credit bureaus do not follow proper investigation procedures or continue reporting incorrect data."
             }
         ]
     },
@@ -48,16 +52,20 @@
         "damagesAndRemedies": "The FDCPA provides for statutory damages of up to $1,000 per lawsuit regardless of actual harm, plus actual damages for documented losses such as lost wages, medical bills for stress-related conditions, and emotional distress. Defendants must also pay your attorney's fees and costs, making it possible to pursue claims without upfront legal expenses.",
         "faq": [
             {
-                "question": "Can debt collectors call my workplace?",
-                "answer": "Debt collectors can initially call your workplace, but they must stop immediately if you tell them your employer prohibits such calls or if you request they stop contacting you at work. They cannot tell your employer about the debt."
+                "question": "What is debt collector harassment?",
+                "answer": "Debt collector harassment includes repeated phone calls, threats, abusive language, or contacting you at inconvenient times. The Fair Debt Collection Practices Act (FDCPA) strictly limits how and when debt collectors may contact consumers. Harassing behavior is illegal, even if you owe the debt."
             },
             {
-                "question": "What if the debt isn't mine?",
-                "answer": "Send a written dispute letter within 30 days of their initial contact. The collector must cease collection efforts until they provide validation proving the debt is yours. If they cannot validate it, they must stop collection and remove it from your credit report."
+                "question": "Can debt collectors call me at work?",
+                "answer": "Debt collectors may not call you at work if you tell them your employer does not allow personal calls. Continuing to call your workplace after being informed is a violation of the FDCPA and may entitle you to compensation."
             },
             {
-                "question": "Can I still sue if I actually owe the debt?",
-                "answer": "Yes. Owing a debt does not give collectors the right to violate the FDCPA. Even if the underlying debt is valid, you can still sue for harassment, deception, or other violations of the law."
+                "question": "What if a debt collector refuses to validate the debt?",
+                "answer": "If a debt collector refuses to validate the debt after you request verification, they must stop collection efforts. Continuing to collect without validation violates the FDCPA. Consumers can sue debt collectors who ignore validation requests."
+            },
+            {
+                "question": "Can I sue for debt collector harassment?",
+                "answer": "Yes, you can sue for debt collector harassment under the FDCPA. Consumers may recover statutory damages up to $1,000 per case, plus attorney's fees, even if the debt is legitimate."
             }
         ]
     },
@@ -79,16 +87,36 @@
         "damagesAndRemedies": "The TCPA provides for $500 in statutory damages for each violation (each illegal call or text). If the violation was knowing and willful, damages can be trebled up to $1,500 per violation. You don't need to prove actual damages or harm. With multiple calls or texts, these amounts can add up significantly. Courts can also award injunctive relief to stop future calls.",
         "faq": [
             {
-                "question": "What counts as consent under the TCPA?",
-                "answer": "For telemarketing calls to cell phones, consent must be in writing and clearly authorize calls using an autodialer or prerecorded voice. Simply providing your number isn't always enough. For informational calls (like appointment reminders), oral consent may suffice. Consent can be revoked at any time by any reasonable means."
+                "question": "How do I stop spam calls?",
+                "answer": "If you are wondering how to stop spam calls, start by placing your number on the National Do Not Call Registry, blocking known spam numbers through your phone carrier, and enabling built-in spam call filtering on your device. However, if spam calls continue after you take these steps, the calls may be illegal under the Telephone Consumer Protection Act (TCPA). The TCPA allows consumers to sue companies that make robocalls or telemarketing calls without proper consent, with statutory damages of up to $1,500 per illegal call."
             },
             {
-                "question": "What if I never gave them my number?",
-                "answer": "If you never provided consent and don't have a prior business relationship, calls or texts are likely illegal. This includes wrong numbers and reassigned numbers—callers have a duty to maintain do-not-call lists and honor opt-out requests."
+                "question": "How do I stop getting spam calls permanently?",
+                "answer": "To stop getting spam calls permanently, you must go beyond basic call blocking. While blocking individual numbers helps, many spam callers rotate phone numbers. The most effective long-term solution is enforcing your rights under the TCPA. When companies continue making robocalls after you revoke consent or register on the Do Not Call list, they can be held legally responsible. Filing a TCPA claim can force companies to stop calling and may result in financial compensation."
             },
             {
-                "question": "Can I sue for calls from my bank or pharmacy?",
-                "answer": "It depends. There are exemptions for certain non-marketing calls, but many companies abuse these exemptions. If the calls are marketing in nature, use an autodialer, or continue after you've revoked consent, they may still violate the TCPA."
+                "question": "Can I sue for robocalls?",
+                "answer": "Yes, you can sue for robocalls if the calls were made using an autodialer or prerecorded voice without your consent. Under the TCPA, each illegal robocall or spam text can result in $500 in damages, or up to $1,500 per call if the violation was willful. You do not need to prove financial harm—receiving the illegal call itself is enough to bring a claim."
+            },
+            {
+                "question": "How can I stop spam calls if blocking doesn't work?",
+                "answer": "If blocking does not stop spam calls, the calls may be coming from companies violating federal law. When spam calls continue despite blocking, opt-outs, or Do Not Call registration, you may have a valid TCPA claim. A consumer protection attorney can help you identify whether the calls qualify as illegal robocalls and pursue compensation while forcing the caller to stop."
+            },
+            {
+                "question": "How do I stop spam calls permanently under federal law?",
+                "answer": "Federal law gives consumers the right to stop spam calls permanently through enforcement of the TCPA. If a company ignores opt-out requests or continues calling without consent, you can take legal action. Successful TCPA claims often result in the calls stopping completely because companies face significant penalties for continued violations."
+            },
+            {
+                "question": "How to stop spam calls on iPhone?",
+                "answer": "To stop spam calls on iPhone, enable Apple's \"Silence Unknown Callers\" feature and block known spam numbers. You can also use carrier-provided spam filtering apps. However, if spam calls continue, the calls may violate the TCPA. Repeated robocalls to an iPhone without consent can give you the right to sue for statutory damages."
+            },
+            {
+                "question": "How to stop spam calls on Android?",
+                "answer": "To stop spam calls on Android, enable call screening and spam protection in your phone's settings and block suspicious numbers. Despite these tools, many consumers continue receiving robocalls. If spam calls persist, the caller may be violating the TCPA, which allows consumers to pursue legal action and compensation."
+            },
+            {
+                "question": "How to stop spam calls without blocking numbers?",
+                "answer": "If you want to stop spam calls without blocking each number, your best option is enforcing your rights under the TCPA. Spam callers often rotate phone numbers, making blocking ineffective. Legal action forces companies to stop calling altogether and can result in financial recovery for repeated violations."
             }
         ]
     },
@@ -140,16 +168,20 @@
         "damagesAndRemedies": "The VPPA provides for liquidated damages of not less than $2,500 per violation. Courts have interpreted each disclosure of viewing information as a separate violation, so damages can accumulate quickly. You can also recover punitive damages if the violation was willful, as well as reasonable attorney's fees and costs. The law also allows for equitable relief, including injunctions to stop the unlawful disclosure of video viewing information.",
         "faq": [
             {
+                "question": "What is a video privacy lawsuit?",
+                "answer": "A video privacy lawsuit is a legal claim brought under the Video Privacy Protection Act (VPPA) when a company shares your video viewing history with third parties without consent. This often involves tracking pixels or analytics tools embedded on video pages."
+            },
+            {
+                "question": "Can I sue a website for sharing my video history?",
+                "answer": "Yes, if a website shares your video viewing history without proper consent, you may sue under the VPPA. The law provides statutory damages of at least $2,500 per violation and requires companies to respect consumer video privacy."
+            },
+            {
                 "question": "Does the VPPA apply to free streaming services?",
                 "answer": "Yes. The VPPA applies to any 'video tape service provider,' which courts have broadly interpreted to include free streaming services, websites with video content, and mobile apps. You don't need to pay for the service to be protected."
             },
             {
                 "question": "What kind of consent is required under the VPPA?",
                 "answer": "The VPPA requires informed, written consent that is given in a distinct, separate transaction from other agreements. Simply having a privacy policy or terms of service is typically not enough. The consent must be specific to sharing video viewing information."
-            },
-            {
-                "question": "How do I know if my viewing data was shared?",
-                "answer": "Evidence often requires technical investigation, but signs include seeing targeted ads for products related to videos you watched, privacy policy language about sharing data with 'partners,' or the presence of tracking pixels on video pages. An attorney can help investigate and gather evidence."
             }
         ]
     },
@@ -171,16 +203,20 @@
         "damagesAndRemedies": "FHA remedies include compensatory damages for out-of-pocket costs (application fees, moving expenses, hotel costs), emotional distress, humiliation, and inconvenience. Courts can award punitive damages to punish intentional discrimination and deter future violations. You can obtain injunctive relief, such as requiring the landlord to rent to you or stopping discriminatory practices. Attorney's fees and costs are available to prevailing plaintiffs. HUD can also impose civil penalties separate from damages awarded in your case.",
         "faq": [
             {
+                "question": "What is housing discrimination?",
+                "answer": "Housing discrimination occurs when a landlord, property manager, HOA, or lender treats someone unfairly based on protected characteristics such as disability, family status, race, or national origin. The Fair Housing Act makes housing discrimination illegal in most rental and housing transactions."
+            },
+            {
+                "question": "What are disabled tenant rights in Florida?",
+                "answer": "Disabled tenant rights in Florida include the right to reasonable accommodations and modifications necessary to use and enjoy housing. Landlords and HOAs must comply with the Fair Housing Act and cannot deny housing or impose extra fees because of a disability."
+            },
+            {
+                "question": "Can I file a fair housing complaint in Florida?",
+                "answer": "Yes, you can file a fair housing complaint in Florida if you experience housing discrimination. Complaints may be filed with HUD or pursued through a private lawsuit under the Fair Housing Act, which allows for damages and attorney's fees."
+            },
+            {
                 "question": "What counts as a reasonable accommodation for a disability?",
                 "answer": "Reasonable accommodations are changes to rules, policies, practices, or services that may be necessary for a person with a disability to use and enjoy a dwelling. Examples include allowing a service or emotional support animal in a no-pets building, assigning an accessible parking space, or allowing a live-in aide. The accommodation must be reasonable and related to the disability, but housing providers cannot charge extra fees for reasonable accommodations."
-            },
-            {
-                "question": "Can a landlord ask about my disability?",
-                "answer": "Landlords can ask if you need an accommodation and may request documentation of disability-related need for the accommodation, but they cannot ask about the nature or extent of your disability. They cannot require medical records or detailed diagnoses."
-            },
-            {
-                "question": "Is it discrimination if a landlord just says the unit is no longer available?",
-                "answer": "It can be. This is called 'pretextual denial' and is a common form of discrimination. If you suspect discrimination, consider having someone from a different protected class (or not in a protected class) inquire about the same property. If they're told it's available, that's strong evidence of discrimination."
             }
         ]
     },
@@ -202,16 +238,20 @@
         "damagesAndRemedies": "Remedies in arbitration depend on the underlying claims and can include compensatory damages for actual losses, statutory damages under consumer protection laws, punitive damages if allowed by the applicable statute, injunctive relief to stop unlawful practices, and attorney's fees under fee-shifting statutes or arbitration rules. The strategic value of mass arbitration often lies in the filing fees companies must pay (often $200-$1,500+ per case), which can quickly exceed millions of dollars, creating strong settlement incentives even for small individual claims.",
         "faq": [
             {
+                "question": "What is a forced arbitration lawsuit?",
+                "answer": "A forced arbitration lawsuit involves challenging or leveraging an arbitration clause that prevents consumers from filing traditional lawsuits. Mass arbitration allows many consumers to file individual arbitration claims simultaneously, creating financial pressure on companies engaging in widespread violations."
+            },
+            {
+                "question": "What does a mass arbitration attorney do?",
+                "answer": "A mass arbitration attorney coordinates large numbers of individual arbitration filings against a company. This strategy is often used when companies rely on forced arbitration clauses to avoid accountability for consumer law violations."
+            },
+            {
                 "question": "Isn't arbitration bad for consumers?",
                 "answer": "Forced arbitration typically favors companies by preventing class actions and public trials. However, mass arbitration flips this dynamic by using the company's own arbitration clause against them. When thousands of consumers each file arbitration demands, companies must pay enormous filing fees, creating leverage that wouldn't exist in individual cases or that was eliminated by the arbitration clause."
             },
             {
                 "question": "Do I need to pay to file arbitration?",
                 "answer": "Most consumer arbitration agreements require the company to pay all or most filing fees for claims below a certain amount. Many attorneys handling mass arbitration work on contingency, meaning you don't pay unless you recover. Always review your specific arbitration clause and discuss fees with your attorney."
-            },
-            {
-                "question": "Can companies change their arbitration clauses to avoid mass arbitration?",
-                "answer": "Companies can change future agreements, but they generally cannot retroactively eliminate arbitration rights for past conduct. If your claim arose before a new arbitration clause took effect, the old clause typically governs. Some companies have tried to add 'mass arbitration' limitations, but these provisions may be unenforceable."
             }
         ]
     }

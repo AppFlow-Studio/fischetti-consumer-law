@@ -1,45 +1,25 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import Image from "next/image"
 import { SITE_NAME, SITE_URL, SERVE_STATEMENT, STATE_SERVE, PRIMARY_PHONE, PRIMARY_EMAIL } from "@/lib/site"
 import { firms } from "@/data/firms"
 import HeroBarTrans from "@/components/hero-bar-trans"
 import { Marquee } from "@/components/ui/marquee"
-import ContactFormSection from "@/components/ui/contact-form-section"
 import Testimonials from "@/components/ui/testimonials"
 import WhyFischetti from "@/components/ui/why-fischetti"
 import SimpleContactForm from "@/components/ui/simple-contact-form"
 import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { MapPin, Phone, Clock, CheckCircle, ArrowRight } from "lucide-react"
+import { Phone, CheckCircle, ArrowRight } from "lucide-react"
 import FreeCaseReviewDialog from "@/components/free-case-review-dialog"
 import FreeCaseReview from "@/components/free-case-review-button"
 import LocationCard from "@/components/ui/location-card"
+import { buildMetadata } from "@/lib/seo/metadata"
 
-export const metadata: Metadata = {
-    title: "Consumer Rights Lawyers Florida",
+export const metadata: Metadata = buildMetadata({
+    title: "Consumer Rights Lawyers Florida | Consumer Law Florida",
     description: `Consumer rights lawyers in Florida serving Orlando, Port St. Lucie, and Boynton Beach. No fee unless we win. Call (833) 645-3247.`,
-    alternates: {
-        canonical: "/locations",
-    },
-    openGraph: {
-        title: "Consumer Rights Lawyers Florida | Consumer Law Florida",
-        description: `Consumer rights lawyers in Florida serving Orlando, Port St. Lucie, and Boynton Beach. No fee unless we win. Call (833) 645-3247.`,
-        url: `${SITE_URL}/locations`,
-        images: [{
-            url: "/opengraph-default.png",
-            width: 1200,
-            height: 630,
-            alt: "Consumer Law Florida"
-        }],
-    },
-    twitter: {
-        card: "summary_large_image",
-        title: "Consumer Rights Lawyers Florida | Consumer Law Florida",
-        description: `Consumer rights lawyers in Florida serving Orlando, Port St. Lucie, and Boynton Beach. No fee unless we win. Call (833) 645-3247.`,
-        images: ["/opengraph-default.png"],
-    },
-}
+    pathname: "/locations",
+    type: "website",
+})
 
 // Parse address into components for schema
 function parseAddress(firm: typeof firms[0]) {
@@ -145,14 +125,12 @@ export default function LocationsPage() {
 
                                     {/* CTA Buttons */}
                                     <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-start items-stretch">
-                                        <div className="">
-                                            <FreeCaseReviewDialog>
-                                                <FreeCaseReview className="w-full sm:w-[260px] h-full hover:cursor-pointer rounded-xl bg-blue-600 hover:bg-blue-700 text-white  text-lg font-semibold shadow-xl " />
-                                            </FreeCaseReviewDialog>
-                                        </div>
+                                        <FreeCaseReviewDialog>
+                                            <FreeCaseReview className="w-full sm:w-[260px] rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 text-lg font-semibold shadow-xl h-[56px] flex items-center justify-center" />
+                                        </FreeCaseReviewDialog>
                                         <a
                                             href="tel:8336453247"
-                                            className="w-full sm:w-[260px] inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm px-6 py-4 text-lg font-semibold text-white hover:bg-white/20 transition-colors whitespace-nowrap"
+                                            className="w-full sm:w-[260px] inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm px-6 py-4 text-lg font-semibold text-white hover:bg-white/20 transition-colors whitespace-nowrap h-[56px]"
                                         >
                                             <Phone className="w-5 h-5 shrink-0" />
                                             <span>Call {PRIMARY_PHONE}</span>
@@ -404,8 +382,32 @@ export default function LocationsPage() {
                         </div>
                     </section>
 
-                    {/* Contact Form Section */}
-                    <ContactFormSection />
+                    {/* CTA Section - Links to form above */}
+                    <section className="w-full py-16 bg-gray-50">
+                        <div className="w-full max-w-[95%] xl:max-w-[1400px] mx-auto px-4 sm:px-6 text-center">
+                            <h2 className="text-3xl md:text-4xl font-[--font-playfair-display] text-gray-900 mb-4">
+                                Ready to Get Started?
+                            </h2>
+                            <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+                                Fill out the form above to get your free case review, or call us directly.
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                                <a
+                                    href="#consultation"
+                                    className="inline-flex items-center justify-center rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
+                                >
+                                    Get Your Free Case Review
+                                </a>
+                                <a
+                                    href="tel:8336453247"
+                                    className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-gray-300 hover:border-gray-400 text-gray-700 px-8 py-4 text-lg font-semibold transition-colors"
+                                >
+                                    <Phone className="w-5 h-5" />
+                                    Call {PRIMARY_PHONE}
+                                </a>
+                            </div>
+                        </div>
+                    </section>
 
                     {/* Testimonials */}
                     <Testimonials />

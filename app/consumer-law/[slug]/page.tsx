@@ -10,10 +10,16 @@ import { Shield, CheckCircle, Phone } from "lucide-react"
 import Link from "next/link"
 import HeroBarTrans from "@/components/hero-bar-trans"
 import { Marquee } from "@/components/ui/marquee"
-import { SITE_URL, SITE_NAME, SERVE_STATEMENT, STATE_SERVE } from "@/lib/site"
+import { SITE_URL, SITE_NAME } from "@/lib/site"
 import SeoInsightBlock from "@/components/sections/SeoInsightBlock"
 import { LAW_CONTENT_MAP } from "@/lib/lawSectionContent"
-type Law = any
+import { buildMetadata } from "@/lib/seo/metadata"
+type Law = {
+    slug: string
+    title: string
+    summary: string
+    [key: string]: unknown
+}
 
 // Helper function to generate law-specific OfferCatalog schema
 function getLawOfferSchema(slug: string) {
@@ -103,30 +109,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const title = getLawTitle(slug.slug)
     const description = getLawDescription(slug.slug)
 
-    return {
+    return buildMetadata({
         title,
         description,
-        alternates: {
-            canonical: `/consumer-law/${slug.slug}`,
-        },
-        openGraph: {
-            title,
-            description,
-            url: `${SITE_URL}/consumer-law/${slug.slug}`,
-            images: [{
-                url: "/opengraph-default.png",
-                width: 1200,
-                height: 630,
-                alt: "Consumer Law Florida"
-            }],
-        },
-        twitter: {
-            card: "summary_large_image",
-            title,
-            description,
-            images: ["/opengraph-default.png"],
-        },
-    }
+        pathname: `/consumer-law/${slug.slug}`,
+        type: "website",
+    })
 }
 
 // Law-specific content generators
@@ -671,66 +659,21 @@ export default async function ConsumerLawDetailsPage({ params }: { params: Promi
 
                         {/* Right: Prominent Form */}
                         <div className="lg:sticky lg:top-24 relative">
-                            {/* SVG Filter Definition */}
-                            <svg style={{ display: 'none' }}>
-                                <filter id="displacementFilter">
-                                    <feTurbulence
-                                        type="turbulence"
-                                        baseFrequency="0.01"
-                                        numOctaves="2"
-                                        result="turbulence"
-                                    />
-                                    <feDisplacementMap
-                                        in="SourceGraphic"
-                                        in2="turbulence"
-                                        scale="200"
-                                        xChannelSelector="R"
-                                        yChannelSelector="G"
-                                    />
-                                </filter>
-                            </svg>
-
-                            {/* Liquid Glass Background */}
-                            <div
-                                className="absolute inset-0 w-full h-full rounded-3xl overflow-hidden"
-                                style={{
-                                    filter: 'drop-shadow(-8px -10px 46px #0000005f)',
-                                    backdropFilter: 'brightness(1.1) blur(2px)',
-                                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                                }}
-                            >
-                                <div
-                                    className="absolute inset-0 rounded-3xl"
-                                    style={{
-                                        boxShadow: 'inset 6px 6px 0px -6px rgba(255, 255, 255, 0.7), inset 0 0 8px 1px rgba(255, 255, 255, 0.7)',
-                                    }}
-                                />
-                            </div>
-
-                            <div className="relative z-20 rounded-2xl shadow-2xl p-6 md:p-8 ">
-                                <div className="flex items-center gap-3 mb-4">
-                                    <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                                        <Shield className="w-6 h-6 text-blue-600" />
-                                    </div>
-                                    <div>
-                                        <h2 className="text-2xl font-bold text-white">Free Case Review</h2>
-                                        <p className="text-sm text-gray-200">Get started in minutes</p>
-                                    </div>
-                                </div>
-
-                                <p className="text-gray-200 mb-6 leading-relaxed">
-                                    Tell us about your situation. Our experienced consumer law attorneys will review your case at no cost. <strong className="text-white">No fees unless we win.</strong>
+                            <Card className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 lg:p-8 shadow-2xl border border-white/20">
+                                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                                    Get Your Free Case Review
+                                </h2>
+                                <p className="text-gray-600 mb-6 text-sm md:text-base">
+                                    Fill out the form below and we'll get back to you within 24 hours.
                                 </p>
-
-                                <SimpleContactForm />
-
+                                <SimpleContactForm useBlueTheme={true} />
                                 <div className="mt-6 pt-6 border-t border-gray-200">
-                                    <div className="flex items-center gap-3 text-sm text-gray-200">
+                                    <div className="flex items-center gap-3 text-sm text-gray-600">
                                         <Phone className="w-4 h-4 text-blue-600" />
                                         <span>Prefer to talk? Call <a href="tel:8336453247" className="text-blue-600 hover:underline font-semibold">(833) 645-3247</a></span>
                                     </div>
-                        </div>
-                    </div>
+                                </div>
+                            </Card>
                         </div>
                     </div>
                 </div>

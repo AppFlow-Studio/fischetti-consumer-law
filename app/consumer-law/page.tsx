@@ -2,7 +2,7 @@ import fs from "node:fs"
 import path from "node:path"
 import type { Metadata } from "next"
 import Link from "next/link"
-import { SITE_URL, SERVE_STATEMENT, STATE_SERVE } from "@/lib/site"
+import { buildMetadata } from "@/lib/seo/metadata"
 
 function readLaws() {
     const p = path.join(process.cwd(), "data", "consumer-laws.json")
@@ -10,30 +10,12 @@ function readLaws() {
     return JSON.parse(raw) as Array<{ slug: string; title: string; summary: string }>
 }
 
-export const metadata: Metadata = {
-    title: "Consumer Rights Laws Florida",
+export const metadata: Metadata = buildMetadata({
+    title: "Consumer Rights Laws Florida | Consumer Law Florida",
     description: `Consumer rights laws in Florida: FCRA, FDCPA, TCPA, and more. Learn your rights under federal consumer protection laws. No fee unless we win.`,
-    alternates: {
-        canonical: "/consumer-law",
-    },
-    openGraph: {
-        title: "Consumer Rights Laws Florida | Consumer Law Florida",
-        description: `Consumer rights laws in Florida: FCRA, FDCPA, TCPA, and more. Learn your rights under federal consumer protection laws. No fee unless we win.`,
-        url: `${SITE_URL}/consumer-law`,
-        images: [{
-            url: "/opengraph-default.png",
-            width: 1200,
-            height: 630,
-            alt: "Consumer Law Florida"
-        }],
-    },
-    twitter: {
-        card: "summary_large_image",
-        title: "Consumer Rights Laws Florida | Consumer Law Florida",
-        description: `Consumer rights laws in Florida: FCRA, FDCPA, TCPA, and more. Learn your rights under federal consumer protection laws. No fee unless we win.`,
-        images: ["/opengraph-default.png"],
-    },
-}
+    pathname: "/consumer-law",
+    type: "website",
+})
 
 export default function ConsumerLawIndex() {
     const laws = readLaws()

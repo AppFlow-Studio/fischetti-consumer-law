@@ -318,7 +318,7 @@ export default function CaseResults() {
                                 >
                                     <span className="text-blue-600 text-2xl font-bold"><item.icon /></span>
                                 </motion.div>
-                                <h4 className="text-lg font-semibold text-gray-900 mb-2">{item.title}</h4>
+                                <p className="text-lg font-semibold text-gray-900 mb-2">{item.title}</p>
                                 <p className="text-gray-600 text-sm">{item.description}</p>
                             </motion.div>
                         ))}

@@ -16,6 +16,10 @@ type LocationCardProps = {
 export default function LocationCard({ firm }: LocationCardProps) {
     const router = useRouter()
 
+    const handleCardClick = () => {
+        router.push(`/locations/${firm.slug}`)
+    }
+
     const handleExploreClick = (e: React.MouseEvent) => {
         e.preventDefault()
         e.stopPropagation()
@@ -23,12 +27,12 @@ export default function LocationCard({ firm }: LocationCardProps) {
     }
 
     return (
-        <Link href={`/locations/${firm.slug}`} className="block">
-            <motion.div
-                whileHover={{ y: -4, scale: 1.02 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-            >
-                <Card className="rounded-2xl border border-gray-100 shadow-md p-4 hover:shadow-xl transition-all duration-200 cursor-pointer">
+        <motion.div
+            whileHover={{ y: -4, scale: 1.02 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            onClick={handleCardClick}
+        >
+            <Card className="rounded-2xl border border-gray-100 shadow-md p-4 hover:shadow-xl transition-all duration-200 cursor-pointer">
                 <div className="flex items-center gap-2 mb-2">
                     <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-blue-600 text-white">
                         <MapPin className="w-3.5 h-3.5" />
@@ -96,7 +100,6 @@ export default function LocationCard({ firm }: LocationCardProps) {
                     </Button>
                 </div>
             </Card>
-            </motion.div>
-        </Link>
+        </motion.div>
     )
 }

@@ -84,7 +84,7 @@ export default function Footer() {
 
                     {/* Practice Areas */}
                     <div className="space-y-6">
-                        <h4 className="text-lg font-semibold text-white">Practice Areas</h4>
+                        <p className="text-lg font-semibold text-white">Practice Areas</p>
                         <ul className="space-y-2">
                             {practiceAreas.map((area, index) => (
                                 <li key={index}>
@@ -101,7 +101,7 @@ export default function Footer() {
 
                     {/* Quick Links */}
                     <div className="space-y-6">
-                        <h4 className="text-lg font-semibold text-white">Quick Links</h4>
+                        <p className="text-lg font-semibold text-white">Quick Links</p>
                         <ul className="space-y-2">
                             {quickLinks.map((link, index) => (
                                 <li key={index}>
@@ -137,7 +137,7 @@ export default function Footer() {
 
                         {/* Social Links */}
                         <div>
-                            <h4 className="text-lg font-semibold text-white mb-4">Follow Us</h4>
+                            <p className="text-lg font-semibold text-white mb-4">Follow Us</p>
                             <div className="flex gap-3">
                                 {socialLinks.map((social, index) => (
                                     <motion.a

@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
-import Link from "next/link"
-import { SITE_NAME, SITE_URL, SERVE_STATEMENT, STATE_SERVE, PRIMARY_PHONE } from "@/lib/site"
+import { SITE_NAME, PRIMARY_PHONE } from "@/lib/site"
 import HeroBarTrans from "@/components/hero-bar-trans"
 import ContactFormSection from "@/components/ui/contact-form-section"
 import { Card } from "@/components/ui/card"
@@ -10,31 +9,14 @@ import FreeCaseReviewDialog from "@/components/free-case-review-dialog"
 import FreeCaseReview from "@/components/free-case-review-button"
 import FAQSearchClient from "./faq-search-client"
 import SeoInsightBlock from "@/components/sections/SeoInsightBlock"
+import { buildMetadata } from "@/lib/seo/metadata"
 
-export const metadata: Metadata = {
-    title: "Florida Consumer Law FAQs",
+export const metadata: Metadata = buildMetadata({
+    title: "Florida Consumer Law FAQs | Consumer Law Florida",
     description: `Florida consumer law FAQs covering FCRA, FDCPA, TCPA, and other consumer protection laws. Get answers about credit reports, debt collection, robocalls, and privacy violations. No fee unless we win.`,
-    alternates: {
-        canonical: "/faqs",
-    },
-    openGraph: {
-        title: "Florida Consumer Law FAQs | Consumer Law Florida",
-        description: `Florida consumer law FAQs covering FCRA, FDCPA, TCPA, and other consumer protection laws. Get answers about credit reports, debt collection, robocalls, and privacy violations. No fee unless we win.`,
-        url: `${SITE_URL}/faqs`,
-        images: [{
-            url: "/opengraph-default.png",
-            width: 1200,
-            height: 630,
-            alt: "Consumer Law Florida"
-        }],
-    },
-    twitter: {
-        card: "summary_large_image",
-        title: "Florida Consumer Law FAQs | Consumer Law Florida",
-        description: `Florida consumer law FAQs covering FCRA, FDCPA, TCPA, and other consumer protection laws. Get answers about credit reports, debt collection, robocalls, and privacy violations. No fee unless we win.`,
-        images: ["/opengraph-default.png"],
-    },
-}
+    pathname: "/faqs",
+    type: "website",
+})
 
 type FAQ = {
     question: string
@@ -283,15 +265,13 @@ export default function FAQsPage() {
                                 </p>
 
                                 {/* CTA Buttons */}
-                                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                                    <div className="w-full sm:w-[260px]">
-                                        <FreeCaseReviewDialog>
-                                            <FreeCaseReview className="w-full rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 text-lg font-semibold shadow-xl" />
-                                        </FreeCaseReviewDialog>
-                                    </div>
+                                <div className="flex flex-col sm:flex-row gap-4 justify-center items-stretch">
+                                    <FreeCaseReviewDialog>
+                                        <FreeCaseReview className="w-full sm:w-[260px] rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 text-lg font-semibold shadow-xl h-[56px] flex items-center justify-center" />
+                                    </FreeCaseReviewDialog>
                                     <a
                                         href="tel:8336453247"
-                                        className="w-full sm:w-[260px] inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm px-6 py-4 text-lg font-semibold text-white hover:bg-white/20 transition-colors whitespace-nowrap"
+                                        className="w-full sm:w-[260px] inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm px-6 py-4 text-lg font-semibold text-white hover:bg-white/20 transition-colors whitespace-nowrap h-[56px]"
                                     >
                                         <Phone className="w-5 h-5 shrink-0" />
                                         <span>Call {PRIMARY_PHONE}</span>
