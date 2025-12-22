@@ -2,31 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AlertTriangle, Scale, FileWarning, Info, Gavel, Mail } from "lucide-react";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { buildMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-    title: "Legal Disclaimer",
+export const metadata: Metadata = buildMetadata({
+    title: "Legal Disclaimer | Consumer Law Florida",
     description: "Legal disclaimer for Consumer Law Florida. Important information about our website content and consumer protection legal services.",
-    alternates: {
-        canonical: "/legal-disclaimer",
-    },
-    openGraph: {
-        title: "Legal Disclaimer | Consumer Law Florida",
-        description: "Legal disclaimer for Consumer Law Florida. Important information about our website content and consumer protection legal services.",
-        url: `${SITE_URL}/legal-disclaimer`,
-        images: [{
-            url: "/opengraph-default.png",
-            width: 1200,
-            height: 630,
-            alt: "Consumer Law Florida"
-        }],
-    },
-    twitter: {
-        card: "summary_large_image",
-        title: "Legal Disclaimer | Consumer Law Florida",
-        description: "Legal disclaimer for Consumer Law Florida. Important information about our website content and consumer protection legal services.",
-        images: ["/opengraph-default.png"],
-    },
-};
+    pathname: "/legal-disclaimer",
+    type: "website",
+});
 
 export default function LegalDisclaimerPage() {
     return (

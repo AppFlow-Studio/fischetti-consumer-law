@@ -9,12 +9,12 @@ import Testimonials from "@/components/ui/testimonials"
 import WhyFischetti from "@/components/ui/why-fischetti"
 import SimpleContactForm from "@/components/ui/simple-contact-form"
 import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Phone, CheckCircle, ArrowRight } from "lucide-react"
 import FreeCaseReviewDialog from "@/components/free-case-review-dialog"
 import FreeCaseReview from "@/components/free-case-review-button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import SeoInsightBlock from "@/components/sections/SeoInsightBlock"
+import { buildMetadata } from "@/lib/seo/metadata"
 
 // City-specific copy blocks
 const cityCopy: Record<string, {
@@ -182,7 +182,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { city } = await params
-    const firm = firmsBySlug.get(city as any)
+    const firm = firmsBySlug.get(city as keyof typeof firmsBySlug)
 
     if (!firm) {
         return {
@@ -193,35 +193,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const title = `${firm.seoCity} Consumer Lawyer`
     const description = `${firm.seoCity} consumer lawyer for credit report errors, debt collection harassment, and robocalls. No fee unless we win. Call (833) 645-3247.`
 
-    return {
+    return buildMetadata({
         title,
         description,
-        alternates: {
-            canonical: `/locations/${firm.slug}`,
-        },
-        openGraph: {
-            title,
-            description,
-            url: `${SITE_URL}/locations/${firm.slug}`,
-            images: [{
-                url: "/opengraph-default.png",
-                width: 1200,
-                height: 630,
-                alt: "Consumer Law Florida"
-            }],
-        },
-        twitter: {
-            card: "summary_large_image",
-            title,
-            description,
-            images: ["/opengraph-default.png"],
-        },
-    }
+        pathname: `/locations/${firm.slug}`,
+        type: "website",
+    })
 }
 
 export default async function CityPage({ params }: Props) {
     const { city } = await params
-    const firm = firmsBySlug.get(city as any)
+    const firm = firmsBySlug.get(city as keyof typeof firmsBySlug)
 
     if (!firm) {
         notFound()
@@ -378,15 +360,13 @@ export default async function CityPage({ params }: Props) {
                                     </div>
 
                                     {/* CTA Buttons */}
-                                    <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-start">
-                                        <div className="w-full sm:w-[260px]">
-                                            <FreeCaseReviewDialog>
-                                                <FreeCaseReview className="w-full rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 text-lg font-semibold shadow-xl" />
-                                            </FreeCaseReviewDialog>
-                                        </div>
+                                    <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-start items-stretch">
+                                        <FreeCaseReviewDialog>
+                                            <FreeCaseReview className="w-full sm:w-[260px] rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 text-lg font-semibold shadow-xl h-[56px] flex items-center justify-center" />
+                                        </FreeCaseReviewDialog>
                                         <a
                                             href="tel:8336453247"
-                                            className="w-full sm:w-[260px] inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm px-6 py-4 text-lg font-semibold text-white hover:bg-white/20 transition-colors whitespace-nowrap"
+                                            className="w-full sm:w-[260px] inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm px-6 py-4 text-lg font-semibold text-white hover:bg-white/20 transition-colors whitespace-nowrap h-[56px]"
                                         >
                                             <Phone className="w-5 h-5 shrink-0" />
                                             <span>Call {PRIMARY_PHONE}</span>

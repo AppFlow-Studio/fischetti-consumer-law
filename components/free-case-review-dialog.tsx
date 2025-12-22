@@ -30,20 +30,70 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
 
     const onSubmit = async (values: ContactFormData) => {
         setSubmitting(true)
+        
+        // Track form attempt
+        if (typeof window !== 'undefined') {
+            window.dataLayer = window.dataLayer || []
+            window.dataLayer.push({
+                event: "lead_form_attempt",
+                form_name: "free_case_review_dialog",
+                page_path: window.location.pathname,
+                method: "web_form"
+            })
+        }
+        
         try {
-            console.log("Free Case Review:", values)
+            // Submit to API
+            const response = await fetch("/api/contact", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(values),
+            })
+
+            // Handle geo-blocking
+            if (response.status === 403) {
+                const data = await response.json()
+                if (data.blocked) {
+                    window.location.href = data.redirect || "/unavailable"
+                    return
+                }
+            }
+
+            if (!response.ok) {
+                throw new Error("Form submission failed")
+            }
+
+            const result = await response.json()
             
             // Track successful submit with enhanced conversions
-            pushEnhancedConversion("free_case_review_dialog", {
-                email: values.email,
-                phone: values.phone,
-                firstName: values.firstName,
-                lastName: values.lastName,
-                zip: values.zip
-            })
-            
+            if (result.enhancedConversionData && typeof window !== 'undefined') {
+                window.dataLayer = window.dataLayer || []
+                window.dataLayer.push({
+                    event: "lead_form_submit",
+                    form_name: "free_case_review_dialog",
+                    page_path: window.location.pathname,
+                    method: "web_form",
+                    user_data: result.enhancedConversionData
+                })
+            } else {
+                // Fallback to client-side push
+                pushEnhancedConversion("free_case_review_dialog", {
+                    email: values.email,
+                    phone: values.phone,
+                    firstName: values.firstName,
+                    lastName: values.lastName,
+                    zip: values.zip
+                })
+            }
+
+            console.log("Free Case Review submitted successfully:", values)
             setTimeout(() => setOpen(false), 300)
             form.reset()
+        } catch (error) {
+            console.error("Form submission error:", error)
+            // You could add error state handling here
         } finally {
             setSubmitting(false)
         }
@@ -63,13 +113,13 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                 </DialogHeader>
 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 sm:space-y-4 px-1">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2.5 sm:space-y-4 px-1">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                             <FormField control={form.control} name="firstName" render={({ field }) => (
                                 <FormItem className="w-full">
                                     <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">First name *</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Jane" className="w-full text-sm" {...field} />
+                                        <Input placeholder="Jane" className="w-full text-sm py-2 sm:py-2.5" {...field} />
                                     </FormControl>
                                     <FormMessage className="text-xs" />
                                 </FormItem>
@@ -78,7 +128,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                                 <FormItem className="w-full">
                                     <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">Last name *</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Doe" className="w-full text-sm" {...field} />
+                                        <Input placeholder="Doe" className="w-full text-sm py-2 sm:py-2.5" {...field} />
                                     </FormControl>
                                     <FormMessage className="text-xs" />
                                 </FormItem>
@@ -90,19 +140,19 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                             <FormItem className="w-full">
                                 <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">Email *</FormLabel>
                                 <FormControl>
-                                    <Input type="email" placeholder="jane@example.com" className="w-full text-sm" {...field} />
+                                    <Input type="email" placeholder="jane@example.com" className="w-full text-sm py-2 sm:py-2.5" {...field} />
                                 </FormControl>
                                 <FormMessage className="text-xs" />
                             </FormItem>
                         )} />
 
                         {/* Phone and ZIP Code - Same row on desktop, stacked on mobile */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                             <FormField control={form.control} name="phone" render={({ field }) => (
                                 <FormItem className="w-full">
                                     <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">Phone *</FormLabel>
                                     <FormControl>
-                                        <Input type="tel" placeholder="(833) 645-3247" className="w-full text-sm" {...field} />
+                                        <Input type="tel" placeholder="(833) 645-3247" className="w-full text-sm py-2 sm:py-2.5" {...field} />
                                     </FormControl>
                                     <FormMessage className="text-xs" />
                                 </FormItem>
@@ -115,7 +165,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                                             type="text"
                                             inputMode="numeric"
                                             placeholder="12345 or 12345-6789"
-                                            className="w-full text-sm"
+                                            className="w-full text-sm py-2 sm:py-2.5"
                                             maxLength={10}
                                             {...field}
                                         />
@@ -130,7 +180,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                                 <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">Case type *</FormLabel>
                                 <FormControl>
                                     <Select onValueChange={field.onChange} value={field.value}>
-                                        <SelectTrigger className="w-full text-sm"><SelectValue placeholder="Select case type" /></SelectTrigger>
+                                        <SelectTrigger className="w-full text-sm py-2 sm:py-2.5"><SelectValue placeholder="Select case type" /></SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
                                                 {caseTypes.map(ct => (<SelectItem key={ct} value={ct} className="text-sm">{ct}</SelectItem>))}
@@ -147,7 +197,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                                 <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">Urgency *</FormLabel>
                                 <FormControl>
                                     <Select onValueChange={field.onChange} value={field.value}>
-                                        <SelectTrigger className="w-full text-sm"><SelectValue placeholder="Select urgency" /></SelectTrigger>
+                                        <SelectTrigger className="w-full text-sm py-2 sm:py-2.5"><SelectValue placeholder="Select urgency" /></SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
                                                 {urgencyLevels.map(u => (<SelectItem key={u} value={u} className="text-sm">{u}</SelectItem>))}
@@ -165,7 +215,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                                 <FormControl>
                                     <Textarea
                                         placeholder="Describe what happened in a few sentences…"
-                                        className="min-h-[90px] sm:min-h-[110px] w-full resize-y text-sm"
+                                        className="min-h-[80px] sm:min-h-[110px] w-full resize-y text-sm"
                                         {...field}
                                     />
                                 </FormControl>

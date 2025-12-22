@@ -224,7 +224,7 @@ export default function ContactFormSection() {
                                     Tell us about your situation. Our experienced consumer law attorneys will review your case at no cost. <strong className="text-white">No fees unless we win.</strong>
                                 </p>
 
-                                <SimpleContactForm darkMode={true} />
+                                <SimpleContactForm />
 
                                 <div className="mt-6 pt-6 border-t border-white/20">
                                     <div className="flex items-center gap-3 text-sm text-gray-600">

@@ -114,78 +114,88 @@ export default function WhyFischetti() {
                     </p>
                 </div>
 
-                {/* Mobile Carousel - Only visible on mobile */}
-                <div className="block md:hidden mb-8">
-                    {hasMounted && (
-                        <div className="w-full">
-                            <Carousel
-                                setApi={setApi}
-                                className="w-full"
-                                opts={{
-                                    align: "center",
-                                    containScroll: "trimSnaps",
-                                }}
-                            >
-                                <CarouselContent>
-                                    {reasons.map((reason, index) => (
-                                        <CarouselItem key={reason.id} className="basis-full py-2">
-                                            <ReasonCard reason={reason} index={index} />
-                                        </CarouselItem>
-                                    ))}
-                                </CarouselContent>
-                                <CarouselPrevious className="bg-white/90 backdrop-blur-sm border border-blue-600/20 hover:bg-white hover:shadow-xl transition-all duration-300 absolute sm:left-0 -left-1 top-1/2 -translate-y-1/2" />
-                                <CarouselNext className="bg-white/90 backdrop-blur-sm border border-blue-600/20 hover:bg-white hover:shadow-xl transition-all duration-300 absolute sm:right-0 -right-1 top-1/2 -translate-y-1/2" />
-                            </Carousel>
+                {/* Single responsive container - carousel on mobile, grid on desktop */}
+                {hasMounted ? (
+                    <>
+                        {/* Mobile Carousel */}
+                        <div className="block md:hidden mb-8">
+                            <div className="w-full">
+                                <Carousel
+                                    setApi={setApi}
+                                    className="w-full"
+                                    opts={{
+                                        align: "center",
+                                        containScroll: "trimSnaps",
+                                    }}
+                                >
+                                    <CarouselContent>
+                                        {reasons.map((reason, index) => (
+                                            <CarouselItem key={reason.id} className="basis-full py-2">
+                                                <ReasonCard reason={reason} index={index} />
+                                            </CarouselItem>
+                                        ))}
+                                    </CarouselContent>
+                                    <CarouselPrevious className="bg-white/90 backdrop-blur-sm border border-blue-600/20 hover:bg-white hover:shadow-xl transition-all duration-300 absolute sm:left-0 -left-1 top-1/2 -translate-y-1/2" />
+                                    <CarouselNext className="bg-white/90 backdrop-blur-sm border border-blue-600/20 hover:bg-white hover:shadow-xl transition-all duration-300 absolute sm:right-0 -right-1 top-1/2 -translate-y-1/2" />
+                                </Carousel>
 
-                            {/* Dynamic Progress Indicators */}
-                            <div className="flex justify-center mt-6 space-x-2">
-                                {reasons.map((_, index) => (
-                                    <motion.button
-                                        key={index}
-                                        onClick={() => api?.scrollTo(index)}
-                                        className={`w-2 h-2 rounded-full transition-all duration-300 ${index === current
-                                            ? "bg-blue-600 w-6"
-                                            : "bg-blue-600/30 hover:bg-blue-600/50"
-                                            }`}
-                                        whileHover={{ scale: 1.2 }}
-                                        whileTap={{ scale: 0.9 }}
-                                    />
-                                ))}
+                                {/* Dynamic Progress Indicators */}
+                                <div className="flex justify-center mt-6 space-x-2">
+                                    {reasons.map((_, index) => (
+                                        <motion.button
+                                            key={index}
+                                            onClick={() => api?.scrollTo(index)}
+                                            className={`w-2 h-2 rounded-full transition-all duration-300 ${index === current
+                                                ? "bg-blue-600 w-6"
+                                                : "bg-blue-600/30 hover:bg-blue-600/50"
+                                                }`}
+                                            whileHover={{ scale: 1.2 }}
+                                            whileTap={{ scale: 0.9 }}
+                                        />
+                                    ))}
+                                </div>
                             </div>
                         </div>
-                    )}
-                </div>
 
-                {/* Desktop Grid - Only visible on desktop */}
-                <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.2 }}
-                    variants={{
-                        hidden: { opacity: 0 },
-                        visible: {
-                            opacity: 1,
-                            transition: {
-                                staggerChildren: 0.1,
-                            },
-                        },
-                    }}
-                    className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6"
-                >
-                    {reasons.map((reason, index) => (
+                        {/* Desktop Grid */}
                         <motion.div
-                            key={reason.id}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, amount: 0.2 }}
                             variants={{
-                                hidden: { opacity: 0, y: 12 },
-                                visible: { opacity: 1, y: 0 },
+                                hidden: { opacity: 0 },
+                                visible: {
+                                    opacity: 1,
+                                    transition: {
+                                        staggerChildren: 0.1,
+                                    },
+                                },
                             }}
-                            transition={{ duration: 0.45, delay: index * 0.05, ease: "easeOut" }}
-                            className="hover:-translate-y-4 transition-all duration-300"
+                            className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6"
                         >
-                            <ReasonCard reason={reason} index={index} />
+                            {reasons.map((reason, index) => (
+                                <motion.div
+                                    key={reason.id}
+                                    variants={{
+                                        hidden: { opacity: 0, y: 12 },
+                                        visible: { opacity: 1, y: 0 },
+                                    }}
+                                    transition={{ duration: 0.45, delay: index * 0.05, ease: "easeOut" }}
+                                    className="hover:-translate-y-4 transition-all duration-300"
+                                >
+                                    <ReasonCard reason={reason} index={index} />
+                                </motion.div>
+                            ))}
                         </motion.div>
-                    ))}
-                </motion.div>
+                    </>
+                ) : (
+                    // SSR fallback - single grid that works on all screen sizes
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {reasons.map((reason, index) => (
+                            <ReasonCard key={reason.id} reason={reason} index={index} />
+                        ))}
+                    </div>
+                )}
             </div>
         </section>
     )
