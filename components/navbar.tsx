@@ -66,12 +66,14 @@ export default function Navbar({ className }: NavbarProps) {
     const isLocationsIndexPage = pathname === "/locations"
     const isConsumerLawPage = pathname?.startsWith("/consumer-law/")
     const isLocationsPage = pathname?.startsWith("/locations/")
+    console.log('isLocationsPage', isLocationsPage)
+   
     const router = useRouter()
     const [openMenu, setOpenMenu] = useState<null | "laws" | "about" | "locations" | "testimonials">(null)
     const hoverTimer = useRef<NodeJS.Timeout | null>(null)
 
     useEffect(() => {
-        if (!isHome && !isConsumerLawPage && !isLocationsIndexPage) {
+        if (!isHome && !isConsumerLawPage && !isLocationsIndexPage && !isLocationsPage) {
             // Other pages (not home, not consumer law, not locations) use dark logo and black text by default
             setScrolled(true)
             return
