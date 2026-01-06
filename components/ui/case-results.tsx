@@ -202,7 +202,7 @@ export default function CaseResults() {
                                         }
                                     }}
                                 >
-                                    Credit reporting agency mixed up our client's file with another person's, causing wrongful denials for loans, apartments, and employment opportunities. The client suffered severe financial and emotional distress due to the bureau's negligence in maintaining accurate records.
+                                    Credit reporting agency mixed up our client&apos;s file with another person&apos;s, causing wrongful denials for loans, apartments, and employment opportunities. The client suffered severe financial and emotional distress due to the bureau&apos;s negligence in maintaining accurate records.
                                 </motion.p>
                             </motion.div>
                         </motion.div>
@@ -342,7 +342,7 @@ export default function CaseResults() {
                         Ready to Fight for Your Rights?
                     </h3>
                     <p className="text-gray-200 mb-8 max-w-2xl mx-auto">
-                        Don't let unfair business practices go unpunished. Get your free case evaluation today.
+                        Don&apos;t let unfair business practices go unpunished. Get your free case evaluation today.
                     </p>
                     <motion.div
                         className="flex flex-col sm:flex-row gap-4 justify-center"

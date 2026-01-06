@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { contactSchema, defaultContactValues, caseTypes, urgencyLevels, type ContactFormData } from "@/components/forms/contact-schema"
-import { pushEnhancedConversion } from "@/lib/enhanced-conversions"
+import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
 
 type SimpleContactFormProps = {
     onSubmitted?: () => void
@@ -19,7 +19,10 @@ type SimpleContactFormProps = {
 export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }: SimpleContactFormProps) {
     const [submitting, setSubmitting] = useState(false)
     const [submitSuccess, setSubmitSuccess] = useState(false)
-    const form = useForm<ContactFormData>({ resolver: zodResolver(contactSchema), defaultValues: defaultContactValues })
+    const form = useForm<ContactFormData>({ 
+        resolver: zodResolver(contactSchema), 
+        defaultValues: defaultContactValues 
+    })
 
     async function onSubmit(values: ContactFormData) {
         setSubmitting(true)
@@ -60,24 +63,43 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
 
             const result = await response.json()
             
-            // Track successful submit with enhanced conversions
-            if (result.enhancedConversionData && typeof window !== 'undefined') {
+            // Format user data for enhanced conversions
+            const formattedUserData = formatUserDataForGTM({
+                email: values.email,
+                phone: values.phone,
+                firstName: values.firstName,
+                lastName: values.lastName,
+                zip: values.zip
+            })
+            
+            // Track successful submit with FLAT user keys for GTM DLV compatibility
+            if (typeof window !== 'undefined') {
                 window.dataLayer = window.dataLayer || []
+                
+                // Push lead_form_submit with flat keys and nested user_data
                 window.dataLayer.push({
                     event: "lead_form_submit",
                     form_name: "free_case_review",
                     page_path: window.location.pathname,
                     method: "web_form",
-                    user_data: result.enhancedConversionData
+                    // Flat keys for GTM DLV mapping
+                    user_email: formattedUserData.email,
+                    user_phone: formattedUserData.phone_number,
+                    user_first_name: formattedUserData.address.first_name,
+                    user_last_name: formattedUserData.address.last_name,
+                    user_zip: formattedUserData.address.postal_code,
+                    // Nested user_data for Google Ads Enhanced Conversions
+                    user_data: result.enhancedConversionData || formattedUserData
                 })
-            } else {
-                // Fallback to client-side push
-                pushEnhancedConversion("free_case_review", {
-                    email: values.email,
-                    phone: values.phone,
-                    firstName: values.firstName,
-                    lastName: values.lastName,
-                    zip: values.zip
+                
+                // Push qualify_lead event (GA4-safe, no PII)
+                window.dataLayer.push({
+                    event: "qualify_lead",
+                    form_name: "free_case_review",
+                    page_path: window.location.pathname,
+                    method: "web_form",
+                    case_type: values.caseType,
+                    urgency: values.urgency
                 })
             }
 
@@ -122,7 +144,7 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
         return (
             <div className="w-full p-6 bg-green-50 border border-green-200 rounded-xl">
                 <p className="text-green-800 font-semibold text-center">
-                    Thank you! Your form has been submitted successfully. We'll get back to you within 24 hours.
+                    Thank you! Your form has been submitted successfully. We&apos;ll get back to you within 24 hours.
                 </p>
             </div>
         )

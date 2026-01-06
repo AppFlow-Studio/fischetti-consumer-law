@@ -27,7 +27,17 @@ import {
 import { motion, AnimatePresence } from "framer-motion"
 import type { CarouselApi } from "@/components/ui/carousel";
 import SocialMediaSection from "./ui/social-media-section";
-const stories = [
+
+type StoryData = {
+    id: number
+    author: string
+    avatar: string
+    fallback: string
+    video: string
+    title: string
+}
+
+const stories: StoryData[] = [
     {
         id: 1,
         author: "Micheal Fischetti",
@@ -89,13 +99,13 @@ const socialLinks = [
 
 const StoriesScroller = () => {
     const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
-    const [selectedStory, setSelectedStory] = useState<any>(null);
+    const [selectedStory, setSelectedStory] = useState<StoryData | null>(null);
     const [api, setApi] = useState<CarouselApi>();
     const [canScrollPrev, setCanScrollPrev] = useState(false);
     const [canScrollNext, setCanScrollNext] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const handleStoryClick = (story: any) => {
+    const handleStoryClick = (story: StoryData) => {
         setSelectedStory(story);
         setSelectedVideo(story.video);
     };

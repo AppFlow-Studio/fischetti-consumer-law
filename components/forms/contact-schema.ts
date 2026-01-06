@@ -14,7 +14,6 @@ export const contactSchema = z.object({
     caseType: z.string().min(1, "Please select a case type"),
     description: z.string().min(10, "Please provide more details about your case"),
     urgency: z.string().min(1, "Please select urgency level"),
-    agreeToTerms: z.boolean().refine((v) => v === true, "You must agree to the terms"),
 })
 
 export type ContactFormData = z.infer<typeof contactSchema>
@@ -28,7 +27,6 @@ export const defaultContactValues: ContactFormData = {
     caseType: "",
     description: "",
     urgency: "",
-    agreeToTerms: false,
 }
 
 export const caseTypes = [

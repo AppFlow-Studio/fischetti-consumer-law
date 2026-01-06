@@ -49,7 +49,7 @@ export default function ContactFormSection() {
                             Thank You for Reaching Out!
                         </h2>
                         <p className="text-lg text-gray-600 mb-8">
-                            We've received your case details and will contact you within 24 hours.
+                            We&apos;ve received your case details and will contact you within 24 hours.
                             Our team is reviewing your information to provide the best possible assistance.
                         </p>
                         <Button
@@ -82,8 +82,8 @@ export default function ContactFormSection() {
                                 Get Your <span className="text-blue-600">Free Case Review</span>
                             </h2>
                             <p className="text-xl text-gray-600 leading-relaxed">
-                                Don't let unfair business practices go unpunished. Our experienced team
-                                is ready to fight for your rights and recover what you're owed.
+                                Don&apos;t let unfair business practices go unpunished. Our experienced team
+                                is ready to fight for your rights and recover what you&apos;re owed.
                             </p>
                         </div>
 

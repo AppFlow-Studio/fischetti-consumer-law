@@ -28,7 +28,7 @@ const defaultMapOptions = {
 
 // Assume icons are defined here or imported. IMPORTANT: Accessing window.google requires the library to be loaded.
 
-export default function officeLocationsMap({ startingClinic }: {
+export default function OfficeLocationsMap({ startingClinic }: {
     startingClinic?: { id: number, name: string, lat: number, lng: number, address: string },
 }) {
     // Load Google Maps API

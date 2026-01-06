@@ -459,10 +459,10 @@ export default function Navbar({ className }: NavbarProps) {
                         id="mobile-sidebar"
                         className="fixed top-0 left-0 h-[100dvh] w-[75%] bg-white rounded-r-2xl shadow-2xl z-[130] xl:hidden overflow-y-auto overscroll-contain"
                         style={{
-                            WebkitOverflowScrolling: 'touch' as any,
+                            WebkitOverflowScrolling: 'touch',
                             maxHeight: '100dvh',
                             paddingBottom: 'env(safe-area-inset-bottom, 0px)'
-                        }}
+                        } as React.CSSProperties}
                         variants={sidebarVariants}
                         initial="hidden"
                         animate="visible"
