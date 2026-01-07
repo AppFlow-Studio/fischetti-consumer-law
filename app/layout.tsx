@@ -172,7 +172,7 @@ export default function RootLayout({
         className={`${openSans.variable} ${playfairDisplay.variable} antialiased w-full h-full overflow-x-hidden  flex flex-col`}
         suppressHydrationWarning
       >
-        {/* Google Tag Manager */}
+        {/* Google Tag Manager - single source of truth for all tracking */}
         <Script
           id="gtm"
           strategy="afterInteractive"
@@ -184,23 +184,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','${GTM_ID}');`,
           }}
         />
-        {/* Google tag (gtag.js) - GA4 */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-2PL17PC8C5"
-          strategy="afterInteractive"
-        />
-        <Script
-          id="ga4"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-2PL17PC8C5');
-            `,
-          }}
-        />
+        {/* NOTE: Direct GA4 gtag.js removed - GA4 should be configured in GTM to avoid duplicate pageviews */}
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe

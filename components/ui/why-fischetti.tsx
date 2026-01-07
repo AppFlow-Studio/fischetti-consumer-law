@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"
-import { Clock, Globe, Phone, MessageSquare, Award, ShieldCheck } from "lucide-react"
+import { Clock, Globe, Phone, MessageSquare, Award, ShieldCheck, type LucideIcon } from "lucide-react"
 import { motion } from "framer-motion"
 import {
     Carousel,
@@ -17,7 +17,7 @@ type Reason = {
     id: string
     title: string
     description: string
-    icon: any
+    icon: LucideIcon
 }
 
 const reasons: Reason[] = [
@@ -110,7 +110,7 @@ export default function WhyFischetti() {
                         Why <span className="text-blue-600 italic">Consumer Law Florida</span>
                     </h2>
                     <p className="mt-3 text-gray-600 max-w-3xl mx-auto">
-                        You'll get the best possible representation with Fischetti Law Group.
+                        You&apos;ll get the best possible representation with Fischetti Law Group.
                     </p>
                 </div>
 
