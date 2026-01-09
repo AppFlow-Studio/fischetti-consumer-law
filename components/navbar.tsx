@@ -66,7 +66,7 @@ export default function Navbar({ className }: NavbarProps) {
     const isLocationsIndexPage = pathname === "/locations"
     const isConsumerLawPage = pathname?.startsWith("/consumer-law/")
     const isLocationsPage = pathname?.startsWith("/locations/")
-    console.log('isLocationsPage', isLocationsPage)
+    // console.log('isLocationsPage', isLocationsPage)
    
     const router = useRouter()
     const [openMenu, setOpenMenu] = useState<null | "laws" | "about" | "locations" | "testimonials">(null)

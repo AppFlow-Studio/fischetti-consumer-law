@@ -1,7 +1,6 @@
-"use client"
-
 import * as z from "zod"
 
+// Contact form schema - agreeToTerms is always true (implicit consent via form submission text)
 export const contactSchema = z.object({
     firstName: z.string().min(2, "First name must be at least 2 characters"),
     lastName: z.string().min(2, "Last name must be at least 2 characters"),
@@ -14,7 +13,8 @@ export const contactSchema = z.object({
     caseType: z.string().min(1, "Please select a case type"),
     description: z.string().min(10, "Please provide more details about your case"),
     urgency: z.string().min(1, "Please select urgency level"),
-    agreeToTerms: z.boolean().refine((v) => v === true, "You must agree to the terms"),
+    // Always true - consent is given by submitting the form (stated in form text)
+    agreeToTerms: z.boolean(),
 })
 
 export type ContactFormData = z.infer<typeof contactSchema>
@@ -28,7 +28,7 @@ export const defaultContactValues: ContactFormData = {
     caseType: "",
     description: "",
     urgency: "",
-    agreeToTerms: false,
+    agreeToTerms: true, // Implicit consent via form submission text
 }
 
 export const caseTypes = [
@@ -48,5 +48,3 @@ export const urgencyLevels = [
     "Moderate - Within a month",
     "Not urgent - Just exploring options",
 ]
-
-
