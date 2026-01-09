@@ -12,9 +12,9 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { contactSchema, defaultContactValues, caseTypes, urgencyLevels, type ContactFormData } from "@/components/forms/contact-schema"
-import { pushEnhancedConversion } from "@/lib/enhanced-conversions"
 import { submitContactForm } from "@/lib/actions/contact"
 import { Loader2, AlertCircle } from "lucide-react"
+import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
 
 type FreeCaseReviewDialogProps = {
     children: React.ReactNode
@@ -27,7 +27,10 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
     const [isPending, startTransition] = useTransition()
     const { setIsDialogOpen } = useUIState()
     const router = useRouter()
-    const form = useForm<ContactFormData>({ resolver: zodResolver(contactSchema), defaultValues: defaultContactValues })
+    const form = useForm<ContactFormData>({ 
+        resolver: zodResolver(contactSchema), 
+        defaultValues: defaultContactValues 
+    })
 
     useEffect(() => {
         setIsDialogOpen(open)
@@ -61,27 +64,48 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                     setErrorMessage(result.message)
                     return
                 }
+                // const result = await response.json()
+            
+            // Format user data for enhanced conversions
+            const formattedUserData = formatUserDataForGTM({
+                email: values.email,
+                phone: values.phone,
+                firstName: values.firstName,
+                lastName: values.lastName,
+                zip: values.zip
+            })
+            
+            // Track successful submit with FLAT user keys for GTM DLV compatibility
+            // Plus nested user_data for Google Ads Enhanced Conversions
+            if (typeof window !== 'undefined') {
+                window.dataLayer = window.dataLayer || []
                 
-                // Track successful submit with enhanced conversions
-                if (result.enhancedConversionData && typeof window !== 'undefined') {
-                    window.dataLayer = window.dataLayer || []
-                    window.dataLayer.push({
-                        event: "lead_form_submit",
-                        form_name: "free_case_review_dialog",
-                        page_path: window.location.pathname,
-                        method: "web_form",
-                        user_data: result.enhancedConversionData
-                    })
-                } else {
-                    // Fallback to client-side push
-                    pushEnhancedConversion("free_case_review_dialog", {
-                        email: values.email,
-                        phone: values.phone,
-                        firstName: values.firstName,
-                        lastName: values.lastName,
-                        zip: values.zip
-                    })
-                }
+                // Push lead_form_submit with both flat keys and nested user_data
+                window.dataLayer.push({
+                    event: "lead_form_submit",
+                    form_name: "free_case_review_dialog",
+                    page_path: window.location.pathname,
+                    method: "web_form",
+                    // Flat keys for typical GTM DLV mapping
+                    user_email: formattedUserData.email,
+                    user_phone: formattedUserData.phone_number,
+                    user_first_name: formattedUserData.address.first_name,
+                    user_last_name: formattedUserData.address.last_name,
+                    user_zip: formattedUserData.address.postal_code,
+                    // Nested user_data for Google Ads Enhanced Conversions
+                    user_data: result.enhancedConversionData || formattedUserData
+                })
+                
+                // Push qualify_lead event (GA4-safe, no PII)
+                window.dataLayer.push({
+                    event: "qualify_lead",
+                    form_name: "free_case_review_dialog",
+                    page_path: window.location.pathname,
+                    method: "web_form",
+                    case_type: values.caseType,
+                    urgency: values.urgency
+                })
+            }
 
                 setOpen(false)
                 form.reset()
@@ -90,8 +114,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                 router.push(`/thank-you?name=${encodeURIComponent(values.firstName)}`)
             } catch (error) {
                 console.error("Form submission error:", error)
-                setErrorMessage("An unexpected error occurred. Please try again or call us directly.")
-            }
+                setErrorMessage("An unexpected error occurred. Please try again or call us directly.")}
         })
     }
 
@@ -104,7 +127,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                 <DialogHeader className="px-1">
                     <DialogTitle className="text-xl sm:text-2xl font-bold text-gray-900">Free Case Review</DialogTitle>
                     <DialogDescription className="text-sm text-gray-600 mt-1">
-                        Tell us about your consumer law issue. We'll review and reach out within 24 hours. Prefer to talk now? Call <a href="tel:8336453247" className="text-blue-600 underline">(833) 645-3247</a>.
+                        Tell us about your consumer law issue. We&apos;ll review and reach out within 24 hours. Prefer to talk now? Call <a href="tel:8336453247" className="text-blue-600 underline">(833) 645-3247</a>.
                     </DialogDescription>
                 </DialogHeader>
 

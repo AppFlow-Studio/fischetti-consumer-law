@@ -96,7 +96,7 @@ export default function ConsumerLawSection() {
                                     Consumer law safeguards everyday people from unfair, deceptive, or abusive acts by companies and collectors.
                                     These protections come from federal statutes like the FCRA (credit reporting), FDCPA (debt collection), TCPA (robocalls/texts),
                                     EFTA (electronic payments), TILA (lending disclosures), CROA (credit repair), and FCBA (billing errors). If a business or collector
-                                    crossed the line, the law gives you remedies—statutory damages, actual damages, attorneys' fees, and court orders to make it stop.
+                                    crossed the line, the law gives you remedies—statutory damages, actual damages, attorneys&apos; fees, and court orders to make it stop.
                                 </motion.p>
                                 <motion.p
                                     className="text-xl text-gray-700 leading-relaxed"
@@ -109,8 +109,8 @@ export default function ConsumerLawSection() {
                                         },
                                     }}
                                 >
-                                    Why Fischetti Law Group? We are trial-tested, results-driven, and client-first. You'll get clear communication,
-                                    a strategy tailored to your goals, and a firm that doesn't get paid unless you win. We handle the fight so you can get back to your life.
+                                    Why Fischetti Law Group? We are trial-tested, results-driven, and client-first. You&apos;ll get clear communication,
+                                    a strategy tailored to your goals, and a firm that doesn&apos;t get paid unless you win. We handle the fight so you can get back to your life.
                                 </motion.p>
                             </motion.div>
                             {/* <div className="rounded-xl bg-gray-100 p-5">

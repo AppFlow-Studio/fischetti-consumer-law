@@ -50,7 +50,6 @@ export async function POST(req: NextRequest) {
                 caseType: formDataObj.get("caseType") as string,
                 description: formDataObj.get("description") as string,
                 urgency: formDataObj.get("urgency") as string,
-                agreeToTerms: formDataObj.get("agreeToTerms") === "true" || formDataObj.get("agreeToTerms") === true,
             }
         }
 

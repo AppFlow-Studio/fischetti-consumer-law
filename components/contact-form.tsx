@@ -102,8 +102,52 @@ export function ContactForm({ backgroundcolor = 'white', header = 'Book an Appoi
             return
         }
 
+        // Setup scroll detection function
+        const setupScrollDetection = (formElement: HTMLFormElement) => {
+            const handleScroll = (event: Event) => {
+                const target = event.target as HTMLElement
+                const { scrollTop, scrollHeight, clientHeight } = target
+                const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5
+                const hasScrollableContent = scrollHeight > clientHeight
+
+                setShowScrollIndicator(hasScrollableContent && !isAtBottom)
+            }
+
+            // Try multiple potential scroll targets
+            const targets = [
+                formElement,
+                formElement.parentElement,
+                formElement.closest('[data-radix-scroll-area-viewport]'),
+                formElement.closest('.overflow-y-auto'),
+                document.querySelector('[data-radix-scroll-area-viewport]'),
+                document.querySelector('.overflow-y-auto')
+            ].filter(Boolean) as HTMLElement[]
+
+            targets.forEach(target => {
+                if (target) {
+                    target.addEventListener('scroll', handleScroll)
+                }
+            })
+
+            // Check initial state
+            setTimeout(() => {
+                const { scrollTop, scrollHeight, clientHeight } = formElement
+                const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5
+                const hasScrollableContent = scrollHeight > clientHeight
+                setShowScrollIndicator(hasScrollableContent && !isAtBottom)
+            }, 100)
+
+            return () => {
+                targets.forEach(target => {
+                    if (target) {
+                        target.removeEventListener('scroll', handleScroll)
+                    }
+                })
+            }
+        }
+
         // Wait a bit for the form to render
-        setTimeout(() => {
+        const timeoutId = setTimeout(() => {
             const form = formRef.current
 
             if (!form) {
@@ -112,49 +156,9 @@ export function ContactForm({ backgroundcolor = 'white', header = 'Book an Appoi
 
             setupScrollDetection(form)
         }, 200)
+
+        return () => clearTimeout(timeoutId)
     }, [openContactForm])
-
-    const setupScrollDetection = (form) => {
-        const handleScroll = (event) => {
-            const { scrollTop, scrollHeight, clientHeight } = event.target
-            const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5
-            const hasScrollableContent = scrollHeight > clientHeight
-
-            setShowScrollIndicator(hasScrollableContent && !isAtBottom)
-        }
-
-        // Try multiple potential scroll targets
-        const targets = [
-            form,
-            form.parentElement,
-            form.closest('[data-radix-scroll-area-viewport]'),
-            form.closest('.overflow-y-auto'),
-            document.querySelector('[data-radix-scroll-area-viewport]'),
-            document.querySelector('.overflow-y-auto')
-        ].filter(Boolean)
-
-        targets.forEach(target => {
-            if (target) {
-                target.addEventListener('scroll', handleScroll)
-            }
-        })
-
-        // Check initial state
-        setTimeout(() => {
-            const { scrollTop, scrollHeight, clientHeight } = form
-            const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5
-            const hasScrollableContent = scrollHeight > clientHeight
-            setShowScrollIndicator(hasScrollableContent && !isAtBottom)
-        }, 100)
-
-        return () => {
-            targets.forEach(target => {
-                if (target) {
-                    target.removeEventListener('scroll', handleScroll)
-                }
-            })
-        }
-    }
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setDisabled(true)
@@ -858,9 +862,9 @@ export function ContactForm({ backgroundcolor = 'white', header = 'Book an Appoi
                                 }}
                                 className='text-white sm:text-md text-sm text-center'
                             >
-                                You're one step closer to pain relief and improved mobility!<br />
+                                You&apos;re one step closer to pain relief and improved mobility!<br />
                                 Please check your email for details. Our team will contact you shortly.<br />
-                                Thank you for choosing Mountain Spine & Orthopedic Center!
+                                Thank you for choosing Mountain Spine &amp; Orthopedic Center!
                             </p>
                         </div>
                         <div

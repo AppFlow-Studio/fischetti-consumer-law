@@ -56,7 +56,7 @@ export default function Footer() {
                                 <Image src="/fischettiwhite-logo.png" alt="Fischetti Law Group Logo" fill className="rounded-xl object-fill" />
                             </div>
                             <p className="text-white/90 text-sm leading-relaxed">
-                                Fighting for consumer rights across Florida. We recover what you're owed
+                                Fighting for consumer rights across Florida. We recover what you&apos;re owed
                                 through aggressive advocacy and proven legal strategies.
                             </p>
                         </div>
