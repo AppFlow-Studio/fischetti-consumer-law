@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     default: "Florida Consumer Rights Lawyers | Consumer Law Florida",
     template: "%s | Consumer Law Florida"
   },
-  description: `Florida consumer lawyer for credit report errors, debt collection harassment, robocalls, and privacy violations. No fee unless we win. Serving all of Florida. Call (833) 645-3247.`,
+  description: `Florida consumer lawyer for credit report errors, debt collection harassment, robocalls, and privacy violations. No fee unless we win. Serving all of Florida. Call ${PRIMARY_PHONE}.`,
   keywords: [
     "Florida consumer lawyer",
     "consumer protection attorney Florida",
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: SITE_NAME,
     title: "Florida Consumer Rights Lawyers | Consumer Law Florida",
-    description: `Florida consumer lawyer for credit report errors, debt collection harassment, robocalls, and privacy violations. No fee unless we win. Serving all of Florida. Call (833) 645-3247.`,
+    description: `Florida consumer lawyer for credit report errors, debt collection harassment, robocalls, and privacy violations. No fee unless we win. Serving all of Florida. Call ${PRIMARY_PHONE}.`,
     images: [
       {
         url: "/opengraph-default.png",
@@ -81,7 +81,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Florida Consumer Rights Lawyers | Consumer Law Florida",
-    description: `Florida consumer lawyer for credit report errors, debt collection harassment, robocalls, and privacy violations. No fee unless we win. Serving all of Florida. Call (833) 645-3247.`,
+    description: `Florida consumer lawyer for credit report errors, debt collection harassment, robocalls, and privacy violations. No fee unless we win. Serving all of Florida. Call ${PRIMARY_PHONE}.`,
     images: ["/opengraph-default.png"],
   },
   alternates: {

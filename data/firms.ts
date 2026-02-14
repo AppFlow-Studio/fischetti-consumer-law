@@ -1,4 +1,4 @@
-import { SERVE_STATEMENT } from "@/lib/site"
+import { SERVE_STATEMENT, PRIMARY_PHONE } from "@/lib/site"
 
 export type Firm = {
     slug: "orlando" | "port-st-lucie" | "boynton-beach"
@@ -29,7 +29,7 @@ export const firms: Firm[] = [
         city: "Orlando",
         state: "FL",
         zip: "32801",
-        phone: "(833) 645-3247",
+        phone: PRIMARY_PHONE,
         hoursText: "Available 24/7",
         servingText: SERVE_STATEMENT,
         serviceAreaSummary: SERVE_STATEMENT,
@@ -47,7 +47,7 @@ export const firms: Firm[] = [
         city: "Fort Pierce",
         state: "FL",
         zip: "34950",
-        phone: "(833) 645-3247",
+        phone: PRIMARY_PHONE,
         hoursText: "Available 24/7",
         servingText: SERVE_STATEMENT,
         serviceAreaSummary: SERVE_STATEMENT,
@@ -65,7 +65,7 @@ export const firms: Firm[] = [
         city: "Boynton Beach",
         state: "FL",
         zip: "33437",
-        phone: "(833) 645-3247",
+        phone: PRIMARY_PHONE,
         hoursText: "Available 24/7",
         servingText: SERVE_STATEMENT,
         serviceAreaSummary: SERVE_STATEMENT,

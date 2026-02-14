@@ -26,7 +26,7 @@ When a form is submitted, the following data is pushed to `window.dataLayer`:
   method: "web_form",
   user_data: {
     email: "user@example.com",           // Lowercased, trimmed
-    phone_number: "+18336453247",        // E.164 format or empty string
+    phone_number: "+15612647211",        // E.164 format or empty string
     address: {
       first_name: "Jane",                 // Trimmed or empty string
       last_name: "Doe",                   // Trimmed or empty string
@@ -123,13 +123,13 @@ Create the following Data Layer Variables in GTM:
    - First Name: Jane
    - Last Name: Doe
    - Email: test@example.com
-   - Phone: (833) 645-3247
+   - Phone: (561) 264-7211
    - ZIP: 12345
 5. In GTM Preview, check:
    - The `lead_form_submit` event fired
    - All DLVs populate with correct values:
      - `user_data.email` = "test@example.com"
-     - `user_data.phone_number` = "+18336453247"
+     - `user_data.phone_number` = "+15612647211"
      - `user_data.address.first_name` = "Jane"
      - `user_data.address.last_name` = "Doe"
      - `user_data.address.postal_code` = "12345"

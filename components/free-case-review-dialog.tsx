@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { contactSchema, defaultContactValues, caseTypes, urgencyLevels, type ContactFormData } from "@/components/forms/contact-schema"
 import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
+import { PRIMARY_PHONE } from "@/lib/site"
 
 type FreeCaseReviewDialogProps = {
     children: React.ReactNode
@@ -131,7 +132,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                 <DialogHeader className="px-1">
                     <DialogTitle className="text-xl sm:text-2xl font-bold text-gray-900">Free Case Review</DialogTitle>
                     <DialogDescription className="text-sm text-gray-600 mt-1">
-                        Tell us about your consumer law issue. We&apos;ll review and reach out within 24 hours. Prefer to talk now? Call <a href="tel:8336453247" className="text-blue-600 underline">(833) 645-3247</a>.
+                        Tell us about your consumer law issue. We&apos;ll review and reach out within 24 hours. Prefer to talk now? Call <a href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`} className="text-blue-600 underline">{PRIMARY_PHONE}</a>.
                     </DialogDescription>
                 </DialogHeader>
 
@@ -175,7 +176,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                                 <FormItem className="w-full">
                                     <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">Phone *</FormLabel>
                                     <FormControl>
-                                        <Input type="tel" placeholder="(833) 645-3247" className="w-full text-sm py-2 sm:py-2.5" {...field} />
+                                        <Input type="tel" placeholder={PRIMARY_PHONE} className="w-full text-sm py-2 sm:py-2.5" {...field} />
                                     </FormControl>
                                     <FormMessage className="text-xs" />
                                 </FormItem>

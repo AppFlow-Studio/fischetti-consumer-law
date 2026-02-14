@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AlertTriangle, Scale, FileWarning, Info, Gavel, Mail } from "lucide-react";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { SITE_NAME, SITE_URL, PRIMARY_PHONE } from "@/lib/site";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = buildMetadata({
@@ -276,7 +276,7 @@ export default function LegalDisclaimerPage() {
                                 <div className="space-y-2 text-gray-700">
                                     <p><strong>Fischetti Law Group</strong></p>
                                     <p>Email: <a href="mailto:info@fischettilaw.com" className="text-blue-600 hover:underline">info@fischettilaw.com</a></p>
-                                    <p>Phone: <a href="tel:8336453247" className="text-blue-600 hover:underline">(833) 645-3247</a></p>
+                                    <p>Phone: <a href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`} className="text-blue-600 hover:underline">{PRIMARY_PHONE}</a></p>
                                     <p className="text-sm text-gray-600 mt-3">
                                         <strong>Important:</strong> Please do not send confidential information via email until
                                         we have confirmed in writing that we represent you.

@@ -270,7 +270,7 @@ export default function FAQsPage() {
                                         <FreeCaseReview className="w-full sm:w-[260px] rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 text-lg font-semibold shadow-xl h-[56px] flex items-center justify-center" />
                                     </FreeCaseReviewDialog>
                                     <a
-                                        href="tel:8336453247"
+                                        href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`}
                                         className="w-full sm:w-[260px] inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm px-6 py-4 text-lg font-semibold text-white hover:bg-white/20 transition-colors whitespace-nowrap h-[56px]"
                                     >
                                         <Phone className="w-5 h-5 shrink-0" />

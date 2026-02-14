@@ -12,6 +12,7 @@ import FreeCaseReviewDialog from "./free-case-review-dialog"
 import { usePathname, useRouter } from "next/navigation"
 import { officeLocations } from "@/data/office-locations"
 import { firms } from "@/data/firms"
+import { PRIMARY_PHONE } from "@/lib/site"
 import { useUIState } from "@/providers/ui-state-provider"
 
 // Animated Hamburger Icon Component
@@ -426,9 +427,9 @@ export default function Navbar({ className }: NavbarProps) {
                             {/* Divider */}
                             <span className={cn("hidden md:block  h-6 w-px", scrolled ? "bg-black/30" : "bg-white/30")} />
                             {/* Phone */}
-                            <a href="tel:8336453247" className={cn(linkClass, "items-center gap-2 md:inline-flex  hidden transition-colors")}>
+                            <a href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`} className={cn(linkClass, "items-center gap-2 md:inline-flex  hidden transition-colors")}>
                                 <Phone className="w-5 h-5" />
-                                <span>(833) 645-3247</span>
+                                <span>{PRIMARY_PHONE}</span>
                             </a>
                         </div>
                     </div>
@@ -558,13 +559,13 @@ export default function Navbar({ className }: NavbarProps) {
 
                             <motion.a
                                 variants={itemVariants}
-                                href="tel:8336453247"
+                                href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`}
                                 className="w-full mt-6 inline-flex items-center justify-center rounded-full bg-blue-600 text-white py-3 font-semibold"
                                 onClick={closeSidebar}
                                 whileTap={{ scale: 0.98 }}
                                 whileHover={{ scale: 1.02 }}
                             >
-                                Call (833) 645-3247
+                                Call {PRIMARY_PHONE}
                             </motion.a>
                             <div className="relative w-full h-32"><Image src="/fischettilogo.png" alt="Navbar Background" width={1000} height={1000} className="absolute bottom-0 left-0 w-full h-full object-cover" /></div>
                         </motion.nav>

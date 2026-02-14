@@ -10,7 +10,7 @@ import { Shield, CheckCircle, Phone } from "lucide-react"
 import Link from "next/link"
 import HeroBarTrans from "@/components/hero-bar-trans"
 import { Marquee } from "@/components/ui/marquee"
-import { SITE_URL, SITE_NAME } from "@/lib/site"
+import { SITE_URL, SITE_NAME, PRIMARY_PHONE } from "@/lib/site"
 import SeoInsightBlock from "@/components/sections/SeoInsightBlock"
 import { LAW_CONTENT_MAP } from "@/lib/lawSectionContent"
 import { buildMetadata } from "@/lib/seo/metadata"
@@ -95,15 +95,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
     const getLawDescription = (slug: string): string => {
         const descriptionMap: Record<string, string> = {
-            fcra: "FCRA Lawyer in Florida for credit report errors, mixed files, and failed disputes. No fee unless we win. Call (833) 645-3247.",
-            fdcpa: "Debt Collection Lawyer in Florida for harassment, threats, and illegal collection tactics. No fee unless we win. Call (833) 645-3247.",
-            tcpa: "Robocall Lawyer in Florida for spam texts and automated calls without consent. No fee unless we win. Call (833) 645-3247.",
-            privacy: "Data Breach Lawyer in Florida for personal information violations and privacy breaches. No fee unless we win. Call (833) 645-3247.",
-            vppa: "Video Privacy Lawyer in Florida for tracking pixel violations and viewing data sharing. No fee unless we win. Call (833) 645-3247.",
-            fha: "Fair Housing Lawyer in Florida for housing discrimination and fair housing violations. No fee unless we win. Call (833) 645-3247.",
-            "mass-arbitration": "Mass Arbitration Lawyer in Florida for consumer protection claims. No fee unless we win. Call (833) 645-3247."
+            fcra: `FCRA Lawyer in Florida for credit report errors, mixed files, and failed disputes. No fee unless we win. Call ${PRIMARY_PHONE}.`,
+            fdcpa: `Debt Collection Lawyer in Florida for harassment, threats, and illegal collection tactics. No fee unless we win. Call ${PRIMARY_PHONE}.`,
+            tcpa: `Robocall Lawyer in Florida for spam texts and automated calls without consent. No fee unless we win. Call ${PRIMARY_PHONE}.`,
+            privacy: `Data Breach Lawyer in Florida for personal information violations and privacy breaches. No fee unless we win. Call ${PRIMARY_PHONE}.`,
+            vppa: `Video Privacy Lawyer in Florida for tracking pixel violations and viewing data sharing. No fee unless we win. Call ${PRIMARY_PHONE}.`,
+            fha: `Fair Housing Lawyer in Florida for housing discrimination and fair housing violations. No fee unless we win. Call ${PRIMARY_PHONE}.`,
+            "mass-arbitration": `Mass Arbitration Lawyer in Florida for consumer protection claims. No fee unless we win. Call ${PRIMARY_PHONE}.`
         }
-        return descriptionMap[slug] || `${law.title} lawyer in Florida for consumer protection violations. No fee unless we win. Call (833) 645-3247.`
+        return descriptionMap[slug] || `${law.title} lawyer in Florida for consumer protection violations. No fee unless we win. Call ${PRIMARY_PHONE}.`
     }
 
     const title = getLawTitle(slug.slug)
@@ -670,7 +670,7 @@ export default async function ConsumerLawDetailsPage({ params }: { params: Promi
                                 <div className="mt-6 pt-6 border-t border-gray-200">
                                     <div className="flex items-center gap-3 text-sm text-gray-600">
                                         <Phone className="w-4 h-4 text-blue-600" />
-                                        <span>Prefer to talk? Call <a href="tel:8336453247" className="text-blue-600 hover:underline font-semibold">(833) 645-3247</a></span>
+                                        <span>Prefer to talk? Call <a href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`} className="text-blue-600 hover:underline font-semibold">{PRIMARY_PHONE}</a></span>
                                     </div>
                                 </div>
                             </Card>
