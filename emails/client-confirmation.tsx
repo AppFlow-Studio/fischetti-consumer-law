@@ -1,4 +1,5 @@
 import * as React from "react"
+import { PRIMARY_PHONE } from "@/lib/site"
 
 interface ClientConfirmationEmailProps {
     firstName: string
@@ -246,7 +247,7 @@ export function ClientConfirmationEmail({
                                                                     Need to speak with us immediately?
                                                                 </p>
                                                                 <a
-                                                                    href="tel:8336453247"
+                                                                    href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`}
                                                                     style={{
                                                                         display: "inline-block",
                                                                         fontSize: "20px",
@@ -255,7 +256,7 @@ export function ClientConfirmationEmail({
                                                                         textDecoration: "none",
                                                                     }}
                                                                 >
-                                                                    (833) 645-3247
+                                                                    {PRIMARY_PHONE}
                                                                 </a>
                                                                 <p style={{
                                                                     margin: "8px 0 0 0",
@@ -311,7 +312,7 @@ export function ClientConfirmationEmail({
                                                                     fontSize: "13px",
                                                                     color: "#94a3b8",
                                                                 }}>
-                                                                    <a href="tel:8336453247" style={{ color: "#94a3b8", textDecoration: "none" }}>(833) 645-3247</a>
+                                                                    <a href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`} style={{ color: "#94a3b8", textDecoration: "none" }}>{PRIMARY_PHONE}</a>
                                                                     {" · "}
                                                                     <a href="mailto:info@consumerlawflorida.com" style={{ color: "#94a3b8", textDecoration: "none" }}>info@consumerlawflorida.com</a>
                                                                 </p>
