@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useTransition } from "react"
+import { useRouter } from "next/navigation"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { useUIState } from "@/providers/ui-state-provider"
 import { Input } from "@/components/ui/input"
@@ -11,6 +12,8 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { contactSchema, defaultContactValues, caseTypes, urgencyLevels, type ContactFormData } from "@/components/forms/contact-schema"
+import { submitContactForm } from "@/lib/actions/contact"
+import { Loader2, AlertCircle } from "lucide-react"
 import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
 import { PRIMARY_PHONE } from "@/lib/site"
 
@@ -21,8 +24,10 @@ type FreeCaseReviewDialogProps = {
 
 export default function FreeCaseReviewDialog({ children, defaultOpen = false }: FreeCaseReviewDialogProps) {
     const [open, setOpen] = useState(defaultOpen)
-    const [submitting, setSubmitting] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("")
+    const [isPending, startTransition] = useTransition()
     const { setIsDialogOpen } = useUIState()
+    const router = useRouter()
     const form = useForm<ContactFormData>({ 
         resolver: zodResolver(contactSchema), 
         defaultValues: defaultContactValues 
@@ -33,8 +38,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
     }, [open, setIsDialogOpen])
 
     const onSubmit = async (values: ContactFormData) => {
-        setSubmitting(true)
-        
+        setErrorMessage("")
         // Track form attempt
         if (typeof window !== 'undefined') {
             window.dataLayer = window.dataLayer || []
@@ -46,30 +50,22 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
             })
         }
         
-        try {
-            // Submit to API
-            const response = await fetch("/api/contact", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(values),
-            })
+        startTransition(async () => {
+            try {
+                const result = await submitContactForm(values)
 
-            // Handle geo-blocking
-            if (response.status === 403) {
-                const data = await response.json()
-                if (data.blocked) {
-                    window.location.href = data.redirect || "/unavailable"
+                // Handle geo-blocking redirect
+                if (result.blocked && result.redirect) {
+                    setOpen(false)
+                    window.location.href = result.redirect
                     return
                 }
-            }
 
-            if (!response.ok) {
-                throw new Error("Form submission failed")
-            }
-
-            const result = await response.json()
+                if (!result.success) {
+                    setErrorMessage(result.message)
+                    return
+                }
+                // const result = await response.json()
             
             // Format user data for enhanced conversions
             const formattedUserData = formatUserDataForGTM({
@@ -112,15 +108,15 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                 })
             }
 
-            console.log("Free Case Review submitted successfully:", values)
-            setTimeout(() => setOpen(false), 300)
-            form.reset()
-        } catch (error) {
-            console.error("Form submission error:", error)
-            // You could add error state handling here
-        } finally {
-            setSubmitting(false)
-        }
+                setOpen(false)
+                form.reset()
+                
+                // Redirect to thank you page
+                router.push(`/thank-you?name=${encodeURIComponent(values.firstName)}`)
+            } catch (error) {
+                console.error("Form submission error:", error)
+                setErrorMessage("An unexpected error occurred. Please try again or call us directly.")}
+        })
     }
 
     return (
@@ -138,12 +134,31 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2.5 sm:space-y-4 px-1">
+                        
+                        {/* Error Banner */}
+                        {errorMessage && (
+                            <div className="w-full p-3 bg-red-50 border border-red-200 rounded-lg flex items-start gap-2">
+                                <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+                                <div>
+                                    <p className="text-red-800 font-medium text-xs">{errorMessage}</p>
+                                    <p className="text-red-600 text-xs mt-0.5">
+                                        Or call: <a href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`} className="font-semibold underline">{PRIMARY_PHONE}</a>
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                             <FormField control={form.control} name="firstName" render={({ field }) => (
                                 <FormItem className="w-full">
                                     <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">First name *</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Jane" className="w-full text-sm py-2 sm:py-2.5" {...field} />
+                                        <Input 
+                                            placeholder="Jane" 
+                                            className="w-full text-sm py-2 sm:py-2.5" 
+                                            disabled={isPending}
+                                            {...field} 
+                                        />
                                     </FormControl>
                                     <FormMessage className="text-xs" />
                                 </FormItem>
@@ -152,7 +167,12 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                                 <FormItem className="w-full">
                                     <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">Last name *</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Doe" className="w-full text-sm py-2 sm:py-2.5" {...field} />
+                                        <Input 
+                                            placeholder="Doe" 
+                                            className="w-full text-sm py-2 sm:py-2.5" 
+                                            disabled={isPending}
+                                            {...field} 
+                                        />
                                     </FormControl>
                                     <FormMessage className="text-xs" />
                                 </FormItem>
@@ -164,7 +184,13 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                             <FormItem className="w-full">
                                 <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">Email *</FormLabel>
                                 <FormControl>
-                                    <Input type="email" placeholder="jane@example.com" className="w-full text-sm py-2 sm:py-2.5" {...field} />
+                                    <Input 
+                                        type="email" 
+                                        placeholder="jane@example.com" 
+                                        className="w-full text-sm py-2 sm:py-2.5" 
+                                        disabled={isPending}
+                                        {...field} 
+                                    />
                                 </FormControl>
                                 <FormMessage className="text-xs" />
                             </FormItem>
@@ -176,7 +202,13 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                                 <FormItem className="w-full">
                                     <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">Phone *</FormLabel>
                                     <FormControl>
-                                        <Input type="tel" placeholder={PRIMARY_PHONE} className="w-full text-sm py-2 sm:py-2.5" {...field} />
+                                        <Input 
+                                            type="tel" 
+                                            placeholder={PRIMARY_PHONE} 
+                                            className="w-full text-sm py-2 sm:py-2.5" 
+                                            disabled={isPending}
+                                            {...field} 
+                                        />
                                     </FormControl>
                                     <FormMessage className="text-xs" />
                                 </FormItem>
@@ -191,6 +223,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                                             placeholder="12345 or 12345-6789"
                                             className="w-full text-sm py-2 sm:py-2.5"
                                             maxLength={10}
+                                            disabled={isPending}
                                             {...field}
                                         />
                                     </FormControl>
@@ -203,7 +236,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                             <FormItem className="w-full">
                                 <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">Case type *</FormLabel>
                                 <FormControl>
-                                    <Select onValueChange={field.onChange} value={field.value}>
+                                    <Select onValueChange={field.onChange} value={field.value} disabled={isPending}>
                                         <SelectTrigger className="w-full text-sm py-2 sm:py-2.5"><SelectValue placeholder="Select case type" /></SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
@@ -220,7 +253,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                             <FormItem className="w-full">
                                 <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">Urgency *</FormLabel>
                                 <FormControl>
-                                    <Select onValueChange={field.onChange} value={field.value}>
+                                    <Select onValueChange={field.onChange} value={field.value} disabled={isPending}>
                                         <SelectTrigger className="w-full text-sm py-2 sm:py-2.5"><SelectValue placeholder="Select urgency" /></SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
@@ -240,9 +273,16 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                                     <Textarea
                                         placeholder="Describe what happened in a few sentences…"
                                         className="min-h-[80px] sm:min-h-[110px] w-full resize-y text-sm"
+                                        disabled={isPending}
                                         {...field}
                                     />
                                 </FormControl>
+                                <div className="flex justify-between items-center mt-1">
+                                    <span className="text-xs text-gray-500">Minimum 10 characters</span>
+                                    <span className={`text-xs ${field.value.length >= 10 ? 'text-gray-500' : 'text-amber-600'}`}>
+                                        {field.value.length}/10
+                                    </span>
+                                </div>
                                 <FormMessage className="text-xs" />
                             </FormItem>
                         )} />
@@ -253,15 +293,23 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                                 variant="ghost"
                                 onClick={() => setOpen(false)}
                                 className="w-full sm:w-auto order-2 sm:order-1"
+                                disabled={isPending}
                             >
                                 Cancel
                             </Button>
                             <Button
                                 type="submit"
                                 className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto order-1 sm:order-2"
-                                disabled={submitting}
+                                disabled={isPending}
                             >
-                                {submitting ? "Submitting…" : "Request Free Review"}
+                                {isPending ? (
+                                    <span className="flex items-center gap-2">
+                                        <Loader2 className="w-4 h-4 animate-spin" />
+                                        Submitting...
+                                    </span>
+                                ) : (
+                                    "Request Free Review"
+                                )}
                             </Button>
                         </DialogFooter>
                     </form>
@@ -270,5 +318,3 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
         </Dialog>
     )
 }
-
-

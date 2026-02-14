@@ -1,14 +1,14 @@
-import AvatarGroup from "@/components/avatar-group";
-import { ContactForm } from "@/components/contact-form";
+// import AvatarGroup from "@/components/avatar-group";
+// import { ContactForm } from "@/components/contact-form";
 import ContactFormSection from "@/components/ui/contact-form-section";
 import HeroBarTrans from "@/components/hero-bar-trans";
 import StoriesScroller from "@/components/stories";
-import Stories from "@/components/stories";
-import { Avatar } from "@/components/ui/avatar";
+// import Stories from "@/components/stories";
+// import { Avatar } from "@/components/ui/avatar";
 import CaseResults from "@/components/ui/case-results";
 import CaseResultsCards from "@/components/ui/case-results-cards";
-import ConsumerLaws from "@/components/ui/consumer-laws";
-import Footer from "@/components/ui/footer";
+// import ConsumerLaws from "@/components/ui/consumer-laws";
+// import Footer from "@/components/ui/footer";
 import { Marquee } from "@/components/ui/marquee";
 import ProfileCard from "@/components/ui/profile-card";
 import LocationsSection from "@/components/ui/locations";
@@ -16,7 +16,7 @@ import Testimonials from "@/components/ui/testimonials";
 import WhyFischetti from "@/components/ui/why-fischetti";
 import Image from "next/image";
 import { MorphingText } from "@/components/ui/morphing-text";
-import ConsumerLawSection from "@/components/ui/consumer-law-section"
+// import ConsumerLawSection from "@/components/ui/consumer-law-section"
 import SeoInsightBlock from "@/components/sections/SeoInsightBlock";
 const texts = [
   "Available 24/7.",

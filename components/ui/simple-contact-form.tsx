@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useTransition } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -9,6 +10,8 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { contactSchema, defaultContactValues, caseTypes, urgencyLevels, type ContactFormData } from "@/components/forms/contact-schema"
+import { submitContactForm } from "@/lib/actions/contact"
+import { Loader2, AlertCircle } from "lucide-react"
 import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
 
 type SimpleContactFormProps = {
@@ -16,7 +19,14 @@ type SimpleContactFormProps = {
     useBlueTheme?: boolean // For white background forms that need blue text
 }
 
+type FormStatus = "idle" | "submitting" | "success" | "error"
+
 export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }: SimpleContactFormProps) {
+    const [status, setStatus] = useState<FormStatus>("idle")
+    const [errorMessage, setErrorMessage] = useState<string>("")
+    const [isPending, startTransition] = useTransition()
+    const router = useRouter()
+    
     const [submitting, setSubmitting] = useState(false)
     const [submitSuccess, setSubmitSuccess] = useState(false)
     const form = useForm<ContactFormData>({ 
@@ -24,8 +34,11 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
         defaultValues: defaultContactValues 
     })
 
+    const isSubmitting = status === "submitting" || isPending
+
     async function onSubmit(values: ContactFormData) {
-        setSubmitting(true)
+        setStatus("submitting")
+        setErrorMessage("")
         
         // Track form attempt
         if (typeof window !== 'undefined') {
@@ -38,32 +51,22 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
             })
         }
         
-        try {
-            // Submit to API
-            const response = await fetch("/api/contact", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(values),
-            })
+        startTransition(async () => {
+            try {
+                const result = await submitContactForm(values)
 
-            // Handle geo-blocking
-            if (response.status === 403) {
-                const data = await response.json()
-                if (data.blocked) {
-                    window.location.href = data.redirect || "/unavailable"
+                // Handle geo-blocking redirect
+                if (result.blocked && result.redirect) {
+                    window.location.href = result.redirect
                     return
                 }
-            }
 
-            if (!response.ok) {
-                throw new Error("Form submission failed")
-            }
-
-            const result = await response.json()
-            
-            // Format user data for enhanced conversions
+                if (!result.success) {
+                    setStatus("error")
+                    setErrorMessage(result.message)
+                    return
+                }
+                   // Format user data for enhanced conversions
             const formattedUserData = formatUserDataForGTM({
                 email: values.email,
                 phone: values.phone,
@@ -89,7 +92,7 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
                     user_last_name: formattedUserData.address.last_name,
                     user_zip: formattedUserData.address.postal_code,
                     // Nested user_data for Google Ads Enhanced Conversions
-                    user_data: result.enhancedConversionData || formattedUserData
+                    user_data: result?.enhancedConversionData || formattedUserData
                 })
                 
                 // Push qualify_lead event (GA4-safe, no PII)
@@ -103,19 +106,18 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
                 })
             }
 
-            console.log("SimpleContactForm submitted successfully", values)
-            setSubmitSuccess(true)
-            onSubmitted?.()
-            form.reset()
-            
-            // Reset success message after 5 seconds
-            setTimeout(() => setSubmitSuccess(false), 5000)
-        } catch (error) {
-            console.error("Form submission error:", error)
-            // You could add error state handling here
-        } finally {
-            setSubmitting(false)
+                console.log("SimpleContactForm submitted successfully", values)
+                onSubmitted?.()
+                form.reset()
+                
+                // Redirect to thank you page with optional name personalization
+                router.push(`/thank-you?name=${encodeURIComponent(values.firstName)}`)
+            } catch (error) {
+                console.error("Form submission error:", error)
+                setStatus("error")
+                setErrorMessage("An unexpected error occurred. Please try again or call us directly.")
         }
+        })
     }
 
     // Always use white background styling with mobile optimizations
@@ -140,19 +142,33 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
         ? "text-blue-600 hover:text-blue-700 underline font-medium"
         : "text-blue-600 hover:text-blue-700 underline font-medium"
 
-    if (submitSuccess) {
-        return (
-            <div className="w-full p-6 bg-green-50 border border-green-200 rounded-xl">
-                <p className="text-green-800 font-semibold text-center">
-                    Thank you! Your form has been submitted successfully. We&apos;ll get back to you within 24 hours.
-                </p>
-            </div>
-        )
-    }
+    // if (submitSuccess) {
+    //     return (
+    //         <div className="w-full p-6 bg-green-50 border border-green-200 rounded-xl">
+    //             <p className="text-green-800 font-semibold text-center">
+    //                 Thank you! Your form has been submitted successfully. We&apos;ll get back to you within 24 hours.
+    //             </p>
+    //         </div>
+    //     )
+    // }
 
     return (
         <Form {...form}>
             <form id="consultation" onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2.5 sm:space-y-4">
+                {/* Error Banner */}
+                {status === "error" && errorMessage && (
+                    <div className="w-full p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+                        <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+                        <div>
+                            <p className="text-red-800 font-medium text-sm">{errorMessage}</p>
+                            <p className="text-red-600 text-xs mt-1">
+                                Or call us directly:{" "}
+                                <a href="tel:8336453247" className="font-semibold underline">(833) 645-3247</a>
+                            </p>
+                        </div>
+                    </div>
+                )}
+
                 <div className="grid grid-cols-1 gap-2.5 sm:gap-4 w-full overflow-hidden">
                     {/* First Name and Last Name - Same row on desktop, stacked on mobile */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
@@ -164,6 +180,7 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
                                         placeholder="Jane"
                                         aria-label="First name"
                                         className={inputClass}
+                                        disabled={isSubmitting}
                                         {...field}
                                     />
                                 </FormControl>
@@ -178,6 +195,7 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
                                         placeholder="Doe"
                                         aria-label="Last name"
                                         className={inputClass}
+                                        disabled={isSubmitting}
                                         {...field}
                                     />
                                 </FormControl>
@@ -195,6 +213,7 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
                                     placeholder="Enter your email address"
                                     aria-label="Email"
                                     className={inputClass}
+                                    disabled={isSubmitting}
                                     {...field}
                                 />
                             </FormControl>
@@ -212,6 +231,7 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
                                         placeholder="Enter your phone number"
                                         aria-label="Phone"
                                         className={inputClass}
+                                        disabled={isSubmitting}
                                         {...field}
                                     />
                                 </FormControl>
@@ -229,6 +249,7 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
                                         aria-label="ZIP Code"
                                         className={inputClass}
                                         maxLength={10}
+                                        disabled={isSubmitting}
                                         {...field}
                                     />
                                 </FormControl>
@@ -241,7 +262,7 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
                             <FormItem className="w-full">
                                 <FormLabel className={labelClass}>Case type *</FormLabel>
                                 <FormControl>
-                                    <Select onValueChange={field.onChange} value={field.value}>
+                                    <Select onValueChange={field.onChange} value={field.value} disabled={isSubmitting}>
                                         <SelectTrigger className={selectTriggerClass}>
                                             <SelectValue placeholder="Select case type" />
                                         </SelectTrigger>
@@ -261,7 +282,7 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
                             <FormItem className="w-full">
                                 <FormLabel className={labelClass}>Urgency *</FormLabel>
                                 <FormControl>
-                                    <Select onValueChange={field.onChange} value={field.value}>
+                                    <Select onValueChange={field.onChange} value={field.value} disabled={isSubmitting}>
                                         <SelectTrigger className={selectTriggerClass}>
                                             <SelectValue placeholder="Select urgency" />
                                         </SelectTrigger>
@@ -286,9 +307,16 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
                                     placeholder="Describe your situation in a few sentences..."
                                     className={textareaClass}
                                     aria-label="Brief details"
+                                    disabled={isSubmitting}
                                     {...field}
                                 />
                             </FormControl>
+                            <div className="flex justify-between items-center mt-1">
+                                <span className="text-xs text-gray-500">Minimum 10 characters</span>
+                                <span className={`text-xs ${field.value.length >= 10 ? 'text-gray-500' : 'text-amber-600'}`}>
+                                    {field.value.length}/10
+                                </span>
+                            </div>
                             <FormMessage className={messageClass} />
                         </FormItem>
                     )} />
@@ -301,14 +329,19 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
                 </div>
                 <Button
                     type="submit"
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm sm:text-base py-2.5 sm:py-3 shadow-lg hover:shadow-xl transition-all"
-                    disabled={submitting}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm sm:text-base py-2.5 sm:py-3 shadow-lg hover:shadow-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+                    disabled={isSubmitting}
                 >
-                    {submitting ? "Submitting…" : "Submit Free Case Review"}
+                    {isSubmitting ? (
+                        <span className="flex items-center justify-center gap-2">
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                            Submitting...
+                        </span>
+                    ) : (
+                        "Submit Free Case Review"
+                    )}
                 </Button>
             </form>
         </Form>
     )
 }
-
-

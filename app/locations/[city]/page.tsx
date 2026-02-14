@@ -336,10 +336,10 @@ export default async function CityPage({ params }: Props) {
                             <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start lg:items-center">
                                 {/* Left Column - Content */}
                                 <div className="w-full lg:w-1/2 flex flex-col">
-                                    <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight mb-6 text-left">
+                                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-[--font-playfair-display] font-bold text-white leading-tight mb-6 text-left">
                                         {firm.seoCity} Consumer Rights Lawyer
                                     </h1>
-                                    <p className="text-lg md:text-xl lg:text-2xl text-white/90 leading-relaxed mb-8 text-left">
+                                    <p className="text-lg md:text-xl  text-white/90 leading-relaxed mb-8 text-left">
                                         {copy.heroSubheadline}
                                     </p>
 
