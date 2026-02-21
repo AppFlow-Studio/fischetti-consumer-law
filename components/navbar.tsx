@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 import { AnimatedThemeToggler } from "./ui/animated-theme-toggler"
 import Image from "next/image"
 import FreeCaseReview from "./free-case-review-button"
-import { Phone, Menu, X, Info, Users, MapPin as MapPinIcon, Star, Quote, Shield, FileText, MessageSquareWarning, PhoneCall, Video, Home, Gavel, HelpCircle, Building2 } from "lucide-react"
+import { Phone, Menu, X, Info, Users, MapPin as MapPinIcon, Star, Quote, Shield, FileText, MessageSquareWarning, PhoneCall, Video, Home, Gavel, HelpCircle, Building2, BookOpen } from "lucide-react"
 import { useEffect, useState, useRef } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import FreeCaseReviewDialog from "./free-case-review-dialog"
@@ -67,15 +67,19 @@ export default function Navbar({ className }: NavbarProps) {
     const isLocationsIndexPage = pathname === "/locations"
     const isConsumerLawPage = pathname?.startsWith("/consumer-law/")
     const isLocationsPage = pathname?.startsWith("/locations/")
-    // console.log('isLocationsPage', isLocationsPage)
+    const isBlogPage = pathname === "/blog" || pathname?.startsWith("/blog/")
    
     const router = useRouter()
     const [openMenu, setOpenMenu] = useState<null | "laws" | "about" | "locations" | "testimonials">(null)
     const hoverTimer = useRef<NodeJS.Timeout | null>(null)
 
     useEffect(() => {
-        if (!isHome && !isConsumerLawPage && !isLocationsIndexPage && !isLocationsPage) {
-            // Other pages (not home, not consumer law, not locations) use dark logo and black text by default
+        if (!isHome && !isConsumerLawPage && !isLocationsIndexPage && !isLocationsPage && !isBlogPage) {
+            // Other pages (not home, not consumer law, not locations, not blog) use dark logo and black text by default
+            setScrolled(true)
+            return
+        }
+        if (isBlogPage) {
             setScrolled(true)
             return
         }
@@ -125,7 +129,7 @@ export default function Navbar({ className }: NavbarProps) {
         onScroll()
         window.addEventListener('scroll', onScroll, { passive: true })
         return () => window.removeEventListener('scroll', onScroll)
-    }, [isHome, isConsumerLawPage, isLocationsPage])
+    }, [isHome, isConsumerLawPage, isLocationsPage, isBlogPage])
 
     const linkClass = scrolled ? "text-black/90 hover:text-black font-medium text-[15px] leading-[140%] tracking-[-0.15px] hover:opacity-80 transition-all duration-[250ms] ease-[cubic-bezier(0.4,0,0.2,1)] font-af " : "text-white/90 hover:text-white font-medium text-[15px] leading-[140%] tracking-[-0.15px] hover:opacity-80 transition-all duration-[250ms] ease-[cubic-bezier(0.4,0,0.2,1)] font-af "
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen)
@@ -368,6 +372,11 @@ export default function Navbar({ className }: NavbarProps) {
                             </div>
                         </div>
 
+                        {/* Blog */}
+                        <Link href="/blog" className={cn(linkClass, "transition-colors text-lg")}>
+                            Blog
+                        </Link>
+
                         {/* Testimonials dropdown */}
                         <div
                             className="relative"
@@ -542,6 +551,18 @@ export default function Navbar({ className }: NavbarProps) {
                                         ))
                                     }
                                 </div>
+                            </motion.div>
+
+                            {/* Blog */}
+                            <motion.div variants={itemVariants}>
+                                <Link
+                                    href="/blog"
+                                    onClick={closeSidebar}
+                                    className="text-gray-900 text-lg font-semibold hover:text-blue-600 transition-colors flex items-center gap-2"
+                                >
+                                    <BookOpen className="w-4 h-4 text-blue-600" />
+                                    Blog
+                                </Link>
                             </motion.div>
 
                             {/* Testimonials quick links */}
