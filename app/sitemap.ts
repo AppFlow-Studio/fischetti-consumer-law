@@ -3,6 +3,7 @@ import fs from "node:fs"
 import path from "node:path"
 import { SITE_URL } from "@/lib/site"
 import { firms } from "@/data/firms"
+import { GetBlogSearchIndex } from "@/lib/get-blogs"
 
 function readLaws() {
     const p = path.join(process.cwd(), "data", "consumer-laws.json")
@@ -10,7 +11,7 @@ function readLaws() {
     return JSON.parse(raw) as Array<{ slug: string }>
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const laws = readLaws()
     const now = new Date()
 
@@ -27,6 +28,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
             lastModified: now,
             changeFrequency: "weekly",
             priority: 0.9,
+        },
+        {
+            url: `${SITE_URL}/blog`,
+            lastModified: now,
+            changeFrequency: "weekly",
+            priority: 0.8,
         },
         {
             url: `${SITE_URL}/locations`,
@@ -59,6 +66,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
             lastModified: now,
             changeFrequency: "monthly",
             priority: 0.8,
+        })
+    })
+
+    // Published blog posts
+    const blogPosts = await GetBlogSearchIndex(500)
+    blogPosts.forEach((post) => {
+        routes.push({
+            url: `${SITE_URL}/blog/${post.slug}`,
+            lastModified:
+                post.date_published || post.updated_at
+                    ? new Date(post.date_published || post.updated_at!)
+                    : now,
+            changeFrequency: "weekly",
+            priority: 0.7,
         })
     })
 

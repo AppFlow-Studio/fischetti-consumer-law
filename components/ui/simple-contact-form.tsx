@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { contactSchema, defaultContactValues, caseTypes, urgencyLevels, type ContactFormData } from "@/components/forms/contact-schema"
 import { submitContactForm } from "@/lib/actions/contact"
 import { Loader2, AlertCircle } from "lucide-react"
+import { PRIMARY_PHONE } from "@/lib/site"
 import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
 
 type SimpleContactFormProps = {
@@ -163,7 +164,7 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
                             <p className="text-red-800 font-medium text-sm">{errorMessage}</p>
                             <p className="text-red-600 text-xs mt-1">
                                 Or call us directly:{" "}
-                                <a href="tel:8336453247" className="font-semibold underline">(833) 645-3247</a>
+                                <a href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`} className="font-semibold underline">{PRIMARY_PHONE}</a>
                             </p>
                         </div>
                     </div>

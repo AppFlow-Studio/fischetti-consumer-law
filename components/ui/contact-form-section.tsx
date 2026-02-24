@@ -17,6 +17,7 @@ import { contactSchema, type ContactFormData, caseTypes, urgencyLevels, defaultC
 import { ShineBorder } from "./shine-border"
 import SimpleContactForm from "./simple-contact-form"
 import { BorderBeam } from "./border-beam"
+import { PRIMARY_PHONE } from "@/lib/site"
 
 export default function ContactFormSection() {
     const [isSubmitted, setIsSubmitted] = useState(false)
@@ -144,7 +145,7 @@ export default function ContactFormSection() {
                             <div className="space-y-3">
                                 <div className="flex items-center gap-3 text-gray-600">
                                     <Phone className="h-5 w-5 text-blue-600" />
-                                    <span>(833) 645-3247</span>
+                                    <span>{PRIMARY_PHONE}</span>
                                 </div>
                                 <div className="flex items-center gap-3 text-gray-600">
                                     <Mail className="h-5 w-5 text-blue-600" />
@@ -229,7 +230,7 @@ export default function ContactFormSection() {
                                 <div className="mt-6 pt-6 border-t border-white/20">
                                     <div className="flex items-center gap-3 text-sm text-gray-600">
                                         <Phone className="w-4 h-4 text-blue-600" />
-                                        <span>Prefer to talk? Call <a href="tel:8336453247" className="text-blue-600 hover:underline font-semibold">(833) 645-3247</a></span>
+                                        <span>Prefer to talk? Call <a href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`} className="text-blue-600 hover:underline font-semibold">{PRIMARY_PHONE}</a></span>
                                     </div>
                                 </div>
                             </div>

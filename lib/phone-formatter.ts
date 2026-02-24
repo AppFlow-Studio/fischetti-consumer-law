@@ -201,8 +201,8 @@ export function validatePhoneNumber(phone: string): boolean {
 
 /**
  * Converts phone number to E.164 format for enhanced conversions
- * Input: Any phone format (e.g., "(833) 645-3247" or "8336453247")
- * Output: "+18336453247" or empty string if invalid
+ * Input: Any phone format (e.g., "(561) 264-7211" or "5612647211")
+ * Output: "+15612647211" or empty string if invalid
  */
 export function formatPhoneToE164(phone: string): string {
     const digits = extractDigits(phone);

@@ -5,6 +5,7 @@ import { Phone, Mail, ArrowRight, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
+import { PRIMARY_PHONE } from "@/lib/site"
 import { Suspense } from "react"
 import Image from "next/image"
 
@@ -173,7 +174,7 @@ function ThankYouContent() {
 
                             <div className="space-y-4">
                                 <a
-                                    href="tel:8336453247"
+                                    href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`}
                                     className="flex items-center gap-4 p-4 bg-white rounded-lg border border-slate-200 hover:border-slate-300 transition-colors group"
                                 >
                                     <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center group-hover:bg-blue-700 transition-colors">
@@ -181,7 +182,7 @@ function ThankYouContent() {
                                     </div>
                                     <div>
                                         <p className="text-sm text-slate-500">Call us now</p>
-                                        <p className="font-semibold text-slate-900">(833) 645-3247</p>
+                                        <p className="font-semibold text-slate-900">{PRIMARY_PHONE}</p>
                                     </div>
                                 </a>
 

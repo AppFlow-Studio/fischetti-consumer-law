@@ -13,6 +13,7 @@ import {
     Linkedin,
     Instagram
 } from "lucide-react"
+import { PRIMARY_PHONE, PRIMARY_EMAIL, SITE_NAME } from "@/lib/site"
 
 export default function Footer() {
     const currentYear = new Date().getFullYear()
@@ -65,7 +66,7 @@ export default function Footer() {
                         <div className="space-y-3">
                             <div className="flex items-center gap-3 text-white">
                                 <Phone className="h-4 w-4 text-white" />
-                                <span className="text-sm">(833) 645-3247</span>
+                                <span className="text-sm">{PRIMARY_PHONE}</span>
                             </div>
                             <div className="flex items-center gap-3 text-white">
                                 <Mail className="h-4 w-4 text-white" />

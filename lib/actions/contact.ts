@@ -4,6 +4,7 @@ import { Resend } from "resend"
 import { headers } from "next/headers"
 import { contactSchema, type ContactFormData } from "@/components/forms/contact-schema"
 import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
+import { PRIMARY_PHONE } from "@/lib/site"
 import { ClientConfirmationEmail } from "@/emails/client-confirmation"
 import { OfficeNotificationEmail } from "@/emails/office-notification"
 import { createElement } from "react"
@@ -168,7 +169,7 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactF
         console.error("Error processing contact form:", error)
         return {
             success: false,
-            message: "An unexpected error occurred. Please try again or call us directly at (833) 645-3247.",
+            message: `An unexpected error occurred. Please try again or call us directly at ${PRIMARY_PHONE}.`,
         }
     }
 }

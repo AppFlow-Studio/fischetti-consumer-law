@@ -5,13 +5,14 @@ import { cn } from "@/lib/utils"
 import { AnimatedThemeToggler } from "./ui/animated-theme-toggler"
 import Image from "next/image"
 import FreeCaseReview from "./free-case-review-button"
-import { Phone, Menu, X, Info, Users, MapPin as MapPinIcon, Star, Quote, Shield, FileText, MessageSquareWarning, PhoneCall, Video, Home, Gavel, HelpCircle, Building2 } from "lucide-react"
+import { Phone, Menu, X, Info, Users, MapPin as MapPinIcon, Star, Quote, Shield, FileText, MessageSquareWarning, PhoneCall, Video, Home, Gavel, HelpCircle, Building2, BookOpen } from "lucide-react"
 import { useEffect, useState, useRef } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import FreeCaseReviewDialog from "./free-case-review-dialog"
 import { usePathname, useRouter } from "next/navigation"
 import { officeLocations } from "@/data/office-locations"
 import { firms } from "@/data/firms"
+import { PRIMARY_PHONE } from "@/lib/site"
 import { useUIState } from "@/providers/ui-state-provider"
 
 // Animated Hamburger Icon Component
@@ -66,15 +67,19 @@ export default function Navbar({ className }: NavbarProps) {
     const isLocationsIndexPage = pathname === "/locations"
     const isConsumerLawPage = pathname?.startsWith("/consumer-law/")
     const isLocationsPage = pathname?.startsWith("/locations/")
-    // console.log('isLocationsPage', isLocationsPage)
+    const isBlogPage = pathname === "/blog" || pathname?.startsWith("/blog/")
    
     const router = useRouter()
     const [openMenu, setOpenMenu] = useState<null | "laws" | "about" | "locations" | "testimonials">(null)
     const hoverTimer = useRef<NodeJS.Timeout | null>(null)
 
     useEffect(() => {
-        if (!isHome && !isConsumerLawPage && !isLocationsIndexPage && !isLocationsPage) {
-            // Other pages (not home, not consumer law, not locations) use dark logo and black text by default
+        if (!isHome && !isConsumerLawPage && !isLocationsIndexPage && !isLocationsPage && !isBlogPage) {
+            // Other pages (not home, not consumer law, not locations, not blog) use dark logo and black text by default
+            setScrolled(true)
+            return
+        }
+        if (isBlogPage) {
             setScrolled(true)
             return
         }
@@ -124,7 +129,7 @@ export default function Navbar({ className }: NavbarProps) {
         onScroll()
         window.addEventListener('scroll', onScroll, { passive: true })
         return () => window.removeEventListener('scroll', onScroll)
-    }, [isHome, isConsumerLawPage, isLocationsPage])
+    }, [isHome, isConsumerLawPage, isLocationsPage, isBlogPage])
 
     const linkClass = scrolled ? "text-black/90 hover:text-black font-medium text-[15px] leading-[140%] tracking-[-0.15px] hover:opacity-80 transition-all duration-[250ms] ease-[cubic-bezier(0.4,0,0.2,1)] font-af " : "text-white/90 hover:text-white font-medium text-[15px] leading-[140%] tracking-[-0.15px] hover:opacity-80 transition-all duration-[250ms] ease-[cubic-bezier(0.4,0,0.2,1)] font-af "
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen)
@@ -367,6 +372,11 @@ export default function Navbar({ className }: NavbarProps) {
                             </div>
                         </div>
 
+                        {/* Blog */}
+                        <Link href="/blog" className={cn(linkClass, "transition-colors text-lg")}>
+                            Blog
+                        </Link>
+
                         {/* Testimonials dropdown */}
                         <div
                             className="relative"
@@ -428,9 +438,9 @@ export default function Navbar({ className }: NavbarProps) {
                             {/* Divider */}
                             <span className={cn("hidden md:block  h-6 w-px", scrolled ? "bg-black/30" : "bg-white/30")} />
                             {/* Phone */}
-                            <a href="tel:8336453247" className={cn(linkClass, "items-center gap-2 md:inline-flex  hidden transition-colors")}>
+                            <a href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`} className={cn(linkClass, "items-center gap-2 md:inline-flex  hidden transition-colors")}>
                                 <Phone className="w-5 h-5" />
-                                <span>(833) 645-3247</span>
+                                <span>{PRIMARY_PHONE}</span>
                             </a>
                         </div>
                     </div>
@@ -543,6 +553,18 @@ export default function Navbar({ className }: NavbarProps) {
                                 </div>
                             </motion.div>
 
+                            {/* Blog */}
+                            <motion.div variants={itemVariants}>
+                                <Link
+                                    href="/blog"
+                                    onClick={closeSidebar}
+                                    className="text-gray-900 text-lg font-semibold hover:text-blue-600 transition-colors flex items-center gap-2"
+                                >
+                                    <BookOpen className="w-4 h-4 text-blue-600" />
+                                    Blog
+                                </Link>
+                            </motion.div>
+
                             {/* Testimonials quick links */}
                             <motion.div variants={itemVariants}>
                                 <Link
@@ -560,13 +582,13 @@ export default function Navbar({ className }: NavbarProps) {
 
                             <motion.a
                                 variants={itemVariants}
-                                href="tel:8336453247"
+                                href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`}
                                 className="w-full mt-6 inline-flex items-center justify-center rounded-full bg-blue-600 text-white py-3 font-semibold"
                                 onClick={closeSidebar}
                                 whileTap={{ scale: 0.98 }}
                                 whileHover={{ scale: 1.02 }}
                             >
-                                Call (833) 645-3247
+                                Call {PRIMARY_PHONE}
                             </motion.a>
                             <div className="relative w-full h-32"><Image src="/fischettilogo.png" alt="Navbar Background" width={1000} height={1000} className="absolute bottom-0 left-0 w-full h-full object-cover" /></div>
                         </motion.nav>
