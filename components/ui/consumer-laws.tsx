@@ -42,21 +42,21 @@ const practiceAreas = [
         id: "tcpa",
         description: "Robocalls and spam texts without consent, telemarketing violations. We help consumers stop unwanted calls and texts while seeking compensation for TCPA violations."
     },
-    {
-        icon: Lock,
-        label: "Privacy & Data Breach",
-        id: "privacy",
-        description: "PII leaks, hacked vendors, sloppy security, and improper data sharing. We hold companies accountable for privacy violations and data breach negligence."
-    },
+    // {
+    //     icon: Lock,
+    //     label: "Privacy & Data Breach",
+    //     id: "privacy",
+    //     description: "PII leaks, hacked vendors, sloppy security, and improper data sharing. We hold companies accountable for privacy violations and data breach negligence."
+    // },
     {
         icon: FileText,
-        label: "VPPA — Video Privacy Protection Act",
+        label: "VPPA",
         id: "vppa",
         description: "Apps and publishers leaking viewing history to ad platforms. We protect your video privacy rights when companies improperly share your viewing data."
     },
     {
         icon: Shield,
-        label: "FHA — Fair Housing Act",
+        label: "FHA ",
         id: "fha",
         description: "Housing discrimination claims and violations. We fight for fair housing rights and hold landlords, property managers, and housing providers accountable."
     },
@@ -169,7 +169,7 @@ function TimelineSection() {
                 {/* Progress Bar */}
                 <div className="relative mb-16 h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
                     <motion.div
-                        className="absolute inset-y-0 left-0 right-0 bg-gradient-to-r from-blue-900 via-blue-600 to-teal-600 rounded-full"
+                        className="absolute inset-y-0 left-0 right-0 bg-linear-to-r from-blue-900 via-blue-600 to-teal-600 rounded-full"
                         initial={{ width: "0%" }}
                         animate={isInView ? { width: `${progress}%` } : { width: "0%" }}
                         transition={{ duration: 2, ease: "easeInOut" }}
@@ -312,7 +312,7 @@ function TimelineSection() {
                                 transition={{ delay: index * 0.3 + 0.5 }}
                             >
                                 <motion.div
-                                    className={`h-full bg-gradient-to-r ${step.color}`}
+                                    className={`h-full bg-linear-to-r ${step.color}`}
                                     initial={{ width: "0%" }}
                                     animate={isInView ? { width: "100%" } : { width: "0%" }}
                                     transition={{ delay: index * 0.3 + 0.8, duration: 1, ease: "easeOut" }}
@@ -358,31 +358,31 @@ export default function ConsumerLaws() {
     const area5Ref = useRef<HTMLDivElement>(null)
     const area6Ref = useRef<HTMLDivElement>(null)
 
-    const areaRefs = [area0Ref, area1Ref, area2Ref, area3Ref, area4Ref, area5Ref, area6Ref]
+    const areaRefs = [area0Ref, area1Ref, area2Ref, area3Ref, area5Ref, area6Ref]
 
     return (
-        <div className="">
+        <div className=" border border-gray-100 w-full h-fit rounded-xl bg-gray-200 shadow-2xl">
             {/* Hub and Spoke Section */}
-            <div className="flex min-h-screen items-center justify-center p-4 md:p-8">
-                <div ref={containerRef} className="relative flex h-[800px] w-full max-w-7xl items-center justify-center">
+            <div className="flex items-center justify-center p-4  w-full">
+                <div ref={containerRef} className="relative flex h-[600px] w-full  items-center justify-center">
                     {areaRefs.map((ref, index) => (
                         <AnimatedBeam
                             key={`beam-${index}`}
                             containerRef={containerRef}
                             fromRef={ref}
                             toRef={centerRef}
-                            curvature={5}
-                            duration={20}
-                            reverse={[1,2,3].includes(index) ? true : false}
-                            pathColor="oklch(0.35 0.08 240)"
+                            curvature={[0,1,2].includes(index) ? 75 : -75 }
+                            duration={5}
+                            delay={index * 0.1}
+                            reverse={[5,2].includes(index) ? true : false}
+                            pathColor="oklch(0.35 0.08 300)"
                             pathOpacity={0.2}
-                        
+
                         />
                     ))}
-
                     <Card
                         ref={centerRef}
-                        className="relative z-10 flex h-42 w-42 flex-col items-center justify-center gap-3 bg-white shadow-2xl transition-transform hover:scale-105"
+                        className="relative z-10 flex  h-42 w-42 flex-col items-center justify-center gap-3 bg-white shadow-2xl transition-transform hover:scale-105"
                     >
                         {/* <div className="text-center">
                             <div className="mb-2 text-3xl md:text-4xl font-bold tracking-tight">FL</div>
@@ -393,16 +393,32 @@ export default function ConsumerLaws() {
                     </Card>
 
                     {practiceAreas.map((area, index) => {
-                        const angle = (index * 360) / practiceAreas.length
-                        const radius = 320
-                        const x = Math.cos((angle - 90) * (Math.PI / 180)) * radius
-                        const y = Math.sin((angle - 90) * (Math.PI / 180)) * radius
+                        // Layout: 3 items in a straight line on top, 3 items in a straight line on bottom
+                        const topCount = 3
+                        const spacing = 180 // horizontal spacing between items
+                        const verticalOffset = 200 // vertical distance from center
+
+                        let x: number
+                        let y: number
+
+                        if (index < topCount) {
+                            // Top row: evenly spaced horizontally above center
+                            const position = index - (topCount - 1) / 2 // -1, 0, 1
+                            x = position * spacing
+                            y = -verticalOffset
+                        } else {
+                            // Bottom row: evenly spaced horizontally below center
+                            const bottomIndex = index - topCount
+                            const position = bottomIndex - (topCount - 1) / 2 // -1, 0, 1
+                            x = position * spacing
+                            y = verticalOffset
+                        }
 
                         return (
                             <div
                                 key={area.id}
                                 ref={areaRefs[index]}
-                                className="absolute flex flex-col items-center gap-2 transition-all duration-300 hover:scale-110"
+                                className="absolute flex flex-col items-center gap-1.5 transition-all duration-300 hover:scale-110"
                                 style={{
                                     left: `calc(50% + ${x}px)`,
                                     top: `calc(50% + ${y}px)`,
@@ -411,10 +427,10 @@ export default function ConsumerLaws() {
                             >
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        
-                                        <div className="flex flex-col items-center gap-2">
-                                            <div className="flex h-20 w-20 md:h-24 md:w-24 items-center justify-center rounded-full bg-card shadow-lg border-2 border-border hover:border-primary hover:shadow-xl transition-all cursor-help">
-                                                <area.icon className="h-8 w-8 md:h-10 md:w-10 text-primary" />
+
+                                        <div className="flex flex-col items-center gap-1.5">
+                                            <div className="flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-full bg-card shadow-lg border-2 border-border hover:border-primary hover:shadow-xl transition-all cursor-help">
+                                                <area.icon className="h-7 w-7 md:h-8 md:w-8 text-primary" />
                                             </div>
                                             <div className="space-y-2">
                                                 <h4 className="font-semibold text-sm">{area.label}</h4>
@@ -459,8 +475,8 @@ export default function ConsumerLaws() {
                                             />
                                         </div>
                                         <div className="space-y-2 relative z-10">
-                                            <h4 className="font-semibold text-base">{area.label}</h4>
-                                            <p className="text-sm text-foreground">{area.description}</p>
+                                            <h4 className="font-semibold text-lg">{area.label}</h4>
+                                            <p className="text-base text-foreground">{area.description}</p>
                                         </div>
                                     </TooltipContent>
                                 </Tooltip>

@@ -9,56 +9,22 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Phone, Mail, MapPin, Clock, Send, CheckCircle } from "lucide-react"
+import { Phone, Mail, MapPin, Clock, Send, CheckCircle, Scale, Trophy, Users, Shield } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useState } from "react"
 
-const contactSchema = z.object({
-    firstName: z.string().min(2, "First name must be at least 2 characters"),
-    lastName: z.string().min(2, "Last name must be at least 2 characters"),
-    email: z.string().email("Please enter a valid email address"),
-    phone: z.string().min(10, "Please enter a valid phone number"),
-    caseType: z.string().min(1, "Please select a case type"),
-    description: z.string().min(10, "Please provide more details about your case"),
-    urgency: z.string().min(1, "Please select urgency level"),
-    agreeToTerms: z.boolean().refine(val => val === true, "You must agree to the terms")
-})
-
-type ContactFormData = z.infer<typeof contactSchema>
-
-const caseTypes = [
-    "FCRA Violations",
-    "FDCPA Defense",
-    "TCPA Violations",
-    "Privacy & Data Breach",
-    "VPPA Violations",
-    "Fair Housing Act",
-    "Mass Arbitration",
-    "Other"
-]
-
-const urgencyLevels = [
-    "Immediate - Need help now",
-    "Urgent - Within a week",
-    "Moderate - Within a month",
-    "Not urgent - Just exploring options"
-]
+import { contactSchema, type ContactFormData, caseTypes, urgencyLevels, defaultContactValues } from "@/components/forms/contact-schema"
+import { ShineBorder } from "./shine-border"
+import SimpleContactForm from "./simple-contact-form"
+import { BorderBeam } from "./border-beam"
+import { PRIMARY_PHONE } from "@/lib/site"
 
 export default function ContactFormSection() {
     const [isSubmitted, setIsSubmitted] = useState(false)
 
     const form = useForm<ContactFormData>({
         resolver: zodResolver(contactSchema),
-        defaultValues: {
-            firstName: "",
-            lastName: "",
-            email: "",
-            phone: "",
-            caseType: "",
-            description: "",
-            urgency: "",
-            agreeToTerms: false
-        }
+        defaultValues: defaultContactValues
     })
 
     const onSubmit = (data: ContactFormData) => {
@@ -69,7 +35,7 @@ export default function ContactFormSection() {
 
     if (isSubmitted) {
         return (
-            <section className="w-full bg-gradient-to-br from-blue-50 to-teal-50 py-20">
+            <section className="w-full bg-linear-to-br from-blue-50 to-teal-50 py-20">
                 <div className="max-w-4xl mx-auto px-6">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
@@ -84,7 +50,7 @@ export default function ContactFormSection() {
                             Thank You for Reaching Out!
                         </h2>
                         <p className="text-lg text-gray-600 mb-8">
-                            We've received your case details and will contact you within 24 hours.
+                            We&apos;ve received your case details and will contact you within 24 hours.
                             Our team is reviewing your information to provide the best possible assistance.
                         </p>
                         <Button
@@ -100,32 +66,33 @@ export default function ContactFormSection() {
     }
 
     return (
-        <section className="w-full bg-gradient-to-br from-blue-50 to-teal-50 py-20">
-            <div className="max-w-7xl mx-auto px-6">
+        <section className="w-full bg-linear-to-br from-blue-50 to-teal-50 py-20">
+            <div className="w-full max-w-[95%] xl:max-w-[1400px] mx-auto px-4 sm:px-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
 
                     {/* Left Side - Information */}
                     <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className="space-y-8"
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                        className="space-y-8 w-full"
                     >
                         <div>
                             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
                                 Get Your <span className="text-blue-600">Free Case Review</span>
                             </h2>
                             <p className="text-xl text-gray-600 leading-relaxed">
-                                Don't let unfair business practices go unpunished. Our experienced team
-                                is ready to fight for your rights and recover what you're owed.
+                                Don&apos;t let unfair business practices go unpunished. Our experienced team
+                                is ready to fight for your rights and recover what you&apos;re owed.
                             </p>
                         </div>
 
                         {/* Trust Indicators */}
                         <div className="space-y-6">
                             <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <span className="text-green-600 font-bold text-lg">✓</span>
+                                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center shrink-0">
+                                    <CheckCircle className="text-blue-600 w-6 h-6" />
                                 </div>
                                 <div>
                                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Free Consultation</h3>
@@ -136,8 +103,8 @@ export default function ContactFormSection() {
                             </div>
 
                             <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <span className="text-blue-600 font-bold text-lg">⚖️</span>
+                                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center shrink-0">
+                                    <Scale className="text-blue-600 w-6 h-6" />
                                 </div>
                                 <div>
                                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Expert Legal Team</h3>
@@ -148,13 +115,25 @@ export default function ContactFormSection() {
                             </div>
 
                             <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <span className="text-purple-600 font-bold text-lg">🏆</span>
+                                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center shrink-0">
+                                    <Trophy className="text-blue-600 w-6 h-6" />
                                 </div>
                                 <div>
                                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Proven Results</h3>
                                     <p className="text-gray-600">
                                         $30M+ recovered for clients across Florida.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="flex items-start gap-4">
+                                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center shrink-0">
+                                    <Users className="text-blue-600 w-6 h-6" />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">15,000+ Cases Served</h3>
+                                    <p className="text-gray-600">
+                                        Trusted by thousands of clients statewide.
                                     </p>
                                 </div>
                             </div>
@@ -166,7 +145,7 @@ export default function ContactFormSection() {
                             <div className="space-y-3">
                                 <div className="flex items-center gap-3 text-gray-600">
                                     <Phone className="h-5 w-5 text-blue-600" />
-                                    <span>(305) 555-0123</span>
+                                    <span>{PRIMARY_PHONE}</span>
                                 </div>
                                 <div className="flex items-center gap-3 text-gray-600">
                                     <Mail className="h-5 w-5 text-blue-600" />
@@ -174,7 +153,7 @@ export default function ContactFormSection() {
                                 </div>
                                 <div className="flex items-center gap-3 text-gray-600">
                                     <MapPin className="h-5 w-5 text-blue-600" />
-                                    <span>Miami, FL</span>
+                                    <span>7593 Boynton Beach Blvd, Suite 110, Boynton Beach, FL <span className="text-gray-400 text-sm">(Main Office)</span></span>
                                 </div>
                                 <div className="flex items-center gap-3 text-gray-600">
                                     <Clock className="h-5 w-5 text-blue-600" />
@@ -186,195 +165,77 @@ export default function ContactFormSection() {
 
                     {/* Right Side - Contact Form */}
                     <motion.div
-                        initial={{ opacity: 0, x: 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.6 }}
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                        className="w-full relative"
                     >
-                        <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
-                            <CardHeader className="text-center pb-6">
-                                <CardTitle className="text-2xl font-bold text-gray-900">
-                                    Tell Us About Your Case
-                                </CardTitle>
-                                <CardDescription className="text-gray-600">
-                                    All information is confidential and protected by attorney-client privilege
-                                </CardDescription>
-                            </CardHeader>
+                        <div className="shadow-2xl w-full relative rounded-2xl  ">
+                            {/* SVG Filter Definition */}
+                            <svg style={{ display: 'none' }}>
+                                <filter id="displacementFilter">
+                                    <feTurbulence
+                                        type="turbulence"
+                                        baseFrequency="0.01"
+                                        numOctaves="2"
+                                        result="turbulence"
+                                    />
+                                    <feDisplacementMap
+                                        in="SourceGraphic"
+                                        in2="turbulence"
+                                        scale="200"
+                                        xChannelSelector="R"
+                                        yChannelSelector="G"
+                                    />
+                                </filter>
+                            </svg>
 
-                            <CardContent>
-                                <Form {...form}>
-                                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                                        {/* Name Fields */}
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <FormField
-                                                control={form.control}
-                                                name="firstName"
-                                                render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel>First Name *</FormLabel>
-                                                        <FormControl>
-                                                            <Input placeholder="John" {...field} />
-                                                        </FormControl>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                )}
-                                            />
-                                            <FormField
-                                                control={form.control}
-                                                name="lastName"
-                                                render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel>Last Name *</FormLabel>
-                                                        <FormControl>
-                                                            <Input placeholder="Doe" {...field} />
-                                                        </FormControl>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                )}
-                                            />
-                                        </div>
+                            {/* Liquid Glass Background */}
+                            <div
+                                className="absolute inset-0 w-full h-full rounded-3xl overflow-hidden"
+                                style={{
+                                    filter: 'drop-shadow(-8px -10px 46px #0000005f)',
+                                    backdropFilter: 'brightness(1.1) blur(2px)',
+                                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                                }}
+                            >
+                                <div
+                                    className="absolute inset-0 rounded-3xl"
+                                    style={{
+                                        boxShadow: 'inset 6px 6px 0px -6px rgba(255, 255, 255, 0.7), inset 0 0 8px 1px rgba(255, 255, 255, 0.7)',
+                                    }}
+                                />
+                            </div>
 
-                                        {/* Contact Fields */}
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <FormField
-                                                control={form.control}
-                                                name="email"
-                                                render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel>Email *</FormLabel>
-                                                        <FormControl>
-                                                            <Input type="email" placeholder="john@example.com" {...field} />
-                                                        </FormControl>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                )}
-                                            />
-                                            <FormField
-                                                control={form.control}
-                                                name="phone"
-                                                render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel>Phone *</FormLabel>
-                                                        <FormControl>
-                                                            <Input type="tel" placeholder="(305) 555-0123" {...field} />
-                                                        </FormControl>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                )}
-                                            />
-                                        </div>
+                            <div className="relative z-20 rounded-2xl p-6 md:p-8 bg-linear-to-br from-teal-50 to-blue-50">
+                                <BorderBeam colorFrom="#2563eb" colorTo="#3b82f6" duration={20} className="rounded-2xl" />
 
-                                        {/* Case Type */}
-                                        <FormField
-                                            control={form.control}
-                                            name="caseType"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Type of Case *</FormLabel>
-                                                    <FormControl>
-                                                        <select
-                                                            {...field}
-                                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                                        >
-                                                            <option value="">Select a case type</option>
-                                                            {caseTypes.map((type) => (
-                                                                <option key={type} value={type}>
-                                                                    {type}
-                                                                </option>
-                                                            ))}
-                                                        </select>
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
+                                <div className="flex items-center gap-3 mb-4 bg-transparent">
+                                    <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                                        <Shield className="w-6 h-6 text-blue-600" />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-2xl font-bold text-gray-900">Free Case Review</h2>
+                                        <p className="text-sm text-gray-600">Get started in minutes</p>
+                                    </div>
+                                </div>
 
-                                        {/* Urgency */}
-                                        <FormField
-                                            control={form.control}
-                                            name="urgency"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>How urgent is your case? *</FormLabel>
-                                                    <FormControl>
-                                                        <select
-                                                            {...field}
-                                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                                        >
-                                                            <option value="">Select urgency level</option>
-                                                            {urgencyLevels.map((level) => (
-                                                                <option key={level} value={level}>
-                                                                    {level}
-                                                                </option>
-                                                            ))}
-                                                        </select>
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
+                                <p className="text-gray-600 mb-6 leading-relaxed">
+                                    Tell us about your situation. Our experienced consumer law attorneys will review your case at no cost. <strong className="text-white">No fees unless we win.</strong>
+                                </p>
 
-                                        {/* Description */}
-                                        <FormField
-                                            control={form.control}
-                                            name="description"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Case Details *</FormLabel>
-                                                    <FormControl>
-                                                        <Textarea
-                                                            placeholder="Please describe your situation in detail. Include dates, companies involved, and any documentation you have..."
-                                                            className="min-h-[120px]"
-                                                            {...field}
-                                                        />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
+                                <SimpleContactForm />
 
-                                        {/* Terms Agreement */}
-                                        <FormField
-                                            control={form.control}
-                                            name="agreeToTerms"
-                                            render={({ field }) => (
-                                                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                                                    <FormControl>
-                                                        <input
-                                                            type="checkbox"
-                                                            checked={field.value}
-                                                            onChange={field.onChange}
-                                                            className="mt-1"
-                                                        />
-                                                    </FormControl>
-                                                    <div className="space-y-1 leading-none">
-                                                        <FormLabel className="text-sm text-gray-600">
-                                                            I agree to the{" "}
-                                                            <a href="#terms" className="text-blue-600 hover:underline">
-                                                                Terms of Service
-                                                            </a>{" "}
-                                                            and{" "}
-                                                            <a href="#privacy" className="text-blue-600 hover:underline">
-                                                                Privacy Policy
-                                                            </a>
-                                                        </FormLabel>
-                                                        <FormMessage />
-                                                    </div>
-                                                </FormItem>
-                                            )}
-                                        />
+                                <div className="mt-6 pt-6 border-t border-white/20">
+                                    <div className="flex items-center gap-3 text-sm text-gray-600">
+                                        <Phone className="w-4 h-4 text-blue-600" />
+                                        <span>Prefer to talk? Call <a href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`} className="text-blue-600 hover:underline font-semibold">{PRIMARY_PHONE}</a></span>
+                                    </div>
+                                </div>
+                            </div>
 
-                                        {/* Submit Button */}
-                                        <Button
-                                            type="submit"
-                                            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-lg font-semibold rounded-xl transition-all duration-200 hover:scale-105"
-                                        >
-                                            <Send className="w-5 h-5 mr-2" />
-                                            Get Free Case Review
-                                        </Button>
-                                    </form>
-                                </Form>
-                            </CardContent>
-                        </Card>
+                        </div>
                     </motion.div>
                 </div>
             </div>

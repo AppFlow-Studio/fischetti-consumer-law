@@ -198,3 +198,21 @@ export function validatePhoneNumber(phone: string): boolean {
     const result = formatPhone(phone);
     return result.isValid && !result.isBot;
 }
+
+/**
+ * Converts phone number to E.164 format for enhanced conversions
+ * Input: Any phone format (e.g., "(561) 264-7211" or "5612647211")
+ * Output: "+15612647211" or empty string if invalid
+ */
+export function formatPhoneToE164(phone: string): string {
+    const digits = extractDigits(phone);
+    
+    // Must be 10 digits for US numbers
+    if (digits.length !== 10) return '';
+    
+    // Validate using existing isValidAmericanPhone
+    if (!isValidAmericanPhone(phone)) return '';
+    
+    // Return E.164 format: +1 + 10 digits
+    return `+1${digits}`;
+}
