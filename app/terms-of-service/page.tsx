@@ -265,7 +265,7 @@ export default function TermsOfServicePage() {
                                 </p>
                                 <div className="space-y-2 text-gray-700">
                                     <p><strong>Fischetti Law Group</strong></p>
-                                    <p>Email: <a href="mailto:info@fischettilaw.com" className="text-blue-600 hover:underline">info@fischettilaw.com</a></p>
+                                    <p>Email: <a href="mailto:info@consumerlawflorida.com" className="text-blue-600 hover:underline">info@consumerlawflorida.com</a></p>
                                     <p>Phone: <a href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`} className="text-blue-600 hover:underline">{PRIMARY_PHONE}</a></p>
                                 </div>
                             </div>

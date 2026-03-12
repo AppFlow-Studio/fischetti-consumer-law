@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import { useForm } from "react-hook-form"
+import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Button } from "@/components/ui/button"
@@ -21,6 +22,7 @@ import { PRIMARY_PHONE } from "@/lib/site"
 
 export default function ContactFormSection() {
     const [isSubmitted, setIsSubmitted] = useState(false)
+    const router = useRouter()
 
     const form = useForm<ContactFormData>({
         resolver: zodResolver(contactSchema),
@@ -29,8 +31,7 @@ export default function ContactFormSection() {
 
     const onSubmit = (data: ContactFormData) => {
         console.log("Form submitted:", data)
-        setIsSubmitted(true)
-        // Here you would typically send the data to your backend
+        router.push(`/thank-you?name=${encodeURIComponent(data.firstName)}`)
     }
 
     if (isSubmitted) {
@@ -149,7 +150,7 @@ export default function ContactFormSection() {
                                 </div>
                                 <div className="flex items-center gap-3 text-gray-600">
                                     <Mail className="h-5 w-5 text-blue-600" />
-                                    <span>info@fischettilaw.com</span>
+                                    <span>info@consumerlawflorida.com</span>
                                 </div>
                                 <div className="flex items-center gap-3 text-gray-600">
                                     <MapPin className="h-5 w-5 text-blue-600" />

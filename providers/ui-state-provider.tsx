@@ -7,6 +7,8 @@ type UIStateContextType = {
     setIsSidebarOpen: (open: boolean) => void
     isDialogOpen: boolean
     setIsDialogOpen: (open: boolean) => void
+    openDialogRequest: boolean
+    setOpenDialogRequest: (open: boolean) => void
 }
 
 const UIStateContext = createContext<UIStateContextType | undefined>(undefined)
@@ -14,9 +16,10 @@ const UIStateContext = createContext<UIStateContextType | undefined>(undefined)
 export function UIStateProvider({ children }: { children: ReactNode }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const [isDialogOpen, setIsDialogOpen] = useState(false)
+    const [openDialogRequest, setOpenDialogRequest] = useState(false)
 
     return (
-        <UIStateContext.Provider value={{ isSidebarOpen, setIsSidebarOpen, isDialogOpen, setIsDialogOpen }}>
+        <UIStateContext.Provider value={{ isSidebarOpen, setIsSidebarOpen, isDialogOpen, setIsDialogOpen, openDialogRequest, setOpenDialogRequest }}>
             {children}
         </UIStateContext.Provider>
     )
@@ -29,4 +32,3 @@ export function useUIState() {
     }
     return context
 }
-

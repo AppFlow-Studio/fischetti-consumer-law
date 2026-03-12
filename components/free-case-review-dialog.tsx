@@ -18,24 +18,32 @@ import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
 import { PRIMARY_PHONE } from "@/lib/site"
 
 type FreeCaseReviewDialogProps = {
-    children: React.ReactNode
+    children?: React.ReactNode
     defaultOpen?: boolean
+    respondToOpenRequest?: boolean
 }
 
-export default function FreeCaseReviewDialog({ children, defaultOpen = false }: FreeCaseReviewDialogProps) {
+export default function FreeCaseReviewDialog({ children, defaultOpen = false, respondToOpenRequest = false }: FreeCaseReviewDialogProps) {
     const [open, setOpen] = useState(defaultOpen)
     const [errorMessage, setErrorMessage] = useState("")
     const [isPending, startTransition] = useTransition()
-    const { setIsDialogOpen } = useUIState()
+    const { setIsDialogOpen, openDialogRequest, setOpenDialogRequest } = useUIState()
     const router = useRouter()
-    const form = useForm<ContactFormData>({ 
-        resolver: zodResolver(contactSchema), 
-        defaultValues: defaultContactValues 
+    const form = useForm<ContactFormData>({
+        resolver: zodResolver(contactSchema),
+        defaultValues: defaultContactValues
     })
 
     useEffect(() => {
         setIsDialogOpen(open)
     }, [open, setIsDialogOpen])
+
+    useEffect(() => {
+        if (respondToOpenRequest && openDialogRequest) {
+            setOpen(true)
+            setOpenDialogRequest(false)
+        }
+    }, [respondToOpenRequest, openDialogRequest, setOpenDialogRequest])
 
     const onSubmit = async (values: ContactFormData) => {
         setErrorMessage("")
@@ -121,9 +129,11 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                {children}
-            </DialogTrigger>
+            {children && (
+                <DialogTrigger asChild>
+                    {children}
+                </DialogTrigger>
+            )}
             <DialogContent className="w-[95vw] max-w-lg rounded-2xl border-0 bg-white/95 backdrop-blur-md shadow-2xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader className="px-1">
                     <DialogTitle className="text-xl sm:text-2xl font-bold text-gray-900">Free Case Review</DialogTitle>

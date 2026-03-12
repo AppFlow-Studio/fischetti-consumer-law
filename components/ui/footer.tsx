@@ -70,7 +70,7 @@ export default function Footer() {
                             </div>
                             <div className="flex items-center gap-3 text-white">
                                 <Mail className="h-4 w-4 text-white" />
-                                <span className="text-sm">info@fischettilaw.com</span>
+                                <span className="text-sm">info@consumerlawflorida.com</span>
                             </div>
                             <div className="flex items-center gap-3 text-white">
                                 <MapPin className="h-4 w-4 text-white" />
