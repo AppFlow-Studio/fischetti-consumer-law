@@ -9,7 +9,6 @@ import {
     MapPin,
     Clock,
     Facebook,
-    Twitter,
     Linkedin,
     Instagram
 } from "lucide-react"
@@ -38,10 +37,9 @@ export default function Footer() {
     ]
 
     const socialLinks = [
-        { name: "Facebook", icon: Facebook, href: "#" },
-        { name: "Twitter", icon: Twitter, href: "#" },
-        { name: "LinkedIn", icon: Linkedin, href: "#" },
-        { name: "Instagram", icon: Instagram, href: "#" },
+        { name: "Facebook", icon: Facebook, href: "https://www.facebook.com/people/Consumer-Law-Florida/61587398162793/" },
+        { name: "LinkedIn", icon: Linkedin, href: "https://www.linkedin.com/company/consumer-law-florida/" },
+        { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/consumerlawflorida/" },
     ]
 
     return (
@@ -144,6 +142,9 @@ export default function Footer() {
                                     <motion.a
                                         key={index}
                                         href={social.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label={social.name}
                                         className="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition-colors"
                                         whileHover={{ scale: 1.1 }}
                                         whileTap={{ scale: 0.95 }}
