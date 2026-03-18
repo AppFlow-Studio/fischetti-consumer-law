@@ -13,7 +13,7 @@ import {
     Linkedin,
     Instagram
 } from "lucide-react"
-import { PRIMARY_PHONE, PRIMARY_EMAIL, SITE_NAME } from "@/lib/site"
+import { PRIMARY_PHONE, PRIMARY_PHONE_E164, PRIMARY_EMAIL, SITE_NAME } from "@/lib/site"
 
 export default function Footer() {
     const currentYear = new Date().getFullYear()
@@ -45,7 +45,7 @@ export default function Footer() {
     ]
 
     return (
-        <footer className="text-white border-t border-white/20" style={{ backgroundColor: '#0974a4' }}>
+        <footer className="text-white" style={{ background: 'linear-gradient(to bottom, #051937, #020b16)' }}>
             {/* Main Footer Content */}
             <div className="max-w-7xl mx-auto px-6 sm:py-16 py-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -65,12 +65,12 @@ export default function Footer() {
                         {/* Contact Info */}
                         <div className="space-y-3">
                             <div className="flex items-center gap-3 text-white">
-                                <Phone className="h-4 w-4 text-white" />
-                                <span className="text-sm">{PRIMARY_PHONE}</span>
+                                <Phone className="h-4 w-4 text-white shrink-0" />
+                                <a href={`tel:${PRIMARY_PHONE_E164}`} className="text-sm hover:underline">{PRIMARY_PHONE}</a>
                             </div>
                             <div className="flex items-center gap-3 text-white">
-                                <Mail className="h-4 w-4 text-white" />
-                                <span className="text-sm">info@consumerlawflorida.com</span>
+                                <Mail className="h-4 w-4 text-white shrink-0" />
+                                <a href={`mailto:${PRIMARY_EMAIL}`} className="text-sm hover:underline">{PRIMARY_EMAIL}</a>
                             </div>
                             <div className="flex items-center gap-3 text-white">
                                 <MapPin className="h-4 w-4 text-white" />
