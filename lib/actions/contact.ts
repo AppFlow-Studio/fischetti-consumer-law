@@ -5,6 +5,7 @@ import { headers } from "next/headers"
 import { contactSchema, type ContactFormData } from "@/components/forms/contact-schema"
 import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
 import { PRIMARY_PHONE } from "@/lib/site"
+import { logLead } from "@/lib/logLead"
 import { ClientConfirmationEmail } from "@/emails/client-confirmation"
 import { OfficeNotificationEmail } from "@/emails/office-notification"
 import { createElement } from "react"
@@ -158,6 +159,26 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactF
             firstName: formData.firstName,
             lastName: formData.lastName,
             zip: formData.zip,
+        })
+
+        // Log lead to Supabase — wrapped in try/catch inside logLead, never throws
+        await logLead({
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            email: formData.email,
+            phone: formData.phone,
+            zip: formData.zip,
+            case_type: formData.caseType,
+            description: formData.description,
+            urgency: formData.urgency,
+            form_source: formData.form_source || "free-case-review",
+            gclid: formData.gclid,
+            utm_source: formData.utm_source,
+            utm_medium: formData.utm_medium,
+            utm_campaign: formData.utm_campaign,
+            utm_term: formData.utm_term,
+            utm_content: formData.utm_content,
+            email_sent: clientSuccess || officeSuccess,
         })
 
         return {

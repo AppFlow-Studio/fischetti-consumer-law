@@ -10,7 +10,7 @@ import { Shield, CheckCircle, Phone } from "lucide-react"
 import Link from "next/link"
 import HeroBarTrans from "@/components/hero-bar-trans"
 import { Marquee } from "@/components/ui/marquee"
-import { SITE_URL, SITE_NAME, PRIMARY_PHONE } from "@/lib/site"
+import { SITE_URL, SITE_NAME, PRIMARY_PHONE, PRIMARY_PHONE_E164 } from "@/lib/site"
 import SeoInsightBlock from "@/components/sections/SeoInsightBlock"
 import { LAW_CONTENT_MAP } from "@/lib/lawSectionContent"
 import { buildMetadata } from "@/lib/seo/metadata"
@@ -670,7 +670,7 @@ export default async function ConsumerLawDetailsPage({ params }: { params: Promi
                                 <div className="mt-6 pt-6 border-t border-gray-200">
                                     <div className="flex items-center gap-3 text-sm text-gray-600">
                                         <Phone className="w-4 h-4 text-blue-600" />
-                                        <span>Prefer to talk? Call <a href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`} className="text-blue-600 hover:underline font-semibold">{PRIMARY_PHONE}</a></span>
+                                        <span>Prefer to talk? Call <a href={`tel:${PRIMARY_PHONE_E164}`} className="text-blue-600 hover:underline font-semibold">{PRIMARY_PHONE}</a></span>
                                     </div>
                                 </div>
                             </Card>

@@ -5,7 +5,7 @@ import { Phone, Mail, ArrowRight, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
-import { PRIMARY_PHONE } from "@/lib/site"
+import { PRIMARY_PHONE, PRIMARY_PHONE_E164 } from "@/lib/site"
 import { Suspense } from "react"
 import Image from "next/image"
 
@@ -174,7 +174,7 @@ function ThankYouContent() {
 
                             <div className="space-y-4">
                                 <a
-                                    href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`}
+                                    href={`tel:${PRIMARY_PHONE_E164}`}
                                     className="flex items-center gap-4 p-4 bg-white rounded-lg border border-slate-200 hover:border-slate-300 transition-colors group"
                                 >
                                     <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center group-hover:bg-blue-700 transition-colors">

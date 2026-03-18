@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FileText, Scale, AlertCircle, CheckCircle, Mail, Gavel } from "lucide-react";
-import { SITE_NAME, SITE_URL, PRIMARY_PHONE } from "@/lib/site";
+import { SITE_NAME, SITE_URL, PRIMARY_PHONE, PRIMARY_PHONE_E164 } from "@/lib/site";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = buildMetadata({
@@ -266,7 +266,7 @@ export default function TermsOfServicePage() {
                                 <div className="space-y-2 text-gray-700">
                                     <p><strong>Fischetti Law Group</strong></p>
                                     <p>Email: <a href="mailto:info@consumerlawflorida.com" className="text-blue-600 hover:underline">info@consumerlawflorida.com</a></p>
-                                    <p>Phone: <a href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`} className="text-blue-600 hover:underline">{PRIMARY_PHONE}</a></p>
+                                    <p>Phone: <a href={`tel:${PRIMARY_PHONE_E164}`} className="text-blue-600 hover:underline">{PRIMARY_PHONE}</a></p>
                                 </div>
                             </div>
                         </div>

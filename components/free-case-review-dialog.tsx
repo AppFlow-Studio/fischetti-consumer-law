@@ -15,7 +15,8 @@ import { contactSchema, defaultContactValues, caseTypes, urgencyLevels, type Con
 import { submitContactForm } from "@/lib/actions/contact"
 import { Loader2, AlertCircle } from "lucide-react"
 import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
-import { PRIMARY_PHONE } from "@/lib/site"
+import { PRIMARY_PHONE, PRIMARY_PHONE_E164 } from "@/lib/site"
+import { getAttributionData } from "@/lib/gclid"
 
 type FreeCaseReviewDialogProps = {
     children?: React.ReactNode
@@ -60,7 +61,12 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
         
         startTransition(async () => {
             try {
-                const result = await submitContactForm(values)
+                const attribution = getAttributionData()
+                const result = await submitContactForm({
+                    ...values,
+                    ...attribution,
+                    form_source: "free-case-review-dialog",
+                })
 
                 // Handle geo-blocking redirect
                 if (result.blocked && result.redirect) {
@@ -138,7 +144,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                 <DialogHeader className="px-1">
                     <DialogTitle className="text-xl sm:text-2xl font-bold text-gray-900">Free Case Review</DialogTitle>
                     <DialogDescription className="text-sm text-gray-600 mt-1">
-                        Tell us about your consumer law issue. We&apos;ll review and reach out within 24 hours. Prefer to talk now? Call <a href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`} className="text-blue-600 underline">{PRIMARY_PHONE}</a>.
+                        Tell us about your consumer law issue. We&apos;ll review and reach out within 24 hours. Prefer to talk now? Call <a href={`tel:${PRIMARY_PHONE_E164}`} className="text-blue-600 underline">{PRIMARY_PHONE}</a>.
                     </DialogDescription>
                 </DialogHeader>
 
@@ -152,7 +158,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                                 <div>
                                     <p className="text-red-800 font-medium text-xs">{errorMessage}</p>
                                     <p className="text-red-600 text-xs mt-0.5">
-                                        Or call: <a href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`} className="font-semibold underline">{PRIMARY_PHONE}</a>
+                                        Or call: <a href={`tel:${PRIMARY_PHONE_E164}`} className="font-semibold underline">{PRIMARY_PHONE}</a>
                                     </p>
                                 </div>
                             </div>

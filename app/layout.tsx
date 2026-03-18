@@ -12,6 +12,7 @@ import ClickTracking from "@/components/analytics/ClickTracking";
 import { SITE_NAME, SITE_URL, PRIMARY_PHONE, PRIMARY_EMAIL, STATE_SERVE, SERVE_STATEMENT, GTM_ID } from "@/lib/site"
 import AutoOpenDialog from "@/components/auto-open-dialog";
 import FreeCaseReviewDialog from "@/components/free-case-review-dialog";
+import GclidCapture from "@/components/GclidCapture";
 
 const openSans = Open_Sans({
   variable: "--font-open-sans",
@@ -209,6 +210,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
+        <GclidCapture />
         <MapProvider>
           <UIStateProvider>
             <AutoOpenDialog />

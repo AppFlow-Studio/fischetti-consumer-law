@@ -15,6 +15,14 @@ export const contactSchema = z.object({
     urgency: z.string().min(1, "Please select urgency level"),
     // Always true - consent is given by submitting the form (stated in form text)
     agreeToTerms: z.boolean(),
+    // Attribution fields — optional, captured from URL params / sessionStorage
+    gclid: z.string().optional(),
+    utm_source: z.string().optional(),
+    utm_medium: z.string().optional(),
+    utm_campaign: z.string().optional(),
+    utm_term: z.string().optional(),
+    utm_content: z.string().optional(),
+    form_source: z.string().optional(),
 })
 
 export type ContactFormData = z.infer<typeof contactSchema>
