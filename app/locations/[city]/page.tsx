@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import { SITE_NAME, SITE_URL, SERVE_STATEMENT, STATE_SERVE, PRIMARY_PHONE, PRIMARY_EMAIL } from "@/lib/site"
+import { SITE_NAME, SITE_URL, SERVE_STATEMENT, STATE_SERVE, PRIMARY_PHONE, PRIMARY_EMAIL, PRIMARY_PHONE_E164 } from "@/lib/site"
 import { firmsBySlug } from "@/data/firms"
 import HeroBarTrans from "@/components/hero-bar-trans"
 import { Marquee } from "@/components/ui/marquee"
