@@ -2,14 +2,17 @@ import type { Metadata } from "next";
 import { Open_Sans, Playfair_Display } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
-import Navbar from "@/components/navbar";
+import NavbarWrapper from "@/components/navbar-wrapper";
 import Footer from "@/components/ui/footer";
 import FreeCaseReviewFABWrapper from "@/components/free-case-review-fab-wrapper";
 import { MapProvider } from "@/providers/map-provider";
 import { UIStateProvider } from "@/providers/ui-state-provider";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import ClickTracking from "@/components/analytics/ClickTracking";
-import { SITE_NAME, SITE_URL, PRIMARY_PHONE, PRIMARY_EMAIL, STATE_SERVE, SERVE_STATEMENT, GTM_ID } from "@/lib/site";
+import { SITE_NAME, SITE_URL, PRIMARY_PHONE, PRIMARY_EMAIL, STATE_SERVE, SERVE_STATEMENT, GTM_ID } from "@/lib/site"
+import AutoOpenDialog from "@/components/auto-open-dialog";
+import FreeCaseReviewDialog from "@/components/free-case-review-dialog";
+import GclidCapture from "@/components/GclidCapture";
 
 const openSans = Open_Sans({
   variable: "--font-open-sans",
@@ -207,9 +210,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
+        <GclidCapture />
         <MapProvider>
           <UIStateProvider>
-            <Navbar />
+            <AutoOpenDialog />
+            <FreeCaseReviewDialog respondToOpenRequest={true} />
+            <NavbarWrapper />
             {children}
             <Footer />
             <FreeCaseReviewFABWrapper />

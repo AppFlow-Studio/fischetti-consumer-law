@@ -12,7 +12,7 @@ import FreeCaseReviewDialog from "./free-case-review-dialog"
 import { usePathname, useRouter } from "next/navigation"
 import { officeLocations } from "@/data/office-locations"
 import { firms } from "@/data/firms"
-import { PRIMARY_PHONE } from "@/lib/site"
+import { PRIMARY_PHONE, PRIMARY_PHONE_E164 } from "@/lib/site"
 import { useUIState } from "@/providers/ui-state-provider"
 
 // Animated Hamburger Icon Component
@@ -67,6 +67,7 @@ export default function Navbar({ className }: NavbarProps) {
     const isLocationsIndexPage = pathname === "/locations"
     const isConsumerLawPage = pathname?.startsWith("/consumer-law/")
     const isLocationsPage = pathname?.startsWith("/locations/")
+    const isBlogListingPage = pathname === "/blog"
     const isBlogPage = pathname === "/blog" || pathname?.startsWith("/blog/")
    
     const router = useRouter()
@@ -74,12 +75,8 @@ export default function Navbar({ className }: NavbarProps) {
     const hoverTimer = useRef<NodeJS.Timeout | null>(null)
 
     useEffect(() => {
-        if (!isHome && !isConsumerLawPage && !isLocationsIndexPage && !isLocationsPage && !isBlogPage) {
-            // Other pages (not home, not consumer law, not locations, not blog) use dark logo and black text by default
-            setScrolled(true)
-            return
-        }
-        if (isBlogPage) {
+        if (!isHome && !isConsumerLawPage && !isLocationsIndexPage && !isLocationsPage && !isBlogListingPage) {
+            // Other pages (not home, not consumer law, not locations, not blog listing) use dark logo and black text by default
             setScrolled(true)
             return
         }
@@ -123,13 +120,23 @@ export default function Navbar({ className }: NavbarProps) {
                     const threshold = typeof window !== 'undefined' ? window.innerHeight * 0.85 : 0
                     setScrolled(window.scrollY > threshold)
                 }
+            } else if (isBlogListingPage) {
+                // Blog listing page: transition after the hero section
+                const heroSection = document.getElementById('blog-listing-hero')
+                if (heroSection) {
+                    const threshold = heroSection.offsetTop + heroSection.offsetHeight - 50
+                    setScrolled(window.scrollY > threshold)
+                } else {
+                    const threshold = typeof window !== 'undefined' ? window.innerHeight * 0.5 : 0
+                    setScrolled(window.scrollY > threshold)
+                }
             }
         }
 
         onScroll()
         window.addEventListener('scroll', onScroll, { passive: true })
         return () => window.removeEventListener('scroll', onScroll)
-    }, [isHome, isConsumerLawPage, isLocationsPage, isBlogPage])
+    }, [isHome, isConsumerLawPage, isLocationsPage, isBlogPage, isBlogListingPage, isLocationsIndexPage])
 
     const linkClass = scrolled ? "text-black/90 hover:text-black font-medium text-[15px] leading-[140%] tracking-[-0.15px] hover:opacity-80 transition-all duration-[250ms] ease-[cubic-bezier(0.4,0,0.2,1)] font-af " : "text-white/90 hover:text-white font-medium text-[15px] leading-[140%] tracking-[-0.15px] hover:opacity-80 transition-all duration-[250ms] ease-[cubic-bezier(0.4,0,0.2,1)] font-af "
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen)
@@ -438,7 +445,7 @@ export default function Navbar({ className }: NavbarProps) {
                             {/* Divider */}
                             <span className={cn("hidden md:block  h-6 w-px", scrolled ? "bg-black/30" : "bg-white/30")} />
                             {/* Phone */}
-                            <a href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`} className={cn(linkClass, "items-center gap-2 md:inline-flex  hidden transition-colors")}>
+                            <a href={`tel:${PRIMARY_PHONE_E164}`} className={cn(linkClass, "items-center gap-2 md:inline-flex  hidden transition-colors")}>
                                 <Phone className="w-5 h-5" />
                                 <span>{PRIMARY_PHONE}</span>
                             </a>
@@ -582,7 +589,7 @@ export default function Navbar({ className }: NavbarProps) {
 
                             <motion.a
                                 variants={itemVariants}
-                                href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`}
+                                href={`tel:${PRIMARY_PHONE_E164}`}
                                 className="w-full mt-6 inline-flex items-center justify-center rounded-full bg-blue-600 text-white py-3 font-semibold"
                                 onClick={closeSidebar}
                                 whileTap={{ scale: 0.98 }}

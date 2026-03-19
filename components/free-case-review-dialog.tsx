@@ -15,27 +15,36 @@ import { contactSchema, defaultContactValues, caseTypes, urgencyLevels, type Con
 import { submitContactForm } from "@/lib/actions/contact"
 import { Loader2, AlertCircle } from "lucide-react"
 import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
-import { PRIMARY_PHONE } from "@/lib/site"
+import { PRIMARY_PHONE, PRIMARY_PHONE_E164 } from "@/lib/site"
+import { getAttributionData } from "@/lib/gclid"
 
 type FreeCaseReviewDialogProps = {
-    children: React.ReactNode
+    children?: React.ReactNode
     defaultOpen?: boolean
+    respondToOpenRequest?: boolean
 }
 
-export default function FreeCaseReviewDialog({ children, defaultOpen = false }: FreeCaseReviewDialogProps) {
+export default function FreeCaseReviewDialog({ children, defaultOpen = false, respondToOpenRequest = false }: FreeCaseReviewDialogProps) {
     const [open, setOpen] = useState(defaultOpen)
     const [errorMessage, setErrorMessage] = useState("")
     const [isPending, startTransition] = useTransition()
-    const { setIsDialogOpen } = useUIState()
+    const { setIsDialogOpen, openDialogRequest, setOpenDialogRequest } = useUIState()
     const router = useRouter()
-    const form = useForm<ContactFormData>({ 
-        resolver: zodResolver(contactSchema), 
-        defaultValues: defaultContactValues 
+    const form = useForm<ContactFormData>({
+        resolver: zodResolver(contactSchema),
+        defaultValues: defaultContactValues
     })
 
     useEffect(() => {
         setIsDialogOpen(open)
     }, [open, setIsDialogOpen])
+
+    useEffect(() => {
+        if (respondToOpenRequest && openDialogRequest) {
+            setOpen(true)
+            setOpenDialogRequest(false)
+        }
+    }, [respondToOpenRequest, openDialogRequest, setOpenDialogRequest])
 
     const onSubmit = async (values: ContactFormData) => {
         setErrorMessage("")
@@ -52,7 +61,12 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
         
         startTransition(async () => {
             try {
-                const result = await submitContactForm(values)
+                const attribution = getAttributionData()
+                const result = await submitContactForm({
+                    ...values,
+                    ...attribution,
+                    form_source: "free-case-review-dialog",
+                })
 
                 // Handle geo-blocking redirect
                 if (result.blocked && result.redirect) {
@@ -121,14 +135,16 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                {children}
-            </DialogTrigger>
+            {children && (
+                <DialogTrigger asChild>
+                    {children}
+                </DialogTrigger>
+            )}
             <DialogContent className="w-[95vw] max-w-lg rounded-2xl border-0 bg-white/95 backdrop-blur-md shadow-2xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader className="px-1">
                     <DialogTitle className="text-xl sm:text-2xl font-bold text-gray-900">Free Case Review</DialogTitle>
                     <DialogDescription className="text-sm text-gray-600 mt-1">
-                        Tell us about your consumer law issue. We&apos;ll review and reach out within 24 hours. Prefer to talk now? Call <a href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`} className="text-blue-600 underline">{PRIMARY_PHONE}</a>.
+                        Tell us about your consumer law issue. We&apos;ll review and reach out within 24 hours. Prefer to talk now? Call <a href={`tel:${PRIMARY_PHONE_E164}`} className="text-blue-600 underline">{PRIMARY_PHONE}</a>.
                     </DialogDescription>
                 </DialogHeader>
 
@@ -142,7 +158,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false }: 
                                 <div>
                                     <p className="text-red-800 font-medium text-xs">{errorMessage}</p>
                                     <p className="text-red-600 text-xs mt-0.5">
-                                        Or call: <a href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`} className="font-semibold underline">{PRIMARY_PHONE}</a>
+                                        Or call: <a href={`tel:${PRIMARY_PHONE_E164}`} className="font-semibold underline">{PRIMARY_PHONE}</a>
                                     </p>
                                 </div>
                             </div>

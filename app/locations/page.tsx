@@ -129,7 +129,7 @@ export default function LocationsPage() {
                                             <FreeCaseReview className="w-full sm:w-[260px] rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 text-lg font-semibold shadow-xl h-[56px] flex items-center justify-center" />
                                         </FreeCaseReviewDialog>
                                         <a
-                                            href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`}
+                                            href={`tel:${PRIMARY_PHONE_E164}`}
                                             className="w-full sm:w-[260px] inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur-sm px-6 py-4 text-lg font-semibold text-white hover:bg-white/20 transition-colors whitespace-nowrap h-[56px]"
                                         >
                                             <Phone className="w-5 h-5 shrink-0" />
@@ -399,7 +399,7 @@ export default function LocationsPage() {
                                     Get Your Free Case Review
                                 </a>
                                 <a
-                                    href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`}
+                                    href={`tel:${PRIMARY_PHONE_E164}`}
                                     className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-gray-300 hover:border-gray-400 text-gray-700 px-8 py-4 text-lg font-semibold transition-colors"
                                 >
                                     <Phone className="w-5 h-5" />

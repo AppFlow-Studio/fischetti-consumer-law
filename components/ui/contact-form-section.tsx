@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import { useForm } from "react-hook-form"
+import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Button } from "@/components/ui/button"
@@ -17,10 +18,11 @@ import { contactSchema, type ContactFormData, caseTypes, urgencyLevels, defaultC
 import { ShineBorder } from "./shine-border"
 import SimpleContactForm from "./simple-contact-form"
 import { BorderBeam } from "./border-beam"
-import { PRIMARY_PHONE } from "@/lib/site"
+import { PRIMARY_PHONE, PRIMARY_PHONE_E164, PRIMARY_EMAIL } from "@/lib/site"
 
 export default function ContactFormSection() {
     const [isSubmitted, setIsSubmitted] = useState(false)
+    const router = useRouter()
 
     const form = useForm<ContactFormData>({
         resolver: zodResolver(contactSchema),
@@ -29,8 +31,7 @@ export default function ContactFormSection() {
 
     const onSubmit = (data: ContactFormData) => {
         console.log("Form submitted:", data)
-        setIsSubmitted(true)
-        // Here you would typically send the data to your backend
+        router.push(`/thank-you?name=${encodeURIComponent(data.firstName)}`)
     }
 
     if (isSubmitted) {
@@ -144,12 +145,12 @@ export default function ContactFormSection() {
                             <h3 className="text-lg font-semibold text-gray-900 mb-4">Get in Touch</h3>
                             <div className="space-y-3">
                                 <div className="flex items-center gap-3 text-gray-600">
-                                    <Phone className="h-5 w-5 text-blue-600" />
-                                    <span>{PRIMARY_PHONE}</span>
+                                    <Phone className="h-5 w-5 text-blue-600 shrink-0" />
+                                    <a href={`tel:${PRIMARY_PHONE_E164}`} className="hover:text-blue-600 hover:underline transition-colors">{PRIMARY_PHONE}</a>
                                 </div>
                                 <div className="flex items-center gap-3 text-gray-600">
-                                    <Mail className="h-5 w-5 text-blue-600" />
-                                    <span>info@fischettilaw.com</span>
+                                    <Mail className="h-5 w-5 text-blue-600 shrink-0" />
+                                    <a href={`mailto:${PRIMARY_EMAIL}`} className="hover:text-blue-600 hover:underline transition-colors">{PRIMARY_EMAIL}</a>
                                 </div>
                                 <div className="flex items-center gap-3 text-gray-600">
                                     <MapPin className="h-5 w-5 text-blue-600" />
@@ -230,7 +231,7 @@ export default function ContactFormSection() {
                                 <div className="mt-6 pt-6 border-t border-white/20">
                                     <div className="flex items-center gap-3 text-sm text-gray-600">
                                         <Phone className="w-4 h-4 text-blue-600" />
-                                        <span>Prefer to talk? Call <a href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`} className="text-blue-600 hover:underline font-semibold">{PRIMARY_PHONE}</a></span>
+                                        <span>Prefer to talk? Call <a href={`tel:${PRIMARY_PHONE_E164}`} className="text-blue-600 hover:underline font-semibold">{PRIMARY_PHONE}</a></span>
                                     </div>
                                 </div>
                             </div>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { Phone, Home } from "lucide-react"
-import { PRIMARY_PHONE } from "@/lib/site"
+import { PRIMARY_PHONE, PRIMARY_PHONE_E164 } from "@/lib/site"
 
 export const metadata: Metadata = {
     title: "Form Unavailable | Consumer Law Florida",
@@ -31,7 +31,7 @@ export default function UnavailablePage() {
                     </p>
                     <div className="flex flex-col sm:flex-row gap-3 justify-center">
                         <a
-                            href={`tel:${PRIMARY_PHONE.replace(/[^0-9]/g, "")}`}
+                            href={`tel:${PRIMARY_PHONE_E164}`}
                             className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 font-semibold transition-colors"
                         >
                             <Phone className="w-5 h-5" />
