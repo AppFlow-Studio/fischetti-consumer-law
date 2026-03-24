@@ -11,12 +11,28 @@ type BlogTableOfContentsProps = {
   contentHtml: string
 }
 
+function decodeHtmlEntities(str: string): string {
+  let result = str
+  let prev: string
+  do {
+    prev = result
+    result = result
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&apos;/g, "'")
+  } while (result !== prev)
+  return result
+}
+
 function parseHeadings(html: string): Heading[] {
   const matches = Array.from(html.matchAll(/<h2[^>]*\sid="([^"]+)"[^>]*>(.*?)<\/h2>/gi))
   return matches
     .map((m) => ({
       id: m[1],
-      text: m[2].replace(/<[^>]*>/g, "").trim(),
+      text: decodeHtmlEntities(m[2].replace(/<[^>]*>/g, "").trim()),
     }))
     .filter((h) => h.id && h.text)
 }

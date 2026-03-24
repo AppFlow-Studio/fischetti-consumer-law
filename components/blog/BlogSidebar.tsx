@@ -11,9 +11,25 @@ import type { BlogPostPreview } from "@/types/blog"
 
 type Heading = { id: string; text: string }
 
+function decodeHtmlEntities(str: string): string {
+  let result = str
+  let prev: string
+  do {
+    prev = result
+    result = result
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&apos;/g, "'")
+  } while (result !== prev)
+  return result
+}
+
 function parseHeadings(html: string): Heading[] {
   return Array.from(html.matchAll(/<h2[^>]*\sid="([^"]+)"[^>]*>(.*?)<\/h2>/gi))
-    .map((m) => ({ id: m[1], text: m[2].replace(/<[^>]*>/g, "").trim() }))
+    .map((m) => ({ id: m[1], text: decodeHtmlEntities(m[2].replace(/<[^>]*>/g, "").trim()) }))
     .filter((h) => h.id && h.text)
 }
 
