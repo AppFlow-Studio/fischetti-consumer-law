@@ -11,6 +11,11 @@ function escapeHtml(text: string): string {
     .replace(/"/g, "&quot;")
 }
 
+/** Fix double-encoded HTML entities, e.g. &amp;amp; → &amp;, &amp;lt; → &lt; */
+function decodeDoubleEncodedEntities(html: string): string {
+  return html.replace(/&amp;(amp|lt|gt|quot|apos|#\d+|#x[0-9a-fA-F]+);/g, "&$1;")
+}
+
 const NUMBERED_LINE = /^\s*(\d+)\.\s+(.*)$/
 const BULLET_LINE = /^\s*([-*•])\s+(.*)$/
 
@@ -20,9 +25,9 @@ export function normalizeBlogContent(html: string): string {
   if (!trimmed) return html
 
   // Already has list markup — don't alter
-  if (/<ol[\s>]|<ul[\s>]/.test(trimmed)) return html
+  if (/<ol[\s>]|<ul[\s>]/.test(trimmed)) return decodeDoubleEncodedEntities(html)
   // Any HTML at all — don't convert (would need to escape and could break links)
-  if (trimmed.includes("<")) return html
+  if (trimmed.includes("<")) return decodeDoubleEncodedEntities(html)
 
   const lines = trimmed.split(/\r?\n/)
   const out: string[] = []

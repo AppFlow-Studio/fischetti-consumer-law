@@ -40,8 +40,9 @@ export async function generateMetadata({ params }: BlogDetailPageParams): Promis
 
   const title = post.meta_title || post.title
   const description = post.meta_description || post.summary || ""
-  const canonicalPath = `/blog/${post.slug}`
+  const canonicalPath = `/blog/${slug}`
   const url = `${SITE_URL}${canonicalPath}`
+  // Keep Open Graph image in sync with the hero image logic used on the blog page.
   const image = post.og_image_url || post.thumbnail_url || "/opengraph-default.png"
   const imageUrl = image.startsWith("http") ? image : `${SITE_URL}${image.startsWith("/") ? image : `/${image}`}`
 
@@ -89,7 +90,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageParams) {
 
   if (!post) notFound()
 
-  const canonicalUrl = `${SITE_URL}/blog/${post.slug}`
+  const canonicalUrl = `${SITE_URL}/blog/${slug}`
   const contentWithIds = addIdsToHeadings(post.content_html)
   const relatedPosts = await GetRelatedPosts(post.slug, post.tags ?? [], 3)
 
@@ -197,17 +198,65 @@ export default async function BlogDetailPage({ params }: BlogDetailPageParams) {
       {/* Reading progress bar */}
       <BlogReadingProgressBar />
 
-      {/* Gradient hero header */}
+      {/* Gradient hero header — image is the background, fades into page below */}
       <section
-        className="w-full pt-28 sm:pt-32 pb-24 sm:pb-28 px-4 sm:px-6 [mask-image:linear-gradient(to_top,transparent,black_10rem)]"
+        className="relative w-full overflow-hidden pt-28 sm:pt-32 pb-36 sm:pb-44 px-4 sm:px-6"
         style={{
-          background:
-            "radial-gradient(circle, #051937, #002b60, #003e8d, #0052bb, #1265eb)",
+          WebkitMaskImage: "linear-gradient(to bottom, black 50%, transparent 100%)",
+          maskImage: "linear-gradient(to bottom, black 50%, transparent 100%)",
         }}
       >
-        <div className="max-w-3xl mx-auto">
+        {/* Background layer */}
+        <div className="absolute inset-0 z-0">
+          {heroImage ? (
+            <>
+              {isOptimizableUrl(heroImage) ? (
+                <Image
+                  src={heroImage}
+                  alt=""
+                  fill
+                  className="object-cover object-center"
+                  sizes="100vw"
+                  priority
+                  style={{ animation: "scaleIn 1.2s ease forwards" }}
+                />
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={heroImage}
+                  alt=""
+                  className="absolute inset-0 h-full w-full object-cover object-center"
+                  style={{ animation: "scaleIn 1.2s ease forwards" }}
+                />
+              )}
+              {/* Rich blue gradient overlay for legibility */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(160deg, rgba(5,25,55,0.93) 0%, rgba(0,43,96,0.88) 45%, rgba(18,101,235,0.78) 100%)",
+                }}
+              />
+            </>
+          ) : (
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(circle, #051937, #002b60, #003e8d, #0052bb, #1265eb)",
+              }}
+            />
+          )}
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 max-w-3xl mx-auto">
           {/* Breadcrumb */}
-          <nav aria-label="Breadcrumb" className="mb-4 text-sm text-blue-200/70">
+          <nav
+            aria-label="Breadcrumb"
+            className="mb-5 text-sm text-blue-200/70"
+            style={{ animation: "fadeInUp 0.5s ease 0.05s backwards" }}
+          >
             <ol className="flex items-center gap-1.5 flex-wrap">
               <li>
                 <Link href="/" className="hover:text-white transition-colors">
@@ -232,11 +281,14 @@ export default async function BlogDetailPage({ params }: BlogDetailPageParams) {
 
           {/* Tags */}
           {tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-4">
+            <div
+              className="flex flex-wrap gap-2 mb-5"
+              style={{ animation: "fadeInUp 0.5s ease 0.12s backwards" }}
+            >
               {tags.slice(0, 3).map((tag) => (
                 <span
                   key={tag}
-                  className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold uppercase tracking-wide text-white/90 bg-white/15 border border-white/20"
+                  className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-widest text-white/90 bg-white/15 border border-white/25 backdrop-blur-sm"
                 >
                   {tag}
                 </span>
@@ -245,19 +297,28 @@ export default async function BlogDetailPage({ params }: BlogDetailPageParams) {
           )}
 
           {/* H1 */}
-          <h1 className="font-[--font-playfair-display] text-2xl sm:text-3xl lg:text-4xl font-semibold text-white leading-tight tracking-tight mb-4 max-w-3xl">
+          <h1
+            className="font-[--font-playfair-display] text-3xl sm:text-4xl lg:text-5xl font-semibold text-white leading-tight tracking-tight mb-5 max-w-3xl drop-shadow-sm"
+            style={{ animation: "fadeInUp 0.6s ease 0.2s backwards" }}
+          >
             {post.title}
           </h1>
 
           {/* Summary */}
           {post.summary && (
-            <p className="text-blue-100/80 text-base sm:text-lg leading-relaxed mb-4 max-w-2xl">
+            <p
+              className="text-blue-100/85 text-base sm:text-lg leading-relaxed mb-5 max-w-2xl"
+              style={{ animation: "fadeInUp 0.6s ease 0.3s backwards" }}
+            >
               {post.summary}
             </p>
           )}
 
           {/* Meta row */}
-          <div className="flex flex-wrap items-center gap-2 text-blue-200/80 text-sm">
+          <div
+            className="flex flex-wrap items-center gap-2 text-blue-200/75 text-sm mb-1"
+            style={{ animation: "fadeInUp 0.5s ease 0.38s backwards" }}
+          >
             {displayDate && <span>{displayDate}</span>}
             {post.reading_minutes != null && (
               <>
@@ -274,37 +335,14 @@ export default async function BlogDetailPage({ params }: BlogDetailPageParams) {
           </div>
 
           {/* Share buttons */}
-          <BlogShareButtons url={canonicalUrl} title={post.title} />
+          <div style={{ animation: "fadeInUp 0.5s ease 0.44s backwards" }}>
+            <BlogShareButtons url={canonicalUrl} title={post.title} />
+          </div>
         </div>
       </section>
 
-      {/* Featured image — overlaps gradient with negative margin */}
-      {heroImage && (
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 -mt-16 sm:-mt-20 relative z-10">
-          <div className="relative w-full overflow-hidden rounded-2xl shadow-xl ring-2 ring-white/20 aspect-video sm:aspect-[2/1]">
-            {isOptimizableUrl(heroImage) ? (
-              <Image
-                src={heroImage}
-                alt={post.title}
-                fill
-                className="object-cover"
-                sizes="(min-width: 1024px) 672px, 100vw"
-                priority
-              />
-            ) : (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={heroImage}
-                alt={post.title}
-                className="h-full w-full object-cover"
-              />
-            )}
-          </div>
-        </div>
-      )}
-
       {/* Article + Sidebar */}
-      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 pt-8 sm:pt-10 pb-16 sm:pb-20">
+      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-16 sm:pb-20">
         <div className="lg:flex lg:gap-10 xl:gap-12 lg:items-start">
 
         {/* Article column */}
@@ -312,25 +350,10 @@ export default async function BlogDetailPage({ params }: BlogDetailPageParams) {
         <article className="min-w-0">
           <KeyTakeaways items={post.key_takeaways} />
 
-          {/* Inline CTA banner */}
-          <div className="mt-8 border-l-4 border-blue-600 bg-blue-50/50 rounded-r-xl p-4 sm:p-5">
-            <h3 className="text-blue-900 font-semibold text-base mb-1">
-              Think your rights may have been violated?
-            </h3>
-            <p className="text-blue-700/80 text-sm mb-3">
-              Get a free case review — no fee unless we win.
-            </p>
-            <FreeCaseReviewDialog>
-              <button className="inline-flex items-center px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors">
-                Free Case Review →
-              </button>
-            </FreeCaseReviewDialog>
-          </div>
-
           <CdnImageGallery images={post.cdn_images} postTitle={post.title} />
 
           <section
-            className="blog-prose prose prose-sm sm:prose-base prose-lg max-w-none mt-8 sm:mt-10
+            className="blog-prose prose prose-sm sm:prose-base prose-lg max-w-none mt-6 sm:mt-8
               prose-p:text-gray-800 prose-p:leading-relaxed prose-p:mb-4
               prose-h2:font-[--font-playfair-display] prose-h2:text-2xl sm:prose-h2:text-3xl prose-h2:font-semibold prose-h2:text-gray-900 prose-h2:mt-10 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-l-4 prose-h2:border-blue-600 prose-h2:pl-4 prose-h2:border-gray-200 prose-h2:tracking-tight
               prose-h3:font-[--font-playfair-display] prose-h3:text-xl sm:prose-h3:text-2xl prose-h3:font-semibold prose-h3:text-gray-900 prose-h3:mt-8 prose-h3:mb-3 prose-h3:tracking-tight
@@ -404,48 +427,76 @@ export default async function BlogDetailPage({ params }: BlogDetailPageParams) {
 
           <FAQAccordion items={post.faq} />
 
-          {/* Enhanced bottom CTA */}
-          <section className="mt-10 sm:mt-12" aria-label="Call to action">
-            <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-[#003e8d] to-[#1265eb] p-6 sm:p-8 shadow-lg ring-1 ring-gray-900/10">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div>
-                  <h2 className="text-lg sm:text-xl font-semibold text-white mb-1">
-                    Need a Free Case Review?
-                  </h2>
-                  <p className="text-sm sm:text-base text-blue-100">
-                    If your consumer rights were violated, we can help. No fee unless we
-                    win.
-                  </p>
-                  <a
-                    href={`tel:${PRIMARY_PHONE_E164}`}
-                    className="inline-block mt-2 text-sm group"
-                  >
-                    <span className="text-blue-200">Or call: </span>
-                    <span className="font-semibold text-blue-200 group-hover:text-white transition-colors">{PRIMARY_PHONE}</span>
-                  </a>
-                </div>
-                <div className="flex items-center gap-4 shrink-0">
+          {/* Bottom CTA */}
+          <section className="mt-10 sm:mt-14" aria-label="Call to action">
+            <div className="relative overflow-hidden rounded-2xl shadow-xl">
+              {/* Background gradient */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(135deg, #051937 0%, #003e8d 55%, #1265eb 100%)",
+                }}
+                aria-hidden
+              />
+              {/* Subtle radial glow */}
+              <div
+                className="absolute -top-16 -right-16 w-64 h-64 rounded-full opacity-20"
+                style={{ background: "radial-gradient(circle, #60a5fa, transparent 70%)" }}
+                aria-hidden
+              />
+
+              <div className="relative z-10 p-6 sm:p-8">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-6">
                   {/* Attorney photo */}
-                  <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden ring-2 ring-white/30 hidden sm:block flex-shrink-0">
-                    <Image
-                      src="/fischettiheadshot5.png"
-                      alt="Attorney Michael J. Fischetti"
-                      fill
-                      className="object-cover object-[50%_15%]"
-                      sizes="64px"
-                    />
+                  <div className="flex items-center gap-4">
+                    <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden ring-2 ring-white/30 shrink-0">
+                      <Image
+                        src="/fischettiheadshot5.png"
+                        alt="Attorney Michael J. Fischetti"
+                        fill
+                        className="object-cover object-[50%_15%]"
+                        sizes="80px"
+                      />
+                    </div>
+                    <div className="sm:hidden">
+                      <p className="text-xs text-blue-300 font-medium uppercase tracking-widest mb-0.5">Free Consultation</p>
+                      <h2 className="text-lg font-semibold text-white leading-tight">
+                        Were your rights violated?
+                      </h2>
+                    </div>
                   </div>
-                  <FreeCaseReviewDialog>
-                    <FreeCaseReview className="w-full sm:w-auto rounded-xl bg-white text-blue-700 hover:bg-blue-50 px-6 py-3 text-base font-semibold shadow-md transition-colors" />
-                  </FreeCaseReviewDialog>
+
+                  <div className="flex-1">
+                    <p className="hidden sm:block text-xs text-blue-300 font-medium uppercase tracking-widest mb-1">Free Consultation</p>
+                    <h2 className="hidden sm:block text-xl sm:text-2xl font-semibold text-white mb-1.5 font-[--font-playfair-display]">
+                      Were your rights violated?
+                    </h2>
+                    <p className="text-sm sm:text-base text-blue-100/90 leading-relaxed">
+                      We fight for consumers — no upfront cost, no fee unless we win.{" "}
+                      <a
+                        href={`tel:${PRIMARY_PHONE_E164}`}
+                        className="text-white font-semibold underline decoration-white/40 hover:decoration-white transition-all"
+                      >
+                        {PRIMARY_PHONE}
+                      </a>
+                    </p>
+                  </div>
+
+                  <div className="shrink-0">
+                    <FreeCaseReviewDialog>
+                      <FreeCaseReview className="w-full sm:w-auto rounded-xl bg-white text-blue-700 hover:bg-blue-50 px-7 py-3 text-base font-semibold shadow-lg transition-all hover:shadow-xl hover:-translate-y-0.5 duration-200" />
+                    </FreeCaseReviewDialog>
+                  </div>
                 </div>
+
+                <p className="mt-5 text-xs text-blue-200/60 border-t border-white/10 pt-4">
+                  <Link href="/" className="hover:text-blue-200 transition-colors">
+                    Consumer Law Florida
+                  </Link>{" "}
+                  · Licensed Florida attorneys · Serving clients statewide by phone &amp; video
+                </p>
               </div>
-              <p className="mt-4 text-xs sm:text-sm text-blue-100/90">
-                <Link href="/" className="underline hover:text-white">
-                  Consumer Law Florida
-                </Link>{" "}
-                serves clients statewide by phone and video.
-              </p>
             </div>
           </section>
 
