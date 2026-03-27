@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { Facebook } from "@/components/icons/facebook";
 import { LinkedIn } from "@/components/icons/linkedin";
 import { Instagram } from "@/components/icons/instagram";
-import { YouTube } from "@/components/icons/youtube";
-import { TikTok } from "@/components/icons/tiktok";
 
 interface SocialPlatform {
     name: string;
@@ -14,24 +13,19 @@ interface SocialPlatform {
 
 const socialPlatforms: SocialPlatform[] = [
     {
+        name: "Facebook",
+        icon: Facebook,
+        url: "https://www.facebook.com/people/Consumer-Law-Florida/61587398162793/",
+    },
+    {
         name: "LinkedIn",
         icon: LinkedIn,
-        url: "https://www.linkedin.com/company/fischetti-law-group",
+        url: "https://www.linkedin.com/company/consumer-law-florida/",
     },
     {
         name: "Instagram",
         icon: Instagram,
-        url: "https://www.instagram.com/fischettilawgroup",
-    },
-    {
-        name: "YouTube",
-        icon: YouTube,
-        url: "https://www.youtube.com/@fischettilawgroup",
-    },
-    {
-        name: "TikTok",
-        icon: TikTok,
-        url: "https://www.tiktok.com/@fischettilawgroup",
+        url: "https://www.instagram.com/consumerlawflorida/",
     },
 ];
 

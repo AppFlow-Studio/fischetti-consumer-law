@@ -109,14 +109,14 @@ export default function Home() {
                 <div className="flex sm:flex-row h-full flex-col items-start justify-start  w-full gap-4 lg:max-h-fit sm:max-h-100 max-h-140 lg:mb-4 overflow-hidden">
                   <div className="text-sm sm:text-base xl:text-xl backdrop-blur-sm sm:p-4 rounded-xl text-gray-200 leading-relaxed lg:w-full sm:w-1/2 w-full sm:h-100 h-fit lg:h-fit">
                     <p className=" md:mb-0 sm:mb-12 mb-2 w-full" >
-                      Consumer Law Florida is your go-to Florida consumer protection lawyer—trusted, aggressive, and top-rated. We help consumers across Miami, Fort Lauderdale, West Palm Beach, and statewide recover what you're owed under the FDCPA, FCRA, TCPA, and other federal laws. No fees unless we win. Get the best Florida consumer lawyer fighting for you while you breathe easy—we handle everything. We always pick up your call.
+                      If a debt collector harassed you, a company damaged your credit, or you&apos;ve been receiving spam calls — you may be owed money. We fight back against corporations on your behalf across Florida. No fees unless we win.
                     </p>
                     <div className="sm:flex flex-col sm:flex-row gap-4 hidden lg:hidden lg:mt-0 mt-12">
                       <a
                         href="#consultation"
                         className="inline-flex items-center justify-center rounded-xl bg-[#007BFF] px-8 py-4 text-xl font-semibold text-white shadow-xl hover:bg-blue-700 transition-colors"
                       >
-                        Get Free Consultation
+                        Get a Free Case Review Now
                       </a>
                     </div>
                   </div>
@@ -143,7 +143,7 @@ export default function Home() {
                       href="#consultation"
                       className="absolute bottom-4 left-1/2 -translate-x-1/2 sm:hidden inline-flex items-center justify-center rounded-xl bg-[#007BFF] px-6 py-3 text-lg font-semibold text-white shadow-2xl hover:bg-blue-700 transition-colors z-10 w-[80%]"
                     >
-                      Get Free Consultation
+                      Get a Free Case Review Now
                     </a>
                   </div>
                 </div>
@@ -154,7 +154,7 @@ export default function Home() {
                     href="#consultation"
                     className="inline-flex items-center justify-center rounded-xl bg-[#007BFF] px-8 py-4 text-xl font-semibold text-white shadow-xl hover:bg-blue-700 transition-colors"
                   >
-                    Get Free Consultation
+                    Get a Free Case Review Now
                   </a>
                 </div>
               </div>

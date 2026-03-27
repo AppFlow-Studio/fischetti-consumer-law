@@ -12,8 +12,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { contactSchema, defaultContactValues, caseTypes, urgencyLevels, type ContactFormData } from "@/components/forms/contact-schema"
 import { submitContactForm } from "@/lib/actions/contact"
 import { Loader2, AlertCircle } from "lucide-react"
-import { PRIMARY_PHONE } from "@/lib/site"
+import { PRIMARY_PHONE, PRIMARY_PHONE_E164 } from "@/lib/site"
 import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
+import { getAttributionData } from "@/lib/gclid"
 
 type SimpleContactFormProps = {
     onSubmitted?: () => void
@@ -54,7 +55,12 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
         
         startTransition(async () => {
             try {
-                const result = await submitContactForm(values)
+                const attribution = getAttributionData()
+                const result = await submitContactForm({
+                    ...values,
+                    ...attribution,
+                    form_source: "free-case-review",
+                })
 
                 // Handle geo-blocking redirect
                 if (result.blocked && result.redirect) {
@@ -164,7 +170,7 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
                             <p className="text-red-800 font-medium text-sm">{errorMessage}</p>
                             <p className="text-red-600 text-xs mt-1">
                                 Or call us directly:{" "}
-                                <a href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`} className="font-semibold underline">{PRIMARY_PHONE}</a>
+                                <a href={`tel:${PRIMARY_PHONE_E164}`} className="font-semibold underline">{PRIMARY_PHONE}</a>
                             </p>
                         </div>
                     </div>

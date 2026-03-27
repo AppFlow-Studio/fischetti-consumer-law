@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { getRequestCountry, isAllowedCountry, shouldBypassGeoBlock } from "@/lib/geo"
 import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
 import type { ContactFormData } from "@/components/forms/contact-schema"
+import { logLead } from "@/lib/logLead"
 
 /**
  * POST handler for contact form submissions
@@ -50,6 +51,13 @@ export async function POST(req: NextRequest) {
                 caseType: formDataObj.get("caseType") as string,
                 description: formDataObj.get("description") as string,
                 urgency: formDataObj.get("urgency") as string,
+                gclid: (formDataObj.get("gclid") as string) || undefined,
+                utm_source: (formDataObj.get("utm_source") as string) || undefined,
+                utm_medium: (formDataObj.get("utm_medium") as string) || undefined,
+                utm_campaign: (formDataObj.get("utm_campaign") as string) || undefined,
+                utm_term: (formDataObj.get("utm_term") as string) || undefined,
+                utm_content: (formDataObj.get("utm_content") as string) || undefined,
+                form_source: (formDataObj.get("form_source") as string) || undefined,
             }
         }
 
@@ -72,6 +80,26 @@ export async function POST(req: NextRequest) {
         // 2. Send email notification
         // 3. Integrate with CRM
         // For now, we just log and return success
+
+        // Log lead to Supabase — never throws, errors are logged internally
+        await logLead({
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            email: formData.email,
+            phone: formData.phone,
+            zip: formData.zip,
+            case_type: formData.caseType,
+            description: formData.description,
+            urgency: formData.urgency,
+            form_source: formData.form_source || "free-case-review",
+            gclid: formData.gclid,
+            utm_source: formData.utm_source,
+            utm_medium: formData.utm_medium,
+            utm_campaign: formData.utm_campaign,
+            utm_term: formData.utm_term,
+            utm_content: formData.utm_content,
+            email_sent: false,
+        })
 
         // Return success response
         return NextResponse.json(

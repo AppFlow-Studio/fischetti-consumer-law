@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { Home, Scale, FileText, Phone, ArrowRight, Search } from "lucide-react";
-import { PRIMARY_PHONE } from "@/lib/site";
+import { PRIMARY_PHONE, PRIMARY_PHONE_E164 } from "@/lib/site";
 
 export const metadata: Metadata = {
     title: "404 - Page Not Found",
@@ -108,7 +108,7 @@ export default function NotFound() {
                         </Link>
 
                         <a
-                            href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`}
+                            href={`tel:${PRIMARY_PHONE_E164}`}
                             className="group relative overflow-hidden rounded-xl bg-white p-6 shadow-lg ring-1 ring-gray-200 hover:shadow-xl hover:ring-blue-500/50 transition-all duration-300 text-left"
                         >
                             <div className="flex items-start gap-4">
@@ -151,7 +151,7 @@ export default function NotFound() {
                         <p className="text-sm text-gray-500 max-w-xl mx-auto">
                             If you believe this is an error, please{" "}
                             <a
-                                href={`tel:${PRIMARY_PHONE.replace(/\D/g, "")}`}
+                                href={`tel:${PRIMARY_PHONE_E164}`}
                                 className="text-blue-600 hover:text-blue-700 font-medium underline"
                             >
                                 contact us

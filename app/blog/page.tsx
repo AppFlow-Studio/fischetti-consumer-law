@@ -1,9 +1,11 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { SITE_URL } from "@/lib/site"
+import { SITE_URL, PRIMARY_PHONE, PRIMARY_PHONE_E164 } from "@/lib/site"
 import { buildMetadata } from "@/lib/seo/metadata"
 import { GetBlogsPaginated } from "@/lib/get-blogs"
 import { BlogGrid } from "@/components/blog/BlogGrid"
+import BlogListingHero from "@/components/blog/BlogListingHero"
+import { Phone } from "lucide-react"
 
 type BlogIndexPageProps = {
   searchParams?: Promise<{
@@ -11,6 +13,8 @@ type BlogIndexPageProps = {
     tag?: string
   }>
 }
+
+export const revalidate = 60
 
 export const metadata: Metadata = buildMetadata({
   title: "Consumer Law Florida Blog | ConsumerLawFlorida.com",
@@ -28,7 +32,10 @@ export default async function BlogIndexPage({ searchParams }: BlogIndexPageProps
   const currentPage = pageParam ? Math.max(parseInt(pageParam, 10) || 1, 1) : 1
   const perPage = 12
 
-  const { posts, totalPages } = await GetBlogsPaginated(currentPage, perPage, tag)
+  const { posts, totalPages, total } = await GetBlogsPaginated(currentPage, perPage, tag)
+
+  // Extract unique tags from fetched posts for filter bar
+  const allTags = Array.from(new Set(posts.flatMap((p) => p.tags ?? []))).sort()
 
   const createPageHref = (page: number) => {
     const params = new URLSearchParams()
@@ -38,6 +45,7 @@ export default async function BlogIndexPage({ searchParams }: BlogIndexPageProps
     return search ? `/blog?${search}` : "/blog"
   }
 
+  // JSON-LD schemas
   const blogSchema = {
     "@context": "https://schema.org",
     "@type": "Blog",
@@ -45,6 +53,12 @@ export default async function BlogIndexPage({ searchParams }: BlogIndexPageProps
     name: "Consumer Law Florida Blog",
     description:
       "Consumer law updates and practical guides on credit reporting errors, debt collection harassment, robocalls, privacy violations, and other consumer rights issues in Florida.",
+    publisher: {
+      "@type": "LegalService",
+      name: "Consumer Law Florida",
+      url: SITE_URL,
+      "@id": `${SITE_URL}/#organization`,
+    },
     blogPost: posts.map((post) => ({
       "@type": "BlogPosting",
       headline: post.title,
@@ -53,39 +67,86 @@ export default async function BlogIndexPage({ searchParams }: BlogIndexPageProps
     })),
   }
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+      ...(tag
+        ? [
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: tag,
+              item: `${SITE_URL}/blog?tag=${encodeURIComponent(tag)}`,
+            },
+          ]
+        : []),
+    ],
+  }
+
+  const activePillClass =
+    "inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium bg-[#1265eb] text-white transition-colors shrink-0"
+  const inactivePillClass =
+    "inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors shrink-0"
+
   return (
     <>
+      {/* JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
       />
-      <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-12 sm:pb-16">
-        <section className="mb-8 sm:mb-10">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-[--font-playfair-display] text-gray-900 mb-3 sm:mb-4">
-            Consumer Law Florida Blog
-          </h1>
-          <p className="text-base sm:text-lg text-gray-700 max-w-3xl">
-            Learn how federal and Florida consumer protection laws like the FCRA, FDCPA, TCPA, VPPA, and Fair Housing Act apply in real cases. We share insights on
-            credit report errors, debt collection harassment, robocalls and spam texts, privacy violations, and mass arbitration strategies.
-          </p>
-        </section>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
 
-        {tag && (
-          <section className="mb-4 sm:mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
-            <p className="text-sm text-gray-700">
-              Showing posts tagged with <span className="font-semibold">{tag}</span>.
-            </p>
-            <Link
-              href="/blog"
-              className="text-sm font-medium text-blue-700 hover:underline shrink-0"
+      {/* Hero section */}
+      <BlogListingHero />
+
+      {/* Tag filter bar */}
+      {allTags.length > 0 && (
+        <div className="bg-white border-b border-gray-200/80">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">
+            <div
+              className="flex gap-2 overflow-x-auto pb-0.5"
+              style={{ scrollbarWidth: "none" }}
             >
-              Clear filter
-            </Link>
-          </section>
-        )}
+              <Link href="/blog" className={tag ? inactivePillClass : activePillClass}>
+                All
+              </Link>
+              {allTags.map((t) => (
+                <Link
+                  key={t}
+                  href={`/blog?tag=${encodeURIComponent(t)}`}
+                  className={tag === t ? activePillClass : inactivePillClass}
+                >
+                  {t}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Main content */}
+      <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-8 sm:pt-10 pb-16 sm:pb-20">
+        {/* Results info */}
+        <p className="text-sm text-gray-500 mb-6">
+          {total} article{total !== 1 ? "s" : ""}
+          {tag ? (
+            <>
+              {" "}tagged{" "}
+              <span className="font-medium text-gray-700">&ldquo;{tag}&rdquo;</span>
+            </>
+          ) : null}
+        </p>
 
         <BlogGrid posts={posts} />
 
+        {/* Pagination */}
         {totalPages > 1 && (
           <nav
             className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-sm"
@@ -129,7 +190,40 @@ export default async function BlogIndexPage({ searchParams }: BlogIndexPageProps
           </nav>
         )}
       </main>
+
+      {/* Bottom CTA — top mask fades into white content above; bottom left solid to bleed into dark footer */}
+      <section
+        className="w-full pt-20 sm:pt-24 pb-12 sm:pb-16 px-4 sm:px-6 [mask-image:linear-gradient(to_bottom,transparent,black_6rem)]"
+        style={{
+          background:
+            "linear-gradient(to bottom, #ffffff 0%, #1565c0 28%, #051937 100%)",
+        }}
+      >
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="font-[--font-playfair-display] text-2xl sm:text-3xl text-white font-semibold mb-4">
+            Not sure if you have a case?
+          </h2>
+          <p className="text-blue-100 text-base sm:text-lg mb-8 max-w-xl mx-auto">
+            Many consumers don&apos;t realize their rights have been violated. Get a free
+            review — no fee unless we win.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="/free-case-review"
+              className="w-full sm:w-auto rounded-xl bg-white text-blue-700 hover:bg-blue-50 px-8 py-4 text-lg font-semibold shadow-lg transition-colors"
+            >
+              Get Your Free Case Review
+            </Link>
+            <a
+              href={`tel:${PRIMARY_PHONE_E164}`}
+              className="flex items-center gap-2 text-blue-200 hover:text-white transition-colors text-base font-medium"
+            >
+              <Phone className="w-4 h-4" aria-hidden />
+              {PRIMARY_PHONE}
+            </a>
+          </div>
+        </div>
+      </section>
     </>
   )
 }
-

@@ -150,6 +150,83 @@ export async function GetBlogsPaginated(
   }
 }
 
+export async function GetRelatedPosts(
+  currentSlug: string,
+  tags: string[],
+  limit = 3,
+): Promise<BlogPostPreview[]> {
+  noStore()
+
+  const selectFields = `
+    id, title, slug, summary, thumbnail_url,
+    tags, date_published, reading_minutes,
+    meta_title, meta_description
+  `
+
+  try {
+    // First try: posts sharing the first tag, excluding current
+    if (tags.length > 0) {
+      const { data, error } = await supabase
+        .from(BLOG_TABLE)
+        .select(selectFields)
+        .eq("status", "published")
+        .neq("slug", currentSlug)
+        .contains("tags", [tags[0]])
+        .order("date_published", { ascending: false })
+        .limit(limit)
+
+      if (!error && data && data.length > 0) {
+        return data as BlogPostPreview[]
+      }
+    }
+
+    // Fallback: latest posts excluding current
+    const { data, error } = await supabase
+      .from(BLOG_TABLE)
+      .select(selectFields)
+      .eq("status", "published")
+      .neq("slug", currentSlug)
+      .order("date_published", { ascending: false })
+      .limit(limit)
+
+    if (error) {
+      console.error("GetRelatedPosts error:", error.message, error.code)
+      return []
+    }
+
+    return (data ?? []) as BlogPostPreview[]
+  } catch (err) {
+    console.error("GetRelatedPosts unexpected error:", err)
+    return []
+  }
+}
+
+export async function GetBlogPreviews(): Promise<BlogPostPreview[]> {
+  return GetBlogs()
+}
+
+export async function GetAllBlogSlugs(): Promise<string[]> {
+  noStore()
+
+  try {
+    const { data, error } = await supabase
+      .from(BLOG_TABLE)
+      .select("slug")
+      .eq("status", "published")
+      .order("date_published", { ascending: false })
+
+    if (error) {
+      console.error("GetAllBlogSlugs error:", error.message, error.code, error.details)
+      return []
+    }
+
+    return (data ?? []).map((row) => row.slug as string)
+  } catch (err) {
+    console.error("GetAllBlogSlugs unexpected error:", err)
+    return []
+  }
+}
+
 export async function GetBlogSearchIndex(
   limit = 50,
 ): Promise<

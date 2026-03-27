@@ -18,10 +18,8 @@ import {
     MapPin,
     Clock,
     Facebook,
-    Twitter,
     Linkedin,
     Instagram,
-    Youtube,
 
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -91,10 +89,9 @@ const stories: StoryData[] = [
 
 
 const socialLinks = [
-    { name: "Facebook", icon: Facebook, href: "#" },
-    { name: "LinkedIn", icon: Linkedin, href: "#" },
-    { name: "Instagram", icon: Instagram, href: "#" },
-    { name: "YouTube", icon: Youtube, href: "#" },
+    { name: "Facebook", icon: Facebook, href: "https://www.facebook.com/people/Consumer-Law-Florida/61587398162793/" },
+    { name: "LinkedIn", icon: Linkedin, href: "https://www.linkedin.com/company/consumer-law-florida/" },
+    { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/consumerlawflorida/" },
 ]
 
 const StoriesScroller = () => {
@@ -346,6 +343,9 @@ const StoriesScroller = () => {
                         <motion.a
                             key={index}
                             href={social.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={social.name}
                             className="w-10 h-10 bg-gray-100 hover:bg-blue-600 group rounded-lg flex items-center justify-center transition-colors"
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}

@@ -1,21 +1,31 @@
+"use client"
+
 import Link from "next/link"
 import Image from "next/image"
+import { motion } from "motion/react"
+import { Clock, Scale } from "lucide-react"
 import type { BlogPostPreview } from "@/types/blog"
+import { decodeBlogText } from "@/lib/normalize-blog-html"
 
 type BlogCardProps = {
   post: BlogPostPreview
+  index?: number
 }
 
-export function BlogCard({ post }: BlogCardProps) {
-  const {
-    slug,
-    title,
-    summary,
-    thumbnail_url,
-    tags,
-    date_published,
-    reading_minutes,
-  } = post
+function getTagColor(tag: string): string {
+  const t = tag.toLowerCase()
+  if (t.includes("tcpa") || t.includes("robocall")) return "bg-sky-500/80"
+  if (t.includes("fdcpa") || t.includes("debt")) return "bg-blue-600/80"
+  if (t.includes("fcra") || t.includes("credit")) return "bg-indigo-600/80"
+  if (t.includes("data breach") || t.includes("privacy")) return "bg-purple-600/80"
+  if (t.includes("fair housing")) return "bg-teal-600/80"
+  if (t.includes("mass arbitration")) return "bg-orange-600/80"
+  if (t.includes("vppa")) return "bg-rose-600/80"
+  return "bg-blue-600/80"
+}
+
+export function BlogCard({ post, index = 0 }: BlogCardProps) {
+  const { slug, title, summary, thumbnail_url, tags, date_published, reading_minutes } = post
 
   const displayDate = date_published
     ? new Date(date_published).toLocaleDateString("en-US", {
@@ -24,51 +34,96 @@ export function BlogCard({ post }: BlogCardProps) {
         day: "numeric",
       })
     : null
-  const displayTags = (tags ?? []).slice(0, 3)
+
+  const displayTags = (tags ?? []).slice(0, 2)
+  const delay = Math.min(index * 0.07, 0.35)
 
   return (
-    <Link
-      href={`/blog/${slug}`}
-      className="group flex flex-col overflow-hidden rounded-xl sm:rounded-2xl border bg-white shadow-sm hover:shadow-md transition-shadow"
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94], delay }}
+      className="h-full"
     >
-      <div className="relative h-40 sm:h-48 w-full overflow-hidden">
-        <Image
-          src={thumbnail_url || "/opengraph-default.png"}
-          alt={title}
-          fill
-          className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-        />
-      </div>
-      <div className="flex flex-1 flex-col p-3 sm:p-4 space-y-2 sm:space-y-3">
-        <div className="flex flex-wrap items-center gap-2 text-[11px] sm:text-xs text-gray-600">
-          {displayDate && <span>{displayDate}</span>}
-          {reading_minutes != null && (
+      <Link
+        href={`/blog/${slug}`}
+        className="group flex flex-col overflow-hidden rounded-2xl border border-gray-200/80 bg-white shadow-sm hover:shadow-lg hover:ring-2 hover:ring-blue-500/20 transition-all duration-300 h-full"
+      >
+        {/* Thumbnail */}
+        <div className="relative h-48 sm:h-52 w-full overflow-hidden flex-shrink-0">
+          {thumbnail_url ? (
             <>
-              {displayDate && <span className="text-gray-300">•</span>}
-              <span>{reading_minutes} min read</span>
+              <Image
+                src={thumbnail_url}
+                alt={decodeBlogText(title)}
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-[1.04]"
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              />
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/30 pointer-events-none" />
             </>
+          ) : (
+            <div
+              className="w-full h-full flex items-center justify-center"
+              style={{
+                background:
+                  "radial-gradient(circle, #051937, #002b60, #003e8d, #0052bb, #1265eb)",
+              }}
+            >
+              <Scale className="w-12 h-12 text-white/30" aria-hidden />
+            </div>
+          )}
+
+          {/* Tags over image */}
+          {displayTags.length > 0 && (
+            <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+              {displayTags.map((tag) => (
+                <span
+                  key={tag}
+                  className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide text-white backdrop-blur-sm ${getTagColor(tag)}`}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
           )}
         </div>
-        <h2 className="text-base sm:text-lg font-semibold text-gray-900 group-hover:text-blue-700 transition-colors line-clamp-2 sm:line-clamp-none">
-          {title}
-        </h2>
-        {summary && (
-          <p className="text-xs sm:text-sm text-gray-700 line-clamp-3">{summary}</p>
-        )}
-        {displayTags.length > 0 && (
-          <div className="mt-1 flex flex-wrap gap-2">
-            {displayTags.map((tag) => (
-              <span
-                key={tag}
-                className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-2 py-0.5 text-[11px] font-medium text-blue-700 uppercase tracking-wide"
-              >
-                {tag}
-              </span>
-            ))}
+
+        {/* Card body */}
+        <div className="flex flex-1 flex-col gap-2 p-4 sm:p-5">
+          {/* Date + reading time */}
+          <div className="flex items-center gap-1.5 text-xs text-gray-500">
+            {displayDate && <span>{displayDate}</span>}
+            {reading_minutes != null && (
+              <>
+                {displayDate && <span className="text-gray-300">•</span>}
+                <Clock className="w-3 h-3 shrink-0" aria-hidden />
+                <span>{reading_minutes} min read</span>
+              </>
+            )}
           </div>
-        )}
-      </div>
-    </Link>
+
+          {/* Title */}
+          <h2 className="text-lg sm:text-xl font-semibold font-[--font-playfair-display] text-gray-900 line-clamp-2 group-hover:text-blue-700 transition-colors duration-200">
+            {decodeBlogText(title)}
+          </h2>
+
+          {/* Summary */}
+          {summary && (
+            <p className="text-sm text-gray-600 line-clamp-3 flex-1">{decodeBlogText(summary)}</p>
+          )}
+
+          {/* Read article */}
+          <div className="mt-auto pt-2 flex items-center gap-1 text-sm font-medium text-blue-600">
+            <span>Read article</span>
+            <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
+              →
+            </span>
+          </div>
+        </div>
+      </Link>
+    </motion.div>
   )
 }
