@@ -157,7 +157,7 @@ export default function BlogSidebar({ contentHtml, relatedPosts }: Props) {
                         {post.thumbnail_url ? (
                           <Image
                             src={post.thumbnail_url}
-                            alt={post.title}
+                            alt={decodeHtmlEntities(post.title)}
                             fill
                             className="object-cover"
                             sizes="56px"
@@ -177,7 +177,7 @@ export default function BlogSidebar({ contentHtml, relatedPosts }: Props) {
                       {/* Text */}
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
-                          {post.title}
+                          {decodeHtmlEntities(post.title)}
                         </p>
                         <div className="flex items-center gap-1 mt-1 text-[11px] text-gray-400">
                           {date && <span>{date}</span>}

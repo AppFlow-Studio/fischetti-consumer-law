@@ -11,7 +11,7 @@ import { BlogCard } from "@/components/blog/BlogCard"
 import FreeCaseReviewDialog from "@/components/free-case-review-dialog"
 import FreeCaseReview from "@/components/free-case-review-button"
 import { isOptimizableUrl } from "@/lib/is-optimizable-url"
-import { normalizeBlogContent } from "@/lib/normalize-blog-html"
+import { normalizeBlogContent, decodeBlogText } from "@/lib/normalize-blog-html"
 import BlogReadingProgressBar from "@/components/blog/BlogReadingProgressBar"
 import BlogSidebar from "@/components/blog/BlogSidebar"
 import BlogShareButtons from "@/components/blog/BlogShareButtons"
@@ -274,7 +274,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageParams) {
                 className="text-blue-100/60 truncate max-w-[200px] sm:max-w-none"
                 aria-current="page"
               >
-                {post.title}
+                {decodeBlogText(post.title)}
               </li>
             </ol>
           </nav>
@@ -301,7 +301,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageParams) {
             className="font-[--font-playfair-display] text-3xl sm:text-4xl lg:text-5xl font-semibold text-white leading-tight tracking-tight mb-5 max-w-3xl drop-shadow-sm"
             style={{ animation: "fadeInUp 0.6s ease 0.2s backwards" }}
           >
-            {post.title}
+            {decodeBlogText(post.title)}
           </h1>
 
           {/* Summary */}
@@ -310,7 +310,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageParams) {
               className="text-blue-100/85 text-base sm:text-lg leading-relaxed mb-5 max-w-2xl"
               style={{ animation: "fadeInUp 0.6s ease 0.3s backwards" }}
             >
-              {post.summary}
+              {decodeBlogText(post.summary)}
             </p>
           )}
 
@@ -329,14 +329,14 @@ export default async function BlogDetailPage({ params }: BlogDetailPageParams) {
             {post.author_name && (
               <>
                 <span>•</span>
-                <span>{post.author_name}</span>
+                <span>{decodeBlogText(post.author_name)}</span>
               </>
             )}
           </div>
 
           {/* Share buttons */}
           <div style={{ animation: "fadeInUp 0.5s ease 0.44s backwards" }}>
-            <BlogShareButtons url={canonicalUrl} title={post.title} />
+            <BlogShareButtons url={canonicalUrl} title={decodeBlogText(post.title)} />
           </div>
         </div>
       </section>
@@ -350,7 +350,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageParams) {
         <article className="min-w-0">
           <KeyTakeaways items={post.key_takeaways} />
 
-          <CdnImageGallery images={post.cdn_images} postTitle={post.title} />
+          <CdnImageGallery images={post.cdn_images} postTitle={decodeBlogText(post.title)} />
 
           <section
             className="blog-prose prose prose-sm sm:prose-base prose-lg max-w-none mt-6 sm:mt-8

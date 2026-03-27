@@ -5,6 +5,7 @@ import Image from "next/image"
 import { motion } from "motion/react"
 import { Clock, Scale } from "lucide-react"
 import type { BlogPostPreview } from "@/types/blog"
+import { decodeBlogText } from "@/lib/normalize-blog-html"
 
 type BlogCardProps = {
   post: BlogPostPreview
@@ -55,7 +56,7 @@ export function BlogCard({ post, index = 0 }: BlogCardProps) {
             <>
               <Image
                 src={thumbnail_url}
-                alt={title}
+                alt={decodeBlogText(title)}
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-[1.04]"
                 sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
@@ -106,12 +107,12 @@ export function BlogCard({ post, index = 0 }: BlogCardProps) {
 
           {/* Title */}
           <h2 className="text-lg sm:text-xl font-semibold font-[--font-playfair-display] text-gray-900 line-clamp-2 group-hover:text-blue-700 transition-colors duration-200">
-            {title}
+            {decodeBlogText(title)}
           </h2>
 
           {/* Summary */}
           {summary && (
-            <p className="text-sm text-gray-600 line-clamp-3 flex-1">{summary}</p>
+            <p className="text-sm text-gray-600 line-clamp-3 flex-1">{decodeBlogText(summary)}</p>
           )}
 
           {/* Read article */}
