@@ -1,7 +1,6 @@
 "use client"
 
 import { useCallback, useEffect, useRef } from "react"
-
 import { cn } from "@/lib/utils"
 
 const morphTime = 2
@@ -96,8 +95,28 @@ interface MorphingTextProps {
   texts: string[]
 }
 
-const Texts: React.FC<Pick<MorphingTextProps, "texts">> = ({ texts }) => {
+/**
+ * AnimatedTexts — client-only, sets textContent via rAF.
+ * Also hides the SSR fallback span the moment the animation loop starts,
+ * so there is never a double-render visible to users.
+ */
+const AnimatedTexts: React.FC<
+  Pick<MorphingTextProps, "texts"> & {
+    fallbackRef: React.RefObject<HTMLSpanElement | null>
+  }
+> = ({ texts, fallbackRef }) => {
   const { text1Ref, text2Ref } = useMorphingText(texts)
+
+  useEffect(() => {
+    // Hide the SSR fallback the moment the animation takes over.
+    // Using opacity so it's a paint-only change with no layout reflow.
+    if (fallbackRef.current) {
+      fallbackRef.current.style.opacity = "0"
+      // Remove from accessibility tree too — animation spans carry the content
+      fallbackRef.current.setAttribute("aria-hidden", "true")
+    }
+  }, [fallbackRef])
+
   return (
     <>
       <span
@@ -136,14 +155,31 @@ const SvgFilters: React.FC = () => (
 export const MorphingText: React.FC<MorphingTextProps> = ({
   texts,
   className,
-}) => (
-  <div
-    className={cn(
-      "relative h-12 sm:h-16 w-full max-w-screen-md text-center font-sans leading-none font-bold [filter:url(#threshold)_blur(0.6px)] md:h-24 ",
-      className
-    )}
-  >
-    <Texts texts={texts} />
-    <SvgFilters />
-  </div>
-)
+}) => {
+  const fallbackRef = useRef<HTMLSpanElement>(null)
+
+  return (
+    <div
+      className={cn(
+        "relative h-12 sm:h-16 w-full max-w-screen-md text-center font-sans leading-none font-bold [filter:url(#threshold)_blur(0.6px)] md:h-24",
+        className
+      )}
+    >
+      {/*
+        SSR fallback span — genuinely visible in the raw HTML response.
+        Googlebot indexes this as real, visible text (full ranking weight).
+        Rendered with the same absolute positioning as the animation spans.
+        Hidden via opacity:0 the moment AnimatedTexts mounts client-side,
+        so users never see a double-render or flash.
+      */}
+      <span
+        ref={fallbackRef}
+        className="absolute inset-x-0 top-0 m-auto inline-block w-full transition-opacity duration-150"
+      >
+        {texts[0]}
+      </span>
+      <AnimatedTexts texts={texts} fallbackRef={fallbackRef} />
+      <SvgFilters />
+    </div>
+  )
+}

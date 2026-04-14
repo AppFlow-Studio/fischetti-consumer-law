@@ -105,10 +105,10 @@ export function BlogCard({ post, index = 0 }: BlogCardProps) {
             )}
           </div>
 
-          {/* Title */}
-          <h2 className="text-lg sm:text-xl font-semibold font-[--font-playfair-display] text-gray-900 line-clamp-2 group-hover:text-blue-700 transition-colors duration-200">
+          {/* Title — h3 preserves hierarchy under the page-level H1 and grid H2 */}
+          <h3 className="text-lg sm:text-xl font-semibold font-[--font-playfair-display] text-gray-900 line-clamp-2 group-hover:text-blue-700 transition-colors duration-200">
             {decodeBlogText(title)}
-          </h2>
+          </h3>
 
           {/* Summary */}
           {summary && (

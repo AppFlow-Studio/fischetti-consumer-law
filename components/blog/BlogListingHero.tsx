@@ -16,7 +16,7 @@ export default function BlogListingHero() {
       <div className="max-w-7xl mx-auto">
         {/* Badge */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 1, y: 0 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="mb-4"
@@ -26,9 +26,9 @@ export default function BlogListingHero() {
           </span>
         </motion.div>
 
-        {/* H1 */}
+        {/* H1 — initial opacity:1 ensures content is visible in SSR without JS */}
         <motion.h1
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 1, y: 0 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.05 }}
           className="font-[--font-playfair-display] text-3xl sm:text-4xl lg:text-5xl font-semibold text-white leading-tight mb-4"
@@ -38,18 +38,17 @@ export default function BlogListingHero() {
 
         {/* Subheading */}
         <motion.p
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 1, y: 0 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.1 }}
           className="text-base sm:text-lg text-blue-100/90 max-w-2xl mb-8"
         >
-          Practical guides on FCRA, FDCPA, TCPA, data breaches, and your rights
-          under Florida consumer protection law.
+          Practical guides on FCRA, FDCPA, and TCPA rights under Florida consumer protection law.
         </motion.p>
 
         {/* Stats row */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 1, y: 0 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.15 }}
           className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm text-white/80"

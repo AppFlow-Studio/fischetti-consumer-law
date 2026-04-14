@@ -18,6 +18,52 @@ import Image from "next/image";
 import { MorphingText } from "@/components/ui/morphing-text";
 // import ConsumerLawSection from "@/components/ui/consumer-law-section"
 import SeoInsightBlock from "@/components/sections/SeoInsightBlock";
+import type { Metadata } from "next"
+import { buildPageMeta } from "@/lib/seo"
+import { FAQSection } from "@/components/seo/faq-section"
+
+export const metadata: Metadata = buildPageMeta({
+  title: "Florida Consumer Protection Attorney | FDCPA, TCPA & FCRA Lawyer",
+  description: "Florida consumer protection attorney fighting debt collector harassment, robocalls, spam texts, and credit report errors. No fees unless we win.",
+  canonical: "https://www.consumerlawflorida.com",
+  keywords: [
+    "fdcpa lawyer florida",
+    "tcpa lawyer florida",
+    "debt collector harassment attorney",
+    "robocall lawyer florida",
+    "consumer protection attorney florida",
+    "fcra attorney florida",
+    "consumer law attorney florida",
+    "spam text lawyer florida",
+    "credit report error attorney florida",
+  ],
+})
+
+const homepageFaqs = [
+  {
+    question: "What is a consumer protection lawyer?",
+    answer: "A consumer protection lawyer represents individuals whose rights have been violated by companies under federal laws like the FDCPA, TCPA, and FCRA. These laws give consumers the right to sue companies that harass them, call them illegally, or damage their credit — and to recover money damages, often without paying any attorney fees.",
+  },
+  {
+    question: "How do I know if a debt collector is breaking the law?",
+    answer: "Common signs include: calling repeatedly or at unusual hours (before 8 AM or after 9 PM), threatening arrest or legal action they can't take, calling after you told them to stop, contacting your employer, or using abusive language. Under the FDCPA, each of these may be a violation worth up to $1,000.",
+  },
+  {
+    question: "What is the TCPA?",
+    answer: "The Telephone Consumer Protection Act (TCPA) is a federal law that restricts automated calls, prerecorded messages, and spam texts to cell phones. Companies that call or text you without consent — or after you revoke consent — may owe you $500 to $1,500 per call or text under this law.",
+  },
+  {
+    question: "How much can I recover from an illegal robocall?",
+    answer: "Each illegal robocall or spam text can be worth $500 to $1,500 under the TCPA. If you received 10 illegal calls, you may be entitled to up to $15,000. You do not need to prove financial harm — the law provides statutory damages specifically for this purpose.",
+  },
+  {
+    question: "Do I need a lawyer to sue a debt collector?",
+    answer: "While you can file an FDCPA claim on your own, having an attorney dramatically improves your outcome and costs you nothing if we don't win. The FDCPA requires the defendant to pay your attorney's fees if you prevail, meaning Consumer Law Florida typically costs you nothing out of pocket.",
+  },
+]
+
+// AggregateRating is already on the #legal-service entity in layout.tsx — no duplicate needed here.
+
 const texts = [
   "Available 24/7.",
   "We Make Them Pay.",
@@ -56,17 +102,16 @@ export default function Home() {
 
                 {/* Main Headline */}
                 <div className="space-y-2 mb-4 xl:mb-8 text-start">
-                  {/* Hidden H1 for SEO - visually hidden but accessible to screen readers and search engines */}
-                  <h1 className="sr-only">Florida Consumer Lawyer</h1>
-                  {/* Visual headline */}
-                  <div className="text-5xl md:text-6xl xl:text-7xl font-bold text-white leading-tight">
+                  {/* Keyword-optimized H1 — present in first-wave SSR HTML for Googlebot, invisible to sighted users */}
+                  <h1 className="sr-only">
+                    Florida Consumer Protection Attorney — FDCPA, TCPA &amp; FCRA Lawyer | No Fees Unless We Win
+                  </h1>
+                  {/* Visible brand slogan — styled identically to the former H1, purely presentational */}
+                  <p aria-hidden="false" className="text-5xl md:text-6xl xl:text-7xl font-bold text-white leading-tight">
                     Big Companies Play Unfair.
-                  </div>
-                  {/* <h1 className="text-6xl md:text-7xl xl:text-8xl italic font-bold text-[#439cfc] leading-tight">
-            We Make Them Pay.
-          </h1> */}
-                  <div className="rounded-xl text-start items-start justify-start w-full ">
-                    <MorphingText texts={texts} className="text-[2rem] md:text-[3rem] xl:text-[4rem] self-start italic font-bold text-[#439cfc]  text-start leading-tight" />
+                  </p>
+                  <div className="rounded-xl text-start items-start justify-start w-full relative">
+                    <MorphingText texts={texts} className="text-[2rem] md:text-[3rem] xl:text-[4rem] self-start italic font-bold text-[#439cfc] text-start leading-tight" />
                   </div>
                 </div>
 
@@ -108,12 +153,20 @@ export default function Home() {
                 {/* Description */}
                 <div className="flex sm:flex-row h-full flex-col items-start justify-start  w-full gap-4 lg:max-h-fit sm:max-h-100 max-h-140 lg:mb-4 overflow-hidden">
                   <div className="text-sm sm:text-base xl:text-xl backdrop-blur-sm sm:p-4 rounded-xl text-gray-200 leading-relaxed lg:w-full sm:w-1/2 w-full sm:h-100 h-fit lg:h-fit">
-                    <p className=" md:mb-0 sm:mb-12 mb-2 w-full" >
-                      If a debt collector harassed you, a company damaged your credit, or you&apos;ve been receiving spam calls — you may be owed money. We fight back against corporations on your behalf across Florida. No fees unless we win.
+                    <p className="md:mb-0 sm:mb-12 mb-2 w-full">
+                      Debt collectors, robocalls, credit report errors — we sue the companies responsible under the{" "}
+                      <a href="/consumer-law/fdcpa/debt-collector-keeps-calling" className="text-sky-400 hover:text-sky-300 underline underline-offset-2">
+                        FDCPA
+                      </a>
+                      ,{" "}
+                      <a href="/consumer-law/tcpa/robocall-lawsuit-florida" className="text-sky-400 hover:text-sky-300 underline underline-offset-2">
+                        TCPA
+                      </a>
+                      , and FCRA. Serving all of Florida. No fees unless we win.
                     </p>
                     <div className="sm:flex flex-col sm:flex-row gap-4 hidden lg:hidden lg:mt-0 mt-12">
                       <a
-                        href="#consultation"
+                        href="#case-review-form"
                         className="inline-flex items-center justify-center rounded-xl bg-[#007BFF] px-8 py-4 text-xl font-semibold text-white shadow-xl hover:bg-blue-700 transition-colors"
                       >
                         Get a Free Case Review Now
@@ -121,7 +174,7 @@ export default function Home() {
                     </div>
                   </div>
                   {/* <div className="w-full md:w-1/2 sm:h-104 h-80 border border-red-500 relative lg:hidden flex  items-end justify-end sm:mx-auto overflow-hidden">
-                    <Image src="/fischettiheadshot5.png" alt="Micheal Fischetti Headshot" fill className="rounded-xl w-full h-full  sm:mt-6 object-[50%_50%] sm:object-cover" priority />
+                    <Image src="/fischettiheadshot5.png" alt="Michael J. Fischetti — Florida Consumer Protection Attorney" fill className="rounded-xl w-full h-full  sm:mt-6 object-[50%_50%] sm:object-cover" priority />
                     <a
                       href="#consultation"
                       className="absolute bottom-4 left-1/2 -translate-x-1/2 sm:hidden inline-flex items-center justify-center rounded-xl bg-[#007BFF] px-6 py-3 text-lg font-semibold text-white shadow-2xl hover:bg-blue-700 transition-colors z-10 w-[80%]"
@@ -132,7 +185,7 @@ export default function Home() {
                   <div className="w-full md:w-1/2 sm:h-104 h-80 relative lg:hidden flex  items-end justify-end sm:mx-auto overflow-hidden">
                     <Image
                       src="/fischettiheadshot5.png"
-                      alt="Micheal Fischetti Headshot"
+                      alt="Michael J. Fischetti, Consumer Law Florida Attorney"
                       fill
                       priority
                       className="rounded-xl object-cover object-[50%_25%]"
@@ -140,7 +193,7 @@ export default function Home() {
 
                     {/* Button overlay on image for small mobile screens only */}
                     <a
-                      href="#consultation"
+                      href="#case-review-form"
                       className="absolute bottom-4 left-1/2 -translate-x-1/2 sm:hidden inline-flex items-center justify-center rounded-xl bg-[#007BFF] px-6 py-3 text-lg font-semibold text-white shadow-2xl hover:bg-blue-700 transition-colors z-10 w-[80%]"
                     >
                       Get a Free Case Review Now
@@ -151,7 +204,7 @@ export default function Home() {
                 {/* CTA Buttons */}
                 <div className="flex-col sm:flex-row gap-4 lg:flex hidden">
                   <a
-                    href="#consultation"
+                    href="#case-review-form"
                     className="inline-flex items-center justify-center rounded-xl bg-[#007BFF] px-8 py-4 text-xl font-semibold text-white shadow-xl hover:bg-blue-700 transition-colors"
                   >
                     Get a Free Case Review Now
@@ -161,7 +214,7 @@ export default function Home() {
             </div>
 
             <div className="w-0 lg:w-1/2 px-8 xl:px-20 relative hidden lg:block items-end justify-end ">
-              <Image src="/fischettiheadshot5.png" alt="Rays Fishetti Headshot" fill className="rounded-xl object-cover object-[50%_25%]" priority />
+              <Image src="/fischettiheadshot5.png" alt="Michael J. Fischetti, Consumer Protection Lawyer Florida" fill className="rounded-xl object-cover object-[50%_25%]" priority />
               {/* <ContactForm backgroundcolor="white" header="Book an Appointment" buttonText="Book an Appointment" /> */}
             </div>
           </section>
@@ -189,10 +242,10 @@ export default function Home() {
               content={{
                 items: [
                   "Repeated calls or texts after asking them to stop",
-                  "Credit report errors not corrected",
-                  "Background check cost a job or housing",
-                  "Personal data shared without consent",
-                  "Housing accommodation was refused",
+                  "Credit report errors not corrected after a dispute",
+                  "Background check cost you a job, promotion, or housing",
+                  "Debt collectors calling after 9 PM or at your workplace",
+                  "False threats of arrest or jail from a debt buyer",
                 ],
               }}
             />
@@ -215,13 +268,13 @@ export default function Home() {
         <div className="mb-12 w-full flex flex-col xl:flex-row items-center mt-12 justify-center mx-auto px-4 xl:px-8">
           <ProfileCard
             headline="A WINNING CONSUMER LAWYER"
-            name="Meet Micheal J. Fischetti"
+            name="Meet Michael J. Fischetti"
             description="Courtroom warrior from day one. Michael began his career as a defense attorney at the Broward County Public Defender's Office, where he handled both misdemeanor and felony cases, led busy misdemeanor divisions, and tried cases from day one. He later transitioned to civil and consumer litigation, bringing that trial-tested intensity to fight corporations and collectors on behalf of everyday people. Michael founded Fischetti Law Group after years of watching big firms prioritize profits over people. His philosophy? Listen first, fight hard, communicate always. Whether you're facing fraud, deceptive business practices, or corporate misconduct, Michael brings the same aggressive advocacy he learned defending clients in packed courtrooms—except now, he's fighting to get YOU paid. Recognized for excellence, Michael holds an A+ rating from the Better Business Bureau, a Trust badge for Attorney At Law, and is featured on Elite Lawyer—testaments to his commitment to client success and ethical practice."
             primaryButtonText="Book a consultation"
             secondaryButtonText="View Profile"
             accentColor="blue"
             imageUrl="/fischettiheadshots.jpg"
-            imageAlt="Micheal Fischetti Headshot"
+            imageAlt="Michael J. Fischetti, Consumer Protection Lawyer Florida"
             affiliations={[
               { name: "Better Business Bureau", logo: "/bbba.png" },
               { name: "American Trial Lawyers Association", logo: "/atla.png" },
@@ -239,6 +292,9 @@ export default function Home() {
         <ContactFormSection />
 
         <Testimonials />
+
+        {/* FAQ Section — Above Footer for Homepage */}
+        <FAQSection faqs={homepageFaqs} title="Consumer Protection Law — Common Questions" />
 
       </div>
     </main>

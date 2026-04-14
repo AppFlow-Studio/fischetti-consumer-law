@@ -17,9 +17,9 @@ type BlogIndexPageProps = {
 export const revalidate = 60
 
 export const metadata: Metadata = buildMetadata({
-  title: "Consumer Law Florida Blog | ConsumerLawFlorida.com",
+  title: "Consumer Protection Law Blog — FDCPA, TCPA & FCRA",
   description:
-    "Consumer protection insights from Consumer Law Florida covering FCRA, FDCPA, TCPA, VPPA, Fair Housing, mass arbitration, and other consumer rights issues in Florida.",
+    "Consumer protection insights covering FDCPA, TCPA, FCRA, VPPA, Fair Housing, and consumer rights issues in Florida. Written by attorney Michael J. Fischetti.",
   pathname: "/blog",
   type: "website",
 })
@@ -144,6 +144,10 @@ export default async function BlogIndexPage({ searchParams }: BlogIndexPageProps
           ) : null}
         </p>
 
+        <h2 className="text-2xl md:text-3xl font-[--font-playfair-display] font-bold text-gray-900 mb-8">
+          {tag ? `Articles: ${tag}` : "Latest Articles & Guides"}
+        </h2>
+
         <BlogGrid posts={posts} />
 
         {/* Pagination */}
@@ -200,7 +204,7 @@ export default async function BlogIndexPage({ searchParams }: BlogIndexPageProps
         }}
       >
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-[--font-playfair-display] text-2xl sm:text-3xl text-white font-semibold mb-4">
+          <h2 className="font-[var(--font-playfair-display)] text-2xl sm:text-3xl text-white font-semibold mb-4">
             Not sure if you have a case?
           </h2>
           <p className="text-blue-100 text-base sm:text-lg mb-8 max-w-xl mx-auto">

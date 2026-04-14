@@ -1,12 +1,12 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, type Variants } from "framer-motion"
 import Image from "next/image"
 import SimpleContactForm from "@/components/ui/simple-contact-form"
 import { PRIMARY_PHONE, PRIMARY_PHONE_E164 } from "@/lib/site"
 import { Shield, Star, Clock, PhoneCall, CheckCircle2 } from "lucide-react"
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 22 },
   show: (delay = 0) => ({
     opacity: 1,
@@ -15,7 +15,7 @@ const fadeUp = {
   }),
 }
 
-const statCard = {
+const statCard: Variants = {
   hidden: { opacity: 0, scale: 0.82 },
   show: (delay = 0) => ({
     opacity: 1,
@@ -24,7 +24,7 @@ const statCard = {
   }),
 }
 
-const slideLeft = {
+const slideLeft: Variants = {
   hidden: { opacity: 0, x: -18 },
   show: (delay = 0) => ({
     opacity: 1,
@@ -33,7 +33,7 @@ const slideLeft = {
   }),
 }
 
-const caseItem = {
+const caseItem: Variants = {
   hidden: { opacity: 0, x: -10 },
   show: (delay = 0) => ({
     opacity: 1,
@@ -42,7 +42,7 @@ const caseItem = {
   }),
 }
 
-const formCard = {
+const formCard: Variants = {
   hidden: { opacity: 0, y: 28, scale: 0.97 },
   show: {
     opacity: 1,

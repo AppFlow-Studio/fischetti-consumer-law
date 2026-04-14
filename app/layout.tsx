@@ -9,7 +9,14 @@ import { MapProvider } from "@/providers/map-provider";
 import { UIStateProvider } from "@/providers/ui-state-provider";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import ClickTracking from "@/components/analytics/ClickTracking";
-import { SITE_NAME, SITE_URL, PRIMARY_PHONE, PRIMARY_EMAIL, STATE_SERVE, SERVE_STATEMENT, GTM_ID } from "@/lib/site"
+import { SITE_NAME, SITE_URL, PRIMARY_PHONE, GTM_ID } from "@/lib/site"
+import {
+  organizationSchema,
+  personSchema,
+  legalServiceSchema,
+  websiteSchema,
+  officeSchemas,
+} from "@/lib/schemas"
 import AutoOpenDialog from "@/components/auto-open-dialog";
 import FreeCaseReviewDialog from "@/components/free-case-review-dialog";
 import GclidCapture from "@/components/GclidCapture";
@@ -27,29 +34,28 @@ const playfairDisplay = Playfair_Display({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Florida Consumer Rights Lawyers | Consumer Law Florida",
+    default: "Florida Consumer Protection Attorney | FDCPA, FCRA & TCPA Lawyer",
     template: "%s | Consumer Law Florida"
   },
-  description: `Florida consumer lawyer for credit report errors, debt collection harassment, robocalls, and privacy violations. No fee unless we win. Serving all of Florida. Call ${PRIMARY_PHONE}.`,
+  description: `Michael J. Fischetti is a Florida consumer protection attorney fighting FDCPA, FCRA, and TCPA violations. $30M+ recovered. No fees unless you win. Serving all of Florida. Call ${PRIMARY_PHONE}.`,
   keywords: [
     "Florida consumer lawyer",
     "consumer protection attorney Florida",
     "FDCPA lawyer Florida",
-    "FCRA attorney Miami",
+    "FCRA attorney Florida",
     "TCPA violation lawyer",
     "debt collection harassment attorney",
     "credit report error lawyer",
     "robocall attorney Florida",
-    "consumer law firm Miami",
+    "consumer law firm Florida",
     "debt collector lawyer Fort Lauderdale",
     "credit reporting attorney Tampa",
     "consumer rights lawyer Orlando",
     "no win no fee consumer lawyer",
     "Florida consumer protection",
     "debt collection defense",
-    "credit repair attorney",
     "telemarketing violation lawyer",
-    "consumer fraud attorney"
+    "consumer fraud attorney",
   ],
   authors: [{ name: "Michael J. Fischetti", url: SITE_URL }],
   creator: SITE_NAME,
@@ -70,21 +76,21 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: "Florida Consumer Rights Lawyers | Consumer Law Florida",
-    description: `Florida consumer lawyer for credit report errors, debt collection harassment, robocalls, and privacy violations. No fee unless we win. Serving all of Florida. Call ${PRIMARY_PHONE}.`,
+    title: "Florida Consumer Protection Attorney | FDCPA, FCRA & TCPA Lawyer",
+    description: `Michael J. Fischetti is a Florida consumer protection attorney fighting FDCPA, FCRA, and TCPA violations. $30M+ recovered. No fees unless you win. Serving all of Florida. Call ${PRIMARY_PHONE}.`,
     images: [
       {
         url: "/opengraph-default.png",
         width: 1200,
         height: 630,
-        alt: "Consumer Law Florida",
+        alt: "Consumer Law Florida — Michael J. Fischetti, Consumer Protection Attorney",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Florida Consumer Rights Lawyers | Consumer Law Florida",
-    description: `Florida consumer lawyer for credit report errors, debt collection harassment, robocalls, and privacy violations. No fee unless we win. Serving all of Florida. Call ${PRIMARY_PHONE}.`,
+    title: "Florida Consumer Protection Attorney | FDCPA, FCRA & TCPA Lawyer",
+    description: `Michael J. Fischetti is a Florida consumer protection attorney fighting FDCPA, FCRA, and TCPA violations. $30M+ recovered. No fees unless you win. Serving all of Florida. Call ${PRIMARY_PHONE}.`,
     images: ["/opengraph-default.png"],
   },
   alternates: {
@@ -96,16 +102,11 @@ export const metadata: Metadata = {
     icon: "/icon.png",
     apple: "/icon.png",
   },
-  verification: {
-    google: "your-google-verification-code", // Replace with actual verification code
-    // yandex: "your-yandex-verification-code",
-    // bing: "your-bing-verification-code",
-  },
   other: {
     "geo.region": "US-FL",
-    "geo.placename": "Florida",
-    "geo.position": "25.7617;-80.1918", // Miami coordinates
-    "ICBM": "25.7617, -80.1918",
+    "geo.placename": "Orlando, Florida",
+    "geo.position": "28.5383;-81.3792",
+    "ICBM": "28.5383, -81.3792",
   },
 };
 
@@ -114,61 +115,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Sitewide JSON-LD schemas
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: SITE_NAME,
-    url: SITE_URL,
-    telephone: PRIMARY_PHONE,
-    email: PRIMARY_EMAIL,
-    image: `${SITE_URL}/fischettilogo.png`,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "111 N Orange Ave, suite 800",
-      addressLocality: "Orlando",
-      addressRegion: "FL",
-      postalCode: "32801",
-      addressCountry: "US",
-    },
-    areaServed: {
-      "@type": "State",
-      name: STATE_SERVE,
-    },
-    description: SERVE_STATEMENT,
-  }
-
-  const legalServiceSchema = {
-    "@context": "https://schema.org",
-    "@type": "LegalService",
-    name: SITE_NAME,
-    url: SITE_URL,
-    telephone: PRIMARY_PHONE,
-    email: PRIMARY_EMAIL,
-    image: `${SITE_URL}/fischettilogo.png`,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "111 N Orange Ave, suite 800",
-      addressLocality: "Orlando",
-      addressRegion: "FL",
-      postalCode: "32801",
-      addressCountry: "US",
-    },
-    serviceType: "Consumer Law",
-    areaServed: {
-      "@type": "State",
-      name: STATE_SERVE,
-    },
-    description: SERVE_STATEMENT,
-  }
-
-  const websiteSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: SITE_NAME,
-    url: SITE_URL,
-  }
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -187,7 +133,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','${GTM_ID}');`,
           }}
         />
-        {/* NOTE: Direct GA4 gtag.js removed - GA4 should be configured in GTM to avoid duplicate pageviews */}
+        {/* NOTE: Direct GA4 gtag.js removed — GA4 is configured via GTM to avoid duplicate pageviews */}
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe
@@ -197,20 +143,62 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
-        {/* Sitewide JSON-LD Schemas */}
+
+        {/* ── Sitewide JSON-LD Entity Graph ── */}
+        {/* Schema 1: Organization */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
+        {/* Schema 2: Person — Attorney Michael J. Fischetti */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        />
+        {/* Schema 3: Primary statewide LegalService */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(legalServiceSchema) }}
         />
+        {/* Schema 4: WebSite entity (no SearchAction — site has no search endpoint) */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
+        {/* Schema 5: LocalBusiness — one per physical office */}
+        {officeSchemas.map((schema, i) => (
+          <script
+            key={i}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          />
+        ))}
+
         <GclidCapture />
+        {/*
+          Static server-rendered nav — guaranteed in first-wave HTML for every page.
+          sr-only: invisible to sighted users, fully crawlable by Googlebot without JS.
+          All 7 target pages + primary site links are anchored here at the layout level.
+        */}
+        <nav aria-label="Site links" className="sr-only">
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/consumer-law">Consumer Law</a></li>
+            <li><a href="/consumer-law/fcra">FCRA — Credit Report Errors</a></li>
+            <li><a href="/consumer-law/fdcpa">FDCPA — Debt Collector Harassment</a></li>
+            <li><a href="/consumer-law/fdcpa/debt-collector-keeps-calling">Debt Collector Won&apos;t Stop Calling</a></li>
+            <li><a href="/consumer-law/fdcpa/debt-collector-called-after-9pm">Debt Collector Called After 9 PM</a></li>
+            <li><a href="/consumer-law/fdcpa/debt-collector-threatened-me">Debt Collector Made Illegal Threats</a></li>
+            <li><a href="/consumer-law/fdcpa/debt-collector-called-my-work">Debt Collector Called My Workplace</a></li>
+            <li><a href="/consumer-law/tcpa">TCPA — Robocalls &amp; Spam Texts</a></li>
+            <li><a href="/consumer-law/tcpa/robocall-lawsuit-florida">Robocall Lawsuit Florida</a></li>
+            <li><a href="/consumer-law/tcpa/spam-texts-florida">Spam Texts Florida</a></li>
+            <li><a href="/consumer-law/tcpa/texted-stop-still-getting-texts">Texted STOP, Still Getting Texts</a></li>
+            <li><a href="/locations">Our Locations</a></li>
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/faqs">FAQs</a></li>
+          </ul>
+        </nav>
         <MapProvider>
           <UIStateProvider>
             <AutoOpenDialog />

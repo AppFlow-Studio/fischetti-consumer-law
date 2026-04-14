@@ -291,7 +291,7 @@ export function ContactForm({ backgroundcolor = 'white', header = 'Book an Appoi
                                 </h2>}
                                 <FormField
                                     control={form.control}
-                                    name="name"
+                                    name="firstName"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel className="text-sm text-white font-semibold ">
@@ -307,7 +307,13 @@ export function ContactForm({ backgroundcolor = 'white', header = 'Book an Appoi
                                             </FormLabel>
                                             <FormControl>
                                                 <div className=" flex  ">
-                                                    <Input placeholder="Name" startIcon={User} className="sm:h-12 h-10 text-lg border-[#DCDEE1] bg-[#FAFAFA]" {...field} />
+                                                    <Input
+                                                        placeholder="Name"
+                                                        startIcon={User}
+                                                        className="sm:h-12 h-10 text-lg border-[#DCDEE1] bg-[#FAFAFA]"
+                                                        {...field}
+                                                        value={(field.value as string) ?? ""}
+                                                    />
                                                 </div>
                                             </FormControl>
                                             <FormMessage />

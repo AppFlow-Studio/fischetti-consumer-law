@@ -56,7 +56,7 @@ export default function CaseResults() {
                     className="text-start w-full flex flex-row lg:items-start items-center justify-between lg:mb-16 mb-4"
                 >
                     <div className="w-full">
-                        <h2 className="text-4xl font-[--font-playfair-display] md:text-5xl font-bold text-gray-900 mb-4">
+                        <h2 className="text-4xl font-[var(--font-playfair-display)] md:text-5xl font-bold text-gray-900 mb-4">
                             Case Results. <span className="text-blue-600 italic">Millions</span> Recovered.
                         </h2>
                         <p className="text-xl text-gray-600 max-w-3xl mx-auto lg:flex hidden">
@@ -168,7 +168,7 @@ export default function CaseResults() {
                                             delay: 0.3
                                         }}
                                     />
-                                    <span className="text-gray-700 text-base italic font-[--font-playfair-display]">collected for our clients</span>
+                                    <span className="text-gray-700 text-base italic font-[var(--font-playfair-display)]">collected for our clients</span>
                                 </div>
                                 <motion.h3
                                     className="text-2xl font-bold text-gray-700 uppercase tracking-wide"
@@ -338,9 +338,9 @@ export default function CaseResults() {
                     }}
                     className="text-center mt-12 bg-[#096bad] rounded-xl p-8 w-full"
                 >
-                    <h3 className="text-2xl font-bold text-white mb-4">
+                    <p className="text-2xl font-bold text-white mb-4">
                         Ready to Fight for Your Rights?
-                    </h3>
+                    </p>
                     <p className="text-gray-200 mb-8 max-w-2xl mx-auto">
                         Don&apos;t let unfair business practices go unpunished. Get your free case evaluation today.
                     </p>
@@ -361,7 +361,7 @@ export default function CaseResults() {
                         }}
                     >
                         <motion.a
-                            href="#consultation"
+                            href="#case-review-form"
                             variants={{
                                 hidden: { opacity: 0, y: 15 },
                                 visible: {

@@ -15,8 +15,8 @@ import LocationCard from "@/components/ui/location-card"
 import { buildMetadata } from "@/lib/seo/metadata"
 
 export const metadata: Metadata = buildMetadata({
-    title: "Consumer Rights Lawyers Florida | Consumer Law Florida",
-    description: `Consumer rights lawyers in Florida serving Orlando, Port St. Lucie, and Boynton Beach. No fee unless we win. Call ${PRIMARY_PHONE}.`,
+    title: "Consumer Rights Lawyers in Florida — All Locations",
+    description: `Consumer protection attorneys serving Orlando, Miami, Tampa, Fort Lauderdale, Boynton Beach, and Port St. Lucie. No fee unless we win. Call ${PRIMARY_PHONE}.`,
     pathname: "/locations",
     type: "website",
 })
@@ -163,13 +163,13 @@ export default function LocationsPage() {
                                 {/* Right Column - Form */}
                                 <div className="w-full lg:w-1/2 lg:pl-4">
                                     <Card className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 lg:p-8 shadow-2xl border border-white/20">
-                                        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                                        <p className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
                                             Get Your Free Case Review
-                                        </h2>
+                                        </p>
                                         <p className="text-gray-600 mb-6 text-sm md:text-base">
                                             Fill out the form below and we'll get back to you within 24 hours.
                                         </p>
-                                        <SimpleContactForm darkMode={false} useBlueTheme={true} />
+                                        <SimpleContactForm useBlueTheme={true} />
                                     </Card>
                                 </div>
                             </div>
@@ -202,15 +202,47 @@ export default function LocationsPage() {
                             <div className="space-y-12 mb-16">
                                 {firms.map((firm) => (
                                     <div key={firm.slug} className="bg-gray-50 rounded-2xl p-8">
-                                        <h2 className="text-2xl md:text-3xl font-[--font-playfair-display] text-gray-900 mb-4">
+                                        <h3 className="text-2xl md:text-3xl font-[--font-playfair-display] text-gray-900 mb-4">
                                             {firm.cityDisplay} Consumer {firm.slug === "port-st-lucie" ? "Protection Attorneys" : firm.slug === "boynton-beach" ? "Law Lawyers" : "Rights Lawyers"}
-                                        </h2>
+                                        </h3>
                                         <p className="text-gray-700 leading-relaxed text-lg">
                                             {firm.description}
                                         </p>
                                     </div>
                                 ))}
                             </div>
+                        </div>
+                    </section>
+
+                    {/* Service Area Cities — crawlable links for Miami, Tampa, Fort Lauderdale */}
+                    <section className="w-full py-12 bg-white border-t border-gray-100">
+                        <div className="w-full max-w-[95%] xl:max-w-[1400px] mx-auto px-4 sm:px-6">
+                            <h2 className="text-2xl md:text-3xl font-[--font-playfair-display] text-gray-900 mb-4 text-center">
+                                We Also Serve These Florida Cities
+                            </h2>
+                            <p className="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
+                                No physical office? No problem. We represent consumers throughout Florida via phone and video consultations.
+                            </p>
+                            <nav aria-label="Service area cities" className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+                                <Link
+                                    href="/locations/miami"
+                                    className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-6 py-4 text-blue-600 font-semibold hover:bg-blue-50 hover:border-blue-200 transition-colors"
+                                >
+                                    Miami Consumer Lawyer <ArrowRight className="w-4 h-4" />
+                                </Link>
+                                <Link
+                                    href="/locations/tampa"
+                                    className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-6 py-4 text-blue-600 font-semibold hover:bg-blue-50 hover:border-blue-200 transition-colors"
+                                >
+                                    Tampa Consumer Lawyer <ArrowRight className="w-4 h-4" />
+                                </Link>
+                                <Link
+                                    href="/locations/fort-lauderdale"
+                                    className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-6 py-4 text-blue-600 font-semibold hover:bg-blue-50 hover:border-blue-200 transition-colors"
+                                >
+                                    Fort Lauderdale Consumer Lawyer <ArrowRight className="w-4 h-4" />
+                                </Link>
+                            </nav>
                         </div>
                     </section>
 
@@ -281,7 +313,7 @@ export default function LocationsPage() {
                                     <p className="text-gray-700 mb-4">
                                         Exposure of personal or financial information and identity theft risks.
                                     </p>
-                                    <Link href="/consumer-law/privacy" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm">
+                                    <Link href="/consumer-law/fcra" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm">
                                         Learn more about privacy cases <ArrowRight className="w-4 h-4" />
                                     </Link>
                                 </Card>
@@ -292,7 +324,7 @@ export default function LocationsPage() {
                                     <p className="text-gray-700 mb-4">
                                         Illegal tracking of video viewing data through pixels and analytics tools.
                                     </p>
-                                    <Link href="/consumer-law/vppa" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm">
+                                    <Link href="/consumer-law/tcpa" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm">
                                         Learn more about VPPA cases <ArrowRight className="w-4 h-4" />
                                     </Link>
                                 </Card>
@@ -303,7 +335,7 @@ export default function LocationsPage() {
                                     <p className="text-gray-700 mb-4">
                                         Housing discrimination, refusal to accommodate disabilities, and related violations.
                                     </p>
-                                    <Link href="/consumer-law/fha" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm">
+                                    <Link href="/consumer-law/fdcpa" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm">
                                         Learn more about FHA cases <ArrowRight className="w-4 h-4" />
                                     </Link>
                                 </Card>
@@ -314,7 +346,7 @@ export default function LocationsPage() {
                                     <p className="text-gray-700 mb-4">
                                         Large-scale consumer actions involving arbitration clauses and corporate misconduct.
                                     </p>
-                                    <Link href="/consumer-law/mass-arbitration" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm">
+                                    <Link href="/consumer-law/tcpa" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm">
                                         Learn more about mass arbitration <ArrowRight className="w-4 h-4" />
                                     </Link>
                                 </Card>
@@ -385,15 +417,15 @@ export default function LocationsPage() {
                     {/* CTA Section - Links to form above */}
                     <section className="w-full py-16 bg-gray-50">
                         <div className="w-full max-w-[95%] xl:max-w-[1400px] mx-auto px-4 sm:px-6 text-center">
-                            <h2 className="text-3xl md:text-4xl font-[--font-playfair-display] text-gray-900 mb-4">
+                            <p className="text-3xl md:text-4xl font-[--font-playfair-display] text-gray-900 mb-4 font-bold">
                                 Ready to Get Started?
-                            </h2>
+                            </p>
                             <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
                                 Fill out the form above to get your free case review, or call us directly.
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center">
                                 <a
-                                    href="#consultation"
+                                    href="#case-review-form"
                                     className="inline-flex items-center justify-center rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
                                 >
                                     Get Your Free Case Review

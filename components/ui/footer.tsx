@@ -1,45 +1,34 @@
-"use client"
-
 import Link from "next/link"
-import { motion } from "framer-motion"
 import Image from "next/image"
 import {
     Phone,
     Mail,
     MapPin,
     Clock,
-    Facebook,
-    Linkedin,
-    Instagram
 } from "lucide-react"
 import { PRIMARY_PHONE, PRIMARY_PHONE_E164, PRIMARY_EMAIL, SITE_NAME } from "@/lib/site"
+import FooterSocials from "./footer-socials"
 
 export default function Footer() {
     const currentYear = new Date().getFullYear()
 
     const practiceAreas = [
-        { name: "FCRA Violations", href: "#fcra" },
-        { name: "FDCPA Defense", href: "#fdcpa" },
-        { name: "TCPA Violations", href: "#tcpa" },
-        { name: "Privacy & Data Breach", href: "#privacy" },
-        { name: "VPPA Violations", href: "#vppa" },
-        { name: "Fair Housing Act", href: "#fha" },
-        { name: "Mass Arbitration", href: "#arbitration" },
+        { name: "FCRA — Credit Report Errors", href: "/consumer-law/fcra" },
+        { name: "FDCPA — Debt Collector Harassment", href: "/consumer-law/fdcpa" },
+        { name: "TCPA — Robocalls & Spam Texts", href: "/consumer-law/tcpa" },
+        { name: "Debt Collector Won't Stop Calling", href: "/consumer-law/fdcpa/debt-collector-keeps-calling" },
+        { name: "Debt Collector Called After 9 PM", href: "/consumer-law/fdcpa/debt-collector-called-after-9pm" },
+        { name: "Illegal Robocall Lawsuit Florida", href: "/consumer-law/tcpa/robocall-lawsuit-florida" },
+        { name: "Spam Text Lawsuit Florida", href: "/consumer-law/tcpa/spam-texts-florida" },
     ]
 
     const quickLinks = [
-        { name: "About Us", href: "#about" },
-        { name: "Our Process", href: "#process" },
-        { name: "Case Results", href: "#results" },
-        { name: "Free Consultation", href: "#consultation" },
-        { name: "Contact Us", href: "#contact" },
+        { name: "About Us", href: "/#about" },
+        { name: "Case Results", href: "/#results" },
+        { name: "Our Offices", href: "/#locations" },
+        { name: "Free Case Review", href: "/free-case-review" },
+        { name: "FAQs", href: "/faqs" },
         { name: "Privacy Policy", href: "/privacy-policy" },
-    ]
-
-    const socialLinks = [
-        { name: "Facebook", icon: Facebook, href: "https://www.facebook.com/people/Consumer-Law-Florida/61587398162793/" },
-        { name: "LinkedIn", icon: Linkedin, href: "https://www.linkedin.com/company/consumer-law-florida/" },
-        { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/consumerlawflorida/" },
     ]
 
     return (
@@ -70,9 +59,9 @@ export default function Footer() {
                                 <Mail className="h-4 w-4 text-white shrink-0" />
                                 <a href={`mailto:${PRIMARY_EMAIL}`} className="text-sm hover:underline">{PRIMARY_EMAIL}</a>
                             </div>
-                            <div className="flex items-center gap-3 text-white">
-                                <MapPin className="h-4 w-4 text-white" />
-                                <span className="text-sm">Miami, FL</span>
+                            <div className="flex items-start gap-3 text-white">
+                                <MapPin className="h-4 w-4 text-white mt-0.5 shrink-0" />
+                                <span className="text-sm">111 N Orange Ave, Suite 800<br />Orlando, FL 32801</span>
                             </div>
                             <div className="flex items-center gap-3 text-white">
                                 <Clock className="h-4 w-4 text-white" />
@@ -85,8 +74,8 @@ export default function Footer() {
                     <div className="space-y-6">
                         <p className="text-lg font-semibold text-white">Practice Areas</p>
                         <ul className="space-y-2">
-                            {practiceAreas.map((area, index) => (
-                                <li key={index}>
+                            {practiceAreas.map((area) => (
+                                <li key={area.href}>
                                     <Link
                                         href={area.href}
                                         className="text-white/90 hover:text-white transition-colors text-sm"
@@ -102,8 +91,8 @@ export default function Footer() {
                     <div className="space-y-6">
                         <p className="text-lg font-semibold text-white">Quick Links</p>
                         <ul className="space-y-2">
-                            {quickLinks.map((link, index) => (
-                                <li key={index}>
+                            {quickLinks.map((link) => (
+                                <li key={link.href}>
                                     <Link
                                         href={link.href}
                                         className="text-white/90 hover:text-white transition-colors text-sm"
@@ -115,44 +104,11 @@ export default function Footer() {
                         </ul>
                     </div>
 
-                    {/* Newsletter & Social */}
+                    {/* Social Links — client island for hover animations */}
                     <div className="space-y-6">
-                        {/* <div>
-                            <h4 className="text-lg font-semibold text-white mb-4">Stay Updated</h4>
-                            <p className="text-white/90 text-sm mb-4">
-                                Get the latest consumer law updates and case results.
-                            </p>
-                            <div className="flex gap-2">
-                                <input
-                                    type="email"
-                                    placeholder="Enter your email"
-                                    className="flex-1 px-3 py-2 bg-white/20 border border-white/30 rounded-lg text-sm text-white placeholder-white/60 focus:outline-none focus:border-white focus:ring-1 focus:ring-white"
-                                />
-                                <button className="px-4 py-2 bg-white hover:bg-white/90 text-[#0974a4] rounded-lg text-sm font-medium transition-colors">
-                                    Subscribe
-                                </button>
-                            </div>
-                        </div> */}
-
-                        {/* Social Links */}
                         <div>
                             <p className="text-lg font-semibold text-white mb-4">Follow Us</p>
-                            <div className="flex gap-3">
-                                {socialLinks.map((social, index) => (
-                                    <motion.a
-                                        key={index}
-                                        href={social.href}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        aria-label={social.name}
-                                        className="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition-colors"
-                                        whileHover={{ scale: 1.1 }}
-                                        whileTap={{ scale: 0.95 }}
-                                    >
-                                        <social.icon className="h-4 w-4 text-white" />
-                                    </motion.a>
-                                ))}
-                            </div>
+                            <FooterSocials />
                         </div>
                     </div>
                 </div>
@@ -163,7 +119,7 @@ export default function Footer() {
                 <div className="max-w-7xl mx-auto px-6 py-6">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                         <div className="text-white/80 text-sm">
-                            © {currentYear} Fishetti Law Group. All rights reserved.
+                            © {currentYear} {SITE_NAME}. All rights reserved.
                         </div>
 
                         <div className="flex gap-6 text-sm">
@@ -180,8 +136,6 @@ export default function Footer() {
                     </div>
                 </div>
             </div>
-
-       
         </footer>
     )
 }

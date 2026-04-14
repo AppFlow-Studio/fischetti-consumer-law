@@ -207,7 +207,7 @@ export default function SeoInsightBlock(props: SeoInsightBlockProps) {
                         </motion.span>
                         
                         {/* Title with Playfair Display */}
-                        <h2 className="text-2xl md:text-3xl font-[--font-playfair-display] text-gray-900 leading-tight">
+                        <h2 className="text-2xl md:text-3xl font-[var(--font-playfair-display)] text-gray-900 leading-tight">
                             {title}
                         </h2>
                     </div>
@@ -268,7 +268,19 @@ export default function SeoInsightBlock(props: SeoInsightBlockProps) {
                                 })}
                             </ul>
 
-                            {/* Progress Indicator */}
+                            {/* Always visible CTA path */}
+                            {!hasCheckedItems && (
+                                <div className="pt-2">
+                                    <FreeCaseReviewDialog>
+                                        <button className="text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-1.5 group/btn">
+                                            <span>Not sure if you qualify? Get a free review</span>
+                                            <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
+                                        </button>
+                                    </FreeCaseReviewDialog>
+                                </div>
+                            )}
+
+                            {/* Progress Indicator and primary CTA */}
                             <AnimatePresence>
                                 {hasCheckedItems && (
                                     <motion.div
@@ -278,25 +290,12 @@ export default function SeoInsightBlock(props: SeoInsightBlockProps) {
                                         transition={{ duration: 0.3 }}
                                         className="overflow-hidden"
                                     >
-                                        {/* <div className="flex items-center gap-3 mb-4">
-                                            <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
-                                                <motion.div
-                                                    className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full"
-                                                    initial={{ width: 0 }}
-                                                    animate={{ width: `${(checkedCount / totalItems) * 100}%` }}
-                                                    transition={{ duration: 0.4, ease: "easeOut" }}
-                                                />
-                                            </div>
-                                            <span className="text-sm font-medium text-gray-600 tabular-nums">
-                                                {checkedCount}/{totalItems}
-                                            </span>
-                                        </div> */}
-                                        
                                         {/* CTA Button */}
                                         <motion.div
                                             initial={{ opacity: 0, y: 8 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ duration: 0.3, delay: 0.1 }}
+                                            className="pt-2"
                                         >
                                             <FreeCaseReviewDialog>
                                                 <Button 

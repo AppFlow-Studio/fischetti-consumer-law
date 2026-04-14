@@ -85,7 +85,9 @@ export default function WhyFischetti() {
     }, [api])
 
     // Reason Card Component
-    const ReasonCard = ({ reason, index }: { reason: Reason; index: number }) => {
+    // headingEl controls whether the title is an <h3> (desktop grid, contributes to heading outline)
+    // or a <p> (carousel / SSR fallback, suppressed from heading outline to avoid duplicates).
+    const ReasonCard = ({ reason, index, headingEl: HeadingEl = "h3" }: { reason: Reason; index: number; headingEl?: "h3" | "p" }) => {
         const Icon = reason.icon
         return (
             <Card className="h-full w-full rounded-2xl bg-white/95 p-6 shadow-sm ring-1 ring-gray-200/70 backdrop-blur-sm transition hover:shadow-md " >
@@ -94,7 +96,7 @@ export default function WhyFischetti() {
                         <Icon className="h-5 w-5 text-blue-600" />
                     </span>
                     <div>
-                        <h3 className="text-lg font-semibold text-gray-900">{reason.title}</h3>
+                        <HeadingEl className="text-lg font-semibold text-gray-900">{reason.title}</HeadingEl>
                         <p className="mt-2 text-[15px] leading-relaxed text-gray-600">{reason.description}</p>
                     </div>
                 </div>
@@ -106,7 +108,7 @@ export default function WhyFischetti() {
         <section className="w-full py-20 bg-white scroll-mt-8 flex flex-col items-center justify-center" id="about">
             <div className="w-full max-w-[95%] xl:max-w-[1400px] mx-auto px-4 sm:px-6">
                 <div className="text-center mb-12">
-                    <h2 className="text-4xl font-[--font-playfair-display] md:text-5xl text-gray-900">
+                    <h2 className="text-4xl font-[var(--font-playfair-display)] md:text-5xl text-gray-900">
                         Why <span className="text-blue-600 italic">Consumer Law Florida</span>
                     </h2>
                     <p className="mt-3 text-gray-600 max-w-3xl mx-auto">
@@ -117,8 +119,8 @@ export default function WhyFischetti() {
                 {/* Single responsive container - carousel on mobile, grid on desktop */}
                 {hasMounted ? (
                     <>
-                        {/* Mobile Carousel */}
-                        <div className="block md:hidden mb-8">
+                        {/* Mobile Carousel — aria-hidden prevents duplicate H3s in the heading outline */}
+                        <div className="block md:hidden mb-8" aria-hidden="true">
                             <div className="w-full">
                                 <Carousel
                                     setApi={setApi}
@@ -131,7 +133,7 @@ export default function WhyFischetti() {
                                     <CarouselContent>
                                         {reasons.map((reason, index) => (
                                             <CarouselItem key={reason.id} className="basis-full py-2">
-                                                <ReasonCard reason={reason} index={index} />
+                                                <ReasonCard reason={reason} index={index} headingEl="p" />
                                             </CarouselItem>
                                         ))}
                                     </CarouselContent>
@@ -140,18 +142,23 @@ export default function WhyFischetti() {
                                 </Carousel>
 
                                 {/* Dynamic Progress Indicators */}
-                                <div className="flex justify-center mt-6 space-x-2">
-                                    {reasons.map((_, index) => (
+                                <div className="flex justify-center mt-6 space-x-1" role="tablist" aria-label="Carousel navigation">
+                                    {reasons.map((reason, index) => (
                                         <motion.button
                                             key={index}
+                                            role="tab"
+                                            aria-selected={index === current}
+                                            aria-label={`Go to slide ${index + 1}: ${reason.title}`}
                                             onClick={() => api?.scrollTo(index)}
-                                            className={`w-2 h-2 rounded-full transition-all duration-300 ${index === current
-                                                ? "bg-blue-600 w-6"
-                                                : "bg-blue-600/30 hover:bg-blue-600/50"
-                                                }`}
-                                            whileHover={{ scale: 1.2 }}
+                                            className={`relative flex items-center justify-center w-11 h-11 transition-all duration-300`}
+                                            whileHover={{ scale: 1.1 }}
                                             whileTap={{ scale: 0.9 }}
-                                        />
+                                        >
+                                            <span className={`block rounded-full transition-all duration-300 ${index === current
+                                                ? "bg-blue-600 w-6 h-2"
+                                                : "bg-blue-600/30 hover:bg-blue-600/50 w-2 h-2"
+                                                }`} />
+                                        </motion.button>
                                     ))}
                                 </div>
                             </div>
@@ -189,10 +196,10 @@ export default function WhyFischetti() {
                         </motion.div>
                     </>
                 ) : (
-                    // SSR fallback - single grid that works on all screen sizes
+                    // SSR fallback — headingEl="p" so titles don't enter the heading outline before hydration
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {reasons.map((reason, index) => (
-                            <ReasonCard key={reason.id} reason={reason} index={index} />
+                            <ReasonCard key={reason.id} reason={reason} index={index} headingEl="p" />
                         ))}
                     </div>
                 )}
