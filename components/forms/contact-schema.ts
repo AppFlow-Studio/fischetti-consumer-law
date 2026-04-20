@@ -40,13 +40,12 @@ export const defaultContactValues: ContactFormData = {
 }
 
 export const caseTypes = [
-    "FCRA Violations",
-    "FDCPA Defense",
-    "TCPA Violations",
-    "Privacy & Data Breach",
-    "VPPA Violations",
-    "Fair Housing Act",
-    "Mass Arbitration",
+    "FCRA — Credit Report Errors",
+    "FCRA — Background Check Errors",
+    "FDCPA — Debt Collector Harassment",
+    "FDCPA — Illegal Threats or Calls",
+    "TCPA — Robocall Violations",
+    "TCPA — Spam Text Violations",
     "Other",
 ]
 

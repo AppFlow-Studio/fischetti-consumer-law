@@ -20,7 +20,7 @@ export default function PrivacyPolicyPage() {
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-6">
                         <Shield className="w-8 h-8 text-blue-600" />
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-[--font-playfair-display] text-gray-900 mb-4">
+                    <h1 className="text-4xl md:text-5xl font-[var(--font-playfair-display)] text-gray-900 mb-4">
                         Privacy Policy
                     </h1>
                     <p className="text-lg text-gray-600">
@@ -45,7 +45,7 @@ export default function PrivacyPolicyPage() {
                             <div className="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                                 <FileText className="w-5 h-5 text-blue-600" />
                             </div>
-                            <h2 className="text-2xl md:text-3xl font-[--font-playfair-display] text-gray-900">
+                            <h2 className="text-2xl md:text-3xl font-[var(--font-playfair-display)] text-gray-900">
                                 Information We Collect
                             </h2>
                         </div>
@@ -89,7 +89,7 @@ export default function PrivacyPolicyPage() {
                             <div className="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                                 <Eye className="w-5 h-5 text-blue-600" />
                             </div>
-                            <h2 className="text-2xl md:text-3xl font-[--font-playfair-display] text-gray-900">
+                            <h2 className="text-2xl md:text-3xl font-[var(--font-playfair-display)] text-gray-900">
                                 How We Use Your Information
                             </h2>
                         </div>
@@ -111,7 +111,7 @@ export default function PrivacyPolicyPage() {
                             <div className="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                                 <Lock className="w-5 h-5 text-blue-600" />
                             </div>
-                            <h2 className="text-2xl md:text-3xl font-[--font-playfair-display] text-gray-900">
+                            <h2 className="text-2xl md:text-3xl font-[var(--font-playfair-display)] text-gray-900">
                                 Information Sharing and Disclosure
                             </h2>
                         </div>
@@ -144,7 +144,7 @@ export default function PrivacyPolicyPage() {
 
                     {/* Data Security */}
                     <section>
-                        <h2 className="text-2xl md:text-3xl font-[--font-playfair-display] text-gray-900 mb-4">
+                        <h2 className="text-2xl md:text-3xl font-[var(--font-playfair-display)] text-gray-900 mb-4">
                             Data Security
                         </h2>
                         <p className="text-gray-700 leading-relaxed">
@@ -157,7 +157,7 @@ export default function PrivacyPolicyPage() {
 
                     {/* Your Rights */}
                     <section>
-                        <h2 className="text-2xl md:text-3xl font-[--font-playfair-display] text-gray-900 mb-4">
+                        <h2 className="text-2xl md:text-3xl font-[var(--font-playfair-display)] text-gray-900 mb-4">
                             Your Privacy Rights
                         </h2>
                         <p className="text-gray-700 leading-relaxed mb-3">
@@ -175,7 +175,7 @@ export default function PrivacyPolicyPage() {
 
                     {/* Cookies */}
                     <section>
-                        <h2 className="text-2xl md:text-3xl font-[--font-playfair-display] text-gray-900 mb-4">
+                        <h2 className="text-2xl md:text-3xl font-[var(--font-playfair-display)] text-gray-900 mb-4">
                             Cookies and Tracking Technologies
                         </h2>
                         <p className="text-gray-700 leading-relaxed">
@@ -187,7 +187,7 @@ export default function PrivacyPolicyPage() {
 
                     {/* Children's Privacy */}
                     <section>
-                        <h2 className="text-2xl md:text-3xl font-[--font-playfair-display] text-gray-900 mb-4">
+                        <h2 className="text-2xl md:text-3xl font-[var(--font-playfair-display)] text-gray-900 mb-4">
                             Children's Privacy
                         </h2>
                         <p className="text-gray-700 leading-relaxed">
@@ -199,7 +199,7 @@ export default function PrivacyPolicyPage() {
 
                     {/* Changes to Policy */}
                     <section>
-                        <h2 className="text-2xl md:text-3xl font-[--font-playfair-display] text-gray-900 mb-4">
+                        <h2 className="text-2xl md:text-3xl font-[var(--font-playfair-display)] text-gray-900 mb-4">
                             Changes to This Privacy Policy
                         </h2>
                         <p className="text-gray-700 leading-relaxed">

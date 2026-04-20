@@ -38,7 +38,7 @@ type StoryData = {
 const stories: StoryData[] = [
     {
         id: 1,
-        author: "Micheal Fischetti",
+        author: "Michael Fischetti",
         avatar: "/fischettiheadshots.jpg",
         fallback: "MF",
         video: "/hiding-from-your-debt.mp4",
@@ -46,7 +46,7 @@ const stories: StoryData[] = [
     },
     {
         id: 2,
-        author: "Micheal Fischetti",
+        author: "Michael Fischetti",
         avatar: "/fischettiheadshots.jpg",
         fallback: "MF",
         video: "/is-debt-destroying-your-life.mp4",
@@ -54,7 +54,7 @@ const stories: StoryData[] = [
     },
     {
         id: 3,
-        author: "Micheal Fischetti",
+        author: "Michael Fischetti",
         avatar: "/fischettiheadshots.jpg",
         fallback: "MF",
         video: "/medical-debt.mp4",
@@ -62,7 +62,7 @@ const stories: StoryData[] = [
     },
     {
         id: 4,
-        author: "Micheal Fischetti",
+        author: "Michael Fischetti",
         avatar: "/fischettiheadshots.jpg",
         fallback: "MF",
         video: "/out-to-dinner.mp4",
@@ -70,7 +70,7 @@ const stories: StoryData[] = [
     },
     {
         id: 5,
-        author: "Micheal Fischetti",
+        author: "Michael Fischetti",
         avatar: "/fischettiheadshots.jpg",
         fallback: "MF",
         video: "/stop-harresing-calls.mp4",
@@ -78,7 +78,7 @@ const stories: StoryData[] = [
     },
     {
         id: 6,
-        author: "Micheal Fischetti",
+        author: "Michael Fischetti",
         avatar: "/fischettiheadshots.jpg",
         fallback: "MF",
         video: "/debt-collectors-law-violations.mp4",
@@ -337,7 +337,7 @@ const StoriesScroller = () => {
             </div>
 
             <div className="w-full max-w-8xl mx-auto px-8 py-4">
-                <h4 className="text-sm font-semibold text-gray-900 mb-2 ">Follow Us on Our Socials</h4>
+                <p className="text-sm font-semibold text-gray-900 mb-2">Follow Us on Our Socials</p>
                 <div className="flex gap-3">
                     {socialLinks.map((social, index) => (
                         <motion.a

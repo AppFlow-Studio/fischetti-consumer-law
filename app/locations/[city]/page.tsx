@@ -31,7 +31,7 @@ const cityCopy: Record<string, {
     }
 }> = {
     orlando: {
-        heroSubheadline: "Consumer Law Florida helps Orlando residents fight back against unfair credit reporting, illegal debt collection practices, robocalls and spam texts, privacy violations, and housing discrimination. We serve clients statewide in Florida through phone and video consultations, so you can get legal help without taking time off work or traveling to an office.",
+        heroSubheadline: "Consumer Law Florida helps Orlando residents fight back against unfair credit reporting, illegal debt collection practices, and robocalls. We serve clients statewide in Florida through phone and video consultations, so you can get legal help without taking time off work or traveling to an office.",
         howWeHelp: "If you discovered errors on your credit report, were denied a job due to a background check mistake, or are dealing with nonstop collection calls, you may have legal options under federal consumer protection laws. Our team reviews your situation, explains the relevant law, and outlines next steps in plain language—so you can decide what to do with confidence.",
         practiceAreasTitle: "Practice Areas We Handle for Orlando Clients",
         whatToExpect: {
@@ -49,7 +49,7 @@ const cityCopy: Record<string, {
         },
     },
     "port-st-lucie": {
-        heroSubheadline: "Consumer Law Florida helps Port St. Lucie clients take action when companies violate consumer protection laws—whether that means inaccurate credit reporting, abusive debt collection, unwanted robocalls, privacy violations, or housing discrimination. We work with clients statewide in Florida through phone and video consultations, so getting help is simple and fast.",
+        heroSubheadline: "Consumer Law Florida helps Port St. Lucie clients take action when companies violate consumer protection laws—whether that means inaccurate credit reporting, abusive debt collection, or unwanted robocalls. We work with clients statewide in Florida through phone and video consultations, so getting help is simple and fast.",
         howWeHelp: "Many consumer law cases start with a frustrating moment: a credit report error that impacts financing, a background check mistake that costs an opportunity, or repeated calls from collectors that cross the line. Our goal is to help you understand your rights, document what matters, and pursue the appropriate legal path under the laws designed to protect consumers.",
         practiceAreasTitle: "Practice Areas We Handle for Port St. Lucie Clients",
         whatToExpect: {
@@ -66,7 +66,7 @@ const cityCopy: Record<string, {
         },
     },
     "boynton-beach": {
-        heroSubheadline: "Consumer Law Florida represents Boynton Beach clients in consumer protection matters involving credit reporting errors, debt collection harassment, robocalls and spam texts, privacy violations, and housing discrimination. We serve clients statewide in Florida through phone and video consultations, making it easy to get answers quickly and take action when your rights are violated.",
+        heroSubheadline: "Consumer Law Florida represents Boynton Beach clients in consumer protection matters involving credit reporting errors, debt collection harassment, and robocalls. We serve clients statewide in Florida through phone and video consultations, making it easy to get answers quickly and take action when your rights are violated.",
         howWeHelp: "If you're dealing with persistent calls from debt collectors, incorrect information on your credit report, or unwanted marketing texts that won't stop, you may have a claim under consumer protection laws. We help you understand what the law requires, what evidence is helpful, and what options may be available based on your situation.",
         practiceAreasTitle: "Practice Areas We Handle for Boynton Beach Clients",
         whatToExpect: {
@@ -88,10 +88,6 @@ const practiceAreas = [
     { name: "Credit report errors & background check mistakes (FCRA)", slug: "fcra" },
     { name: "Debt collection harassment (FDCPA)", slug: "fdcpa" },
     { name: "Robocalls & spam texts (TCPA)", slug: "tcpa" },
-    { name: "Privacy & data breach violations", slug: "privacy" },
-    { name: "Video privacy & tracking pixels (VPPA)", slug: "vppa" },
-    { name: "Fair housing discrimination (FHA)", slug: "fha" },
-    { name: "Mass arbitration claims", slug: "mass-arbitration" },
 ]
 
 // City-specific FAQs
@@ -125,7 +121,7 @@ const cityFAQs: Record<string, Array<{ question: string; answer: string }>> = {
     "port-st-lucie": [
         {
             question: "What types of consumer law cases are common in Port St. Lucie?",
-            answer: "Many Port St. Lucie clients contact us about credit report errors, debt collection harassment, robocalls, identity theft after data breaches, and privacy violations.",
+            answer: "Many Port St. Lucie clients contact us about credit report errors, debt collection harassment, and robocalls.",
         },
         {
             question: "Can I sue for credit report errors that affected my loan or interest rate?",
@@ -140,10 +136,6 @@ const cityFAQs: Record<string, Array<{ question: string; answer: string }>> = {
             answer: "Marketing texts sent using automated systems without consent may violate the TCPA. These violations often occur repeatedly over time.",
         },
         {
-            question: "What should I do if my personal information was exposed in a data breach?",
-            answer: "You may have legal options if a company failed to safeguard your data. A case review can help determine whether consumer protection or privacy laws apply.",
-        },
-        {
             question: "Does Consumer Law Florida handle Port St. Lucie cases remotely?",
             answer: "Yes. All consultations and case evaluations can be completed by phone or video, making it easy to get help from anywhere in Florida.",
         },
@@ -156,14 +148,6 @@ const cityFAQs: Record<string, Array<{ question: string; answer: string }>> = {
         {
             question: "I'm receiving nonstop robocalls in Boynton Beach — can I stop them legally?",
             answer: "Consumer protection laws restrict automated calls and texts. Many robocall campaigns violate the TCPA, especially when consent was never given.",
-        },
-        {
-            question: "What is a tracking pixel privacy violation?",
-            answer: "Tracking pixels can improperly share personal data, including video viewing information, with third parties. In some cases, this violates the Video Privacy Protection Act (VPPA).",
-        },
-        {
-            question: "Can housing discrimination claims apply in Boynton Beach?",
-            answer: "Yes. Discrimination based on disability, familial status, or refusal to provide reasonable accommodations may violate the Fair Housing Act.",
         },
         {
             question: "Do I need proof of financial loss to bring a consumer law claim?",
@@ -182,7 +166,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { city } = await params
-    const firm = firmsBySlug.get(city as keyof typeof firmsBySlug)
+    const firm = firmsBySlug.get(city as any)
 
     if (!firm) {
         return {
@@ -203,7 +187,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CityPage({ params }: Props) {
     const { city } = await params
-    const firm = firmsBySlug.get(city as keyof typeof firmsBySlug)
+    const firm = firmsBySlug.get(city as any)
 
     if (!firm) {
         notFound()
@@ -223,37 +207,24 @@ export default async function CityPage({ params }: Props) {
         addressCountry: "US",
     }
 
-    // LegalService schema
+    // LegalService schema — address uses the firm's actual office address, not a hardcoded fallback.
     const legalServiceSchema = {
         "@context": "https://schema.org",
         "@type": "LegalService",
         name: SITE_NAME,
         url: `${SITE_URL}/locations/${firm.slug}`,
-        telephone: PRIMARY_PHONE,
+        telephone: firm.phone,
         email: PRIMARY_EMAIL,
         image: `${SITE_URL}/fischettilogo.png`,
         address: {
             "@type": "PostalAddress",
-            streetAddress: "111 N Orange Ave, suite 800",
-            addressLocality: "Orlando",
-            addressRegion: "FL",
-            postalCode: "32801",
-            addressCountry: "US",
+            ...address,
         },
         areaServed: {
             "@type": "State",
             name: STATE_SERVE,
         },
         description: SERVE_STATEMENT,
-        location: {
-            "@type": "Place",
-            name: `${SITE_NAME} - ${firm.cityDisplay} Office`,
-            address: {
-                "@type": "PostalAddress",
-                ...address,
-            },
-            telephone: firm.phone,
-        },
     }
 
     // BreadcrumbList schema
@@ -336,7 +307,7 @@ export default async function CityPage({ params }: Props) {
                             <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start lg:items-center">
                                 {/* Left Column - Content */}
                                 <div className="w-full lg:w-1/2 flex flex-col">
-                                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-[--font-playfair-display] font-bold text-white leading-tight mb-6 text-left">
+                                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-[var(--font-playfair-display)] font-bold text-white leading-tight mb-6 text-left">
                                         {firm.seoCity} Consumer Rights Lawyer
                                     </h1>
                                     <p className="text-lg md:text-xl  text-white/90 leading-relaxed mb-8 text-left">
@@ -399,13 +370,13 @@ export default async function CityPage({ params }: Props) {
                                 {/* Right Column - Form */}
                                 <div className="w-full lg:w-1/2 lg:pl-4">
                                     <Card className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 lg:p-8 shadow-2xl border border-white/20">
-                                        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                                        <p className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
                                             Get Your Free Case Review
-                                        </h2>
+                                        </p>
                                         <p className="text-gray-600 mb-6 text-sm md:text-base">
                                             Fill out the form below and we'll get back to you within 24 hours.
                                         </p>
-                                        <SimpleContactForm darkMode={false} useBlueTheme={true} />
+                                        <SimpleContactForm useBlueTheme={true} />
                                     </Card>
                                 </div>
                             </div>
@@ -418,7 +389,7 @@ export default async function CityPage({ params }: Props) {
                     {/* How We Help Section */}
                     <section className="w-full py-16 bg-white">
                         <div className="w-full max-w-[95%] xl:max-w-[1400px] mx-auto px-4 sm:px-6">
-                            <h2 className="text-3xl md:text-4xl font-[--font-playfair-display] text-gray-900 mb-6">
+                            <h2 className="text-3xl md:text-4xl font-[var(--font-playfair-display)] text-gray-900 mb-6">
                                 How We Help {firm.cityDisplay} Consumers Protect Their Rights
                             </h2>
                             <div className="max-w-4xl space-y-4 text-lg text-gray-700 leading-relaxed">
@@ -430,7 +401,7 @@ export default async function CityPage({ params }: Props) {
                     {/* Practice Areas Section */}
                     <section className="w-full py-16 bg-gray-50">
                         <div className="w-full max-w-[95%] xl:max-w-[1400px] mx-auto px-4 sm:px-6">
-                            <h2 className="text-3xl md:text-4xl font-[--font-playfair-display] text-gray-900 mb-8 text-center">
+                            <h2 className="text-3xl md:text-4xl font-[var(--font-playfair-display)] text-gray-900 mb-8 text-center">
                                 {copy.practiceAreasTitle}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
@@ -438,7 +409,7 @@ export default async function CityPage({ params }: Props) {
                                     <Card key={area.slug} className="p-6 rounded-2xl border hover:shadow-md transition-shadow">
                                         <h3 className="text-xl font-semibold text-gray-900 mb-2">{area.name}</h3>
                                         <Link href={`/consumer-law/${area.slug}`} className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm mt-2">
-                                            Learn more about {area.slug === "fcra" ? "FCRA" : area.slug === "fdcpa" ? "FDCPA" : area.slug === "tcpa" ? "TCPA" : area.slug === "vppa" ? "VPPA" : area.slug === "fha" ? "FHA" : area.name} cases <ArrowRight className="w-4 h-4" />
+                                            Learn more about {area.slug === "fcra" ? "FCRA" : area.slug === "fdcpa" ? "FDCPA" : area.slug === "tcpa" ? "TCPA" : area.name} cases <ArrowRight className="w-4 h-4" />
                                         </Link>
                                     </Card>
                                 ))}
@@ -452,7 +423,7 @@ export default async function CityPage({ params }: Props) {
                     {/* What to Expect Section */}
                     <section className="w-full py-16 bg-white">
                         <div className="w-full max-w-[95%] xl:max-w-[1400px] mx-auto px-4 sm:px-6">
-                            <h2 className="text-3xl md:text-4xl font-[--font-playfair-display] text-gray-900 mb-8 text-center">
+                            <h2 className="text-3xl md:text-4xl font-[var(--font-playfair-display)] text-gray-900 mb-8 text-center">
                                 {copy.whatToExpect.title}
                             </h2>
                             <div className="max-w-3xl mx-auto">
@@ -475,7 +446,7 @@ export default async function CityPage({ params }: Props) {
                     {/* Serving Statewide Section */}
                     <section className="w-full py-16 bg-gray-50">
                         <div className="w-full max-w-[95%] xl:max-w-[1400px] mx-auto px-4 sm:px-6">
-                            <h2 className="text-3xl md:text-4xl font-[--font-playfair-display] text-gray-900 mb-6 text-center">
+                            <h2 className="text-3xl md:text-4xl font-[var(--font-playfair-display)] text-gray-900 mb-6 text-center">
                                 {copy.servingStatewide.title}
                             </h2>
                             <div className="max-w-4xl mx-auto space-y-4 text-lg text-gray-700 leading-relaxed text-center">
@@ -495,10 +466,10 @@ export default async function CityPage({ params }: Props) {
                                     content={{
                                         items: [
                                             "Repeated calls or texts after asking them to stop",
-                                            "Credit report errors not corrected",
-                                            "Background check cost a job or housing",
-                                            "Personal data shared without consent",
-                                            "Housing accommodation was refused",
+                                            "Credit report errors not corrected after a dispute",
+                                            "Background check cost you a job, promotion, or housing",
+                                            "Debt collectors calling after 9 PM or at your workplace",
+                                            "False threats of arrest or jail from a debt buyer",
                                         ],
                                     }}
                                 />
@@ -552,7 +523,7 @@ export default async function CityPage({ params }: Props) {
                     {locationFAQs.length > 0 && (
                         <section className="w-full py-16 bg-white">
                             <div className="w-full max-w-[95%] xl:max-w-[1400px] mx-auto px-4 sm:px-6">
-                                <h2 className="text-3xl md:text-4xl font-[--font-playfair-display] text-gray-900 mb-8 text-center">
+                                <h2 className="text-3xl md:text-4xl font-[var(--font-playfair-display)] text-gray-900 mb-8 text-center">
                                     Frequently Asked Questions for {firm.cityDisplay} Consumers
                                 </h2>
                                 <Card className="rounded-2xl border p-6 max-w-4xl mx-auto">

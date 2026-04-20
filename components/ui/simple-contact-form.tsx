@@ -19,11 +19,12 @@ import { getAttributionData } from "@/lib/gclid"
 type SimpleContactFormProps = {
     onSubmitted?: () => void
     useBlueTheme?: boolean // For white background forms that need blue text
+    id?: string // Added new id prop
 }
 
 type FormStatus = "idle" | "submitting" | "success" | "error"
 
-export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }: SimpleContactFormProps) {
+export default function SimpleContactForm({ onSubmitted, useBlueTheme = false, id = "case-review-form" }: SimpleContactFormProps) {
     const [status, setStatus] = useState<FormStatus>("idle")
     const [errorMessage, setErrorMessage] = useState<string>("")
     const [isPending, startTransition] = useTransition()
@@ -161,7 +162,7 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
 
     return (
         <Form {...form}>
-            <form id="consultation" onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2.5 sm:space-y-4">
+            <form id={id} onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2.5 sm:space-y-4">
                 {/* Error Banner */}
                 {status === "error" && errorMessage && (
                     <div className="w-full p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">

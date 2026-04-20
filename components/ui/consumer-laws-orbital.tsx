@@ -8,10 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 import {
-    FileText,
-    Shield,
     Gavel,
-    AlertTriangle,
     CreditCard,
     Bell,
 } from "lucide-react";
@@ -59,25 +56,6 @@ const practiceAreas: PracticeArea[] = [
         title: "TCPA",
         category: "tcpa",
         content: "Robocalls and spam texts without consent, telemarketing violations. We help consumers stop unwanted calls and texts while seeking compensation for TCPA violations.",
-    },
-    {
-        icon: FileText,
-        title: "VPPA",
-        category: "vppa",
-        content: "Apps and publishers leaking viewing history to ad platforms. We protect your video privacy rights when companies improperly share your viewing data.",
-    },
-    {
-        icon: Shield,
-        title: "FHA",
-        category: "fha",
-        content: "Housing discrimination claims and violations. We fight for fair housing rights and hold landlords, property managers, and housing providers accountable.",
-    },
-    {
-        icon: AlertTriangle,
-        title: "Mass Arbitration",
-        category: "arbitration",
-        slug: "mass-arbitration",
-        content: "When platforms force arbitration through TOS and you bring hundreds of claims at once. We handle complex mass arbitration strategies for consumer protection.",
     },
 ];
 
@@ -280,7 +258,7 @@ export default function ConsumerLawsOrbital({
                         return (
                             <div
                                 key={item.id}
-                                ref={(el) => (nodeRefs.current[item.id] = el)}
+                                ref={(el) => { nodeRefs.current[item.id] = el }}
                                 className="absolute transition-all duration-700 cursor-pointer"
                                 style={nodeStyle}
                                 onClick={(e) => {
@@ -359,7 +337,7 @@ export default function ConsumerLawsOrbital({
                                             {item.relatedIds.length > 0 && (
                                                 <div className="mt-4 pt-3 border-t border-gray-200">
                                                     <div className="flex items-center mb-2">
-                                                        <Link size={12} className="text-gray-500 mr-1" />
+                                                        <LinkIcon className="w-3 h-3 text-gray-500 mr-1" />
                                                         <h4 className="text-xs uppercase tracking-wider font-medium text-gray-600">
                                                             Related Areas
                                                         </h4>

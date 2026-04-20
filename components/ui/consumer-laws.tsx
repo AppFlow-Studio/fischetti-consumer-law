@@ -6,14 +6,10 @@ import { AnimatedBeam } from "@/components/ui/animated-beam"
 import { Card } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import {
-    FileText,
     Shield,
     Gavel,
-    AlertTriangle,
-    Package,
     Lock,
     CreditCard,
-    Car,
     Search,
     CheckCircle,
     FileStack,
@@ -41,30 +37,6 @@ const practiceAreas = [
         label: "TCPA ",
         id: "tcpa",
         description: "Robocalls and spam texts without consent, telemarketing violations. We help consumers stop unwanted calls and texts while seeking compensation for TCPA violations."
-    },
-    // {
-    //     icon: Lock,
-    //     label: "Privacy & Data Breach",
-    //     id: "privacy",
-    //     description: "PII leaks, hacked vendors, sloppy security, and improper data sharing. We hold companies accountable for privacy violations and data breach negligence."
-    // },
-    {
-        icon: FileText,
-        label: "VPPA",
-        id: "vppa",
-        description: "Apps and publishers leaking viewing history to ad platforms. We protect your video privacy rights when companies improperly share your viewing data."
-    },
-    {
-        icon: Shield,
-        label: "FHA ",
-        id: "fha",
-        description: "Housing discrimination claims and violations. We fight for fair housing rights and hold landlords, property managers, and housing providers accountable."
-    },
-    {
-        icon: AlertTriangle,
-        label: "Mass Arbitration",
-        id: "arbitration",
-        description: "When platforms force arbitration through TOS and you bring hundreds of claims at once. We handle complex mass arbitration strategies for consumer protection."
     },
 ]
 
@@ -353,12 +325,8 @@ export default function ConsumerLaws() {
     const area0Ref = useRef<HTMLDivElement>(null)
     const area1Ref = useRef<HTMLDivElement>(null)
     const area2Ref = useRef<HTMLDivElement>(null)
-    const area3Ref = useRef<HTMLDivElement>(null)
-    const area4Ref = useRef<HTMLDivElement>(null)
-    const area5Ref = useRef<HTMLDivElement>(null)
-    const area6Ref = useRef<HTMLDivElement>(null)
 
-    const areaRefs = [area0Ref, area1Ref, area2Ref, area3Ref, area5Ref, area6Ref]
+    const areaRefs = [area0Ref, area1Ref, area2Ref]
 
     return (
         <div className=" border border-gray-100 w-full h-fit rounded-xl bg-gray-200 shadow-2xl">
@@ -386,7 +354,7 @@ export default function ConsumerLaws() {
                     >
                         {/* <div className="text-center">
                             <div className="mb-2 text-3xl md:text-4xl font-bold tracking-tight">FL</div>
-                            <div className="text-sm md:text-base font-semibold leading-tight">Fishetti Law Firm</div>
+                            <div className="text-sm md:text-base font-semibold leading-tight">Fischetti Law Group</div>
                             <div className="mt-1 text-xs opacity-90">Consumer Law Experts</div>
                         </div> */}
                         <Image src="/fischettilogo.png" alt="Fischetti Law Group Logo" width={150} height={150} className="rounded-xl object-cover" />

@@ -12,13 +12,13 @@ export function BlogGrid({ posts }: BlogGridProps) {
     return (
       <div className="w-full rounded-2xl border border-gray-200/80 bg-white p-8 sm:p-12 text-center shadow-sm">
         <Scale className="w-12 h-12 text-blue-200 mx-auto mb-4" aria-hidden />
-        <h2 className="text-2xl font-[--font-playfair-display] text-gray-900 mb-3">
+        <h2 className="text-2xl font-[var(--font-playfair-display)] text-gray-900 mb-3">
           Consumer Rights Articles Coming Soon
         </h2>
         <p className="text-gray-600 max-w-lg mx-auto mb-6 text-sm sm:text-base">
-          We&apos;re putting together in-depth guides on credit reporting errors,
-          debt collection harassment, robocalls and spam texts, data privacy, and
-          other consumer rights issues in Florida. Check back soon.
+          We&apos;re putting together in-depth guides on debt collection harassment, 
+          robocalls and spam texts, credit report errors, and
+          other consumer protection issues in Florida. Check back soon.
         </p>
         <Link
           href="/free-case-review"

@@ -67,7 +67,7 @@ export default function ContactFormSection() {
     }
 
     return (
-        <section className="w-full bg-linear-to-br from-blue-50 to-teal-50 py-20">
+        <section id="case-review-form" className="w-full bg-linear-to-br from-blue-50 to-teal-50 py-20">
             <div className="w-full max-w-[95%] xl:max-w-[1400px] mx-auto px-4 sm:px-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
 
@@ -217,7 +217,7 @@ export default function ContactFormSection() {
                                         <Shield className="w-6 h-6 text-blue-600" />
                                     </div>
                                     <div>
-                                        <h2 className="text-2xl font-bold text-gray-900">Free Case Review</h2>
+                                        <p className="text-2xl font-bold text-gray-900">Free Case Review</p>
                                         <p className="text-sm text-gray-600">Get started in minutes</p>
                                     </div>
                                 </div>
