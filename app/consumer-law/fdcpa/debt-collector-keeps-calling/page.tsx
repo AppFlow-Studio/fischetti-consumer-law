@@ -13,8 +13,8 @@ import { buildPageMeta, buildBreadcrumbSchema, buildLegalServiceSchema, buildArt
 import { BreadcrumbNav } from "@/components/seo/breadcrumb-nav"
 
 export const metadata: Metadata = buildPageMeta({
-  title: "Debt Collector Keeps Calling? Sue for Up to $1,000 | FL",
-  description: "Florida: Debt collector keeps calling after a cease request? That's an FDCPA violation worth up to $1,000. Free case review. No fees unless we win. (561) 264-7211.",
+  title: "Debt Collector Won't Stop Calling — FDCPA Florida",
+  description: "Debt collector won't stop calling after a cease request? That's an FDCPA violation worth up to $1,000. Free case review. No fees unless we win.",
   canonical: "https://www.consumerlawflorida.com/consumer-law/fdcpa/debt-collector-keeps-calling",
   keywords: [
     "debt collector keeps calling after i told them to stop",

@@ -13,7 +13,7 @@ import { buildPageMeta, buildBreadcrumbSchema, buildLegalServiceSchema, buildArt
 import { BreadcrumbNav } from "@/components/seo/breadcrumb-nav"
 
 export const metadata: Metadata = buildPageMeta({
-  title: "Texted STOP, Still Getting Texts? You May Have a TCPA Claim",
+  title: "Texted STOP Still Getting Texts? TCPA Claim Florida",
   description: "Texted STOP and the company kept texting you in Florida? Each text after STOP may be worth $500–$1,500 under the TCPA. Free case review. (561) 264-7211.",
   canonical: "https://www.consumerlawflorida.com/consumer-law/tcpa/texted-stop-still-getting-texts",
   keywords: [
@@ -220,7 +220,7 @@ export default function TextedStopStillGettingTextsPage() {
             {[
               { amount: "$500–$1,500", label: "Per text received after your STOP", icon: Smartphone },
               { amount: "× every text", label: "Each text is a separate violation — they stack", icon: X },
-              { amount: "Attorney's fees", label: "We typically take nothing from you", icon: Handshake },
+              { amount: "No win, no fee", label: "We work on contingency — you pay nothing unless we win", icon: Handshake },
             ].map((item) => (
               <div key={item.label} className="bg-white/10 backdrop-blur-sm rounded-xl p-5 text-center border border-white/10">
                 <div className="flex justify-center mb-2">

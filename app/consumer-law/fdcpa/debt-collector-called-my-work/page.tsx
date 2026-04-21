@@ -13,7 +13,7 @@ import { buildPageMeta, buildBreadcrumbSchema, buildLegalServiceSchema, buildArt
 import { BreadcrumbNav } from "@/components/seo/breadcrumb-nav"
 
 export const metadata: Metadata = buildPageMeta({
-  title: "Debt Collector Called Your Job? Know Your Rights | FL",
+  title: "Debt Collector Calling Your Job? FDCPA Rights Florida",
   description: "Debt collector calling your job in Florida? If your employer prohibits calls, that's an FDCPA violation. Up to $1,000. Free case review. No fees unless we win.",
   canonical: "https://www.consumerlawflorida.com/consumer-law/fdcpa/debt-collector-called-my-work",
   keywords: [

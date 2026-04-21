@@ -12,7 +12,7 @@ import { buildPageMeta, buildBreadcrumbSchema, buildLegalServiceSchema, buildArt
 import { BreadcrumbNav } from "@/components/seo/breadcrumb-nav"
 
 export const metadata: Metadata = buildPageMeta({
-  title: "Spam Texts in Florida — TCPA Lawsuit Up to $1,500 Per Text",
+  title: "Spam Texts in Florida — TCPA Lawsuit Attorney",
   description: "Receiving illegal spam texts in Florida? You may be owed up to $1,500 per text under the TCPA. Free case review. No fees unless we win.",
   canonical: "https://www.consumerlawflorida.com/consumer-law/tcpa/spam-texts-florida",
   keywords: [

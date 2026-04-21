@@ -11,7 +11,7 @@ import { PRIMARY_PHONE_E164, SITE_URL, SITE_NAME } from '@/lib/site'
 const PAGE_URL = `${SITE_URL}/locations/tampa`
 
 export const metadata: Metadata = buildPageMeta({
-  title: 'Consumer Law Lawyer Serving Tampa FL — Debt Harassment, Robocall & FCRA Attorney | Consumer Law Florida',
+  title: 'Tampa Consumer Rights Lawyer — FDCPA, TCPA & FCRA Attorney',
   description:
     'Consumer Law Florida serves Tampa consumers remotely. FDCPA, TCPA, FCRA attorney. Free case review. No fees unless we win. (561) 264-7211.',
   canonical: PAGE_URL,

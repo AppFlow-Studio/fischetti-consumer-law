@@ -1,13 +1,36 @@
 import { NextRequest, NextResponse } from "next/server"
+import { Resend } from "resend"
+import { createElement } from "react"
 import { getRequestCountry, isAllowedCountry, shouldBypassGeoBlock } from "@/lib/geo"
 import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
 import type { ContactFormData } from "@/components/forms/contact-schema"
 import { logLead } from "@/lib/logLead"
+import { ClientQualificationEmail } from "@/emails/client-qualification"
+import { OfficeNotificationEmail } from "@/emails/office-notification"
+import { detectLawType, generateCaseRef, calculateDeadline, getLawTypeLabel } from "@/lib/email-utils"
+
+const FROM_EMAIL = "Consumer Law Florida <info@consumerlawflorida.com>"
+const OFFICE_EMAIL = "info@consumerlawflorida.com"
+
+// Format submission date for email display
+function formatSubmissionDate(): string {
+    return new Intl.DateTimeFormat("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        timeZoneName: "short",
+        timeZone: "America/New_York",
+    }).format(new Date())
+}
 
 /**
- * POST handler for contact form submissions
- * Implements geo-blocking for non-US submissions
- * Handles both multipart form data and JSON submissions
+ * POST handler for contact form submissions.
+ * Implements geo-blocking, parses JSON or multipart payloads,
+ * sends law-specific qualification email to the lead and a notification
+ * to the office via Resend, then logs the lead to Supabase.
  */
 export async function POST(req: NextRequest) {
     try {
@@ -15,32 +38,24 @@ export async function POST(req: NextRequest) {
         if (!shouldBypassGeoBlock()) {
             const country = getRequestCountry(req)
             if (!isAllowedCountry(country)) {
-                // Check if this is a JSON request (AJAX) or form POST
                 const contentType = req.headers.get("content-type") || ""
-                const isJsonRequest = contentType.includes("application/json")
-
-                if (isJsonRequest) {
+                if (contentType.includes("application/json")) {
                     return NextResponse.json(
                         { blocked: true, redirect: "/unavailable" },
                         { status: 403, headers: { "x-geo-blocked": "1" } }
                     )
-                } else {
-                    // Form POST - redirect to unavailable page
-                    return NextResponse.redirect(new URL("/unavailable", req.url), { status: 307 })
                 }
+                return NextResponse.redirect(new URL("/unavailable", req.url), { status: 307 })
             }
         }
 
-        // Parse request body
+        // Parse request body — supports both JSON (AJAX) and multipart (native form POST)
         const contentType = req.headers.get("content-type") || ""
         let formData: ContactFormData
 
         if (contentType.includes("application/json")) {
-            // JSON submission
-            const body = await req.json()
-            formData = body
+            formData = await req.json()
         } else {
-            // Multipart form data
             const formDataObj = await req.formData()
             formData = {
                 firstName: formDataObj.get("firstName") as string,
@@ -62,12 +77,69 @@ export async function POST(req: NextRequest) {
             }
         }
 
-        // Log submission (preserve existing behavior)
-        console.log("Contact form submitted:", formData)
+        console.log("Contact form submitted:", {
+            name: `${formData.firstName} ${formData.lastName}`,
+            email: formData.email,
+            caseType: formData.caseType,
+        })
 
-        // Format data for enhanced conversions (server-side)
-        // Note: pushEnhancedConversion is client-side only, so we'll format here
-        // but the actual push happens client-side after successful submission
+        // Derive email variables from submission
+        const submittedAt = formatSubmissionDate()
+        const lawType = detectLawType(formData.caseType)
+        const caseRef = generateCaseRef()
+        const deadlineDate = calculateDeadline(5)
+        const lawLabel = getLawTypeLabel(lawType)
+
+        // Lazily instantiate Resend so a missing key in dev doesn't crash at module load
+        const resend = new Resend(process.env.RESEND_API_KEY)
+
+        // Send both emails concurrently
+        const [clientEmailResult, officeEmailResult] = await Promise.allSettled([
+            // Law-specific qualification email to the lead
+            resend.emails.send({
+                from: FROM_EMAIL,
+                to: formData.email,
+                subject: `Action Required — Your ${lawLabel} Case Review`,
+                react: createElement(ClientQualificationEmail, {
+                    firstName: formData.firstName,
+                    lastName: formData.lastName,
+                    lawType,
+                    caseRef,
+                    deadlineDate,
+                    submittedAt,
+                }),
+            }),
+            // Internal notification to the office
+            resend.emails.send({
+                from: FROM_EMAIL,
+                to: OFFICE_EMAIL,
+                replyTo: formData.email,
+                subject: `🆕 New Case Review: ${formData.firstName} ${formData.lastName} — ${formData.caseType}`,
+                react: createElement(OfficeNotificationEmail, {
+                    firstName: formData.firstName,
+                    lastName: formData.lastName,
+                    email: formData.email,
+                    phone: formData.phone,
+                    zip: formData.zip,
+                    caseType: formData.caseType,
+                    urgency: formData.urgency,
+                    description: formData.description,
+                    submittedAt,
+                }),
+            }),
+        ])
+
+        if (clientEmailResult.status === "rejected") {
+            console.error("Failed to send client qualification email:", clientEmailResult.reason)
+        }
+        if (officeEmailResult.status === "rejected") {
+            console.error("Failed to send office notification email:", officeEmailResult.reason)
+        }
+
+        const clientSuccess = clientEmailResult.status === "fulfilled" && !clientEmailResult.value.error
+        const officeSuccess = officeEmailResult.status === "fulfilled" && !officeEmailResult.value.error
+
+        // Format data for client-side enhanced conversions
         const enhancedConversionData = formatUserDataForGTM({
             email: formData.email,
             phone: formData.phone,
@@ -75,12 +147,6 @@ export async function POST(req: NextRequest) {
             lastName: formData.lastName,
             zip: formData.zip,
         })
-
-        // Here you would typically:
-        // 1. Save to database
-        // 2. Send email notification
-        // 3. Integrate with CRM
-        // For now, we just log and return success
 
         // Log lead to Supabase — never throws, errors are logged internally
         await logLead({
@@ -92,22 +158,20 @@ export async function POST(req: NextRequest) {
             case_type: formData.caseType,
             description: formData.description,
             urgency: formData.urgency,
-            form_source: formData.form_source || "free-case-review",
+            form_source: formData.form_source || "contact-api",
             gclid: formData.gclid,
             utm_source: formData.utm_source,
             utm_medium: formData.utm_medium,
             utm_campaign: formData.utm_campaign,
             utm_term: formData.utm_term,
             utm_content: formData.utm_content,
-            email_sent: false,
+            email_sent: clientSuccess || officeSuccess,
         })
 
-        // Return success response
         return NextResponse.json(
             {
                 success: true,
                 message: "Form submitted successfully",
-                // Include formatted data for client-side enhanced conversions
                 enhancedConversionData,
             },
             { status: 200 }
@@ -120,4 +184,3 @@ export async function POST(req: NextRequest) {
         )
     }
 }
-

@@ -195,8 +195,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <li><a href="/consumer-law/tcpa/spam-texts-florida">Spam Texts Florida</a></li>
             <li><a href="/consumer-law/tcpa/texted-stop-still-getting-texts">Texted STOP, Still Getting Texts</a></li>
             <li><a href="/locations">Our Locations</a></li>
+            <li><a href="/locations/orlando">Consumer Rights Lawyer — Orlando</a></li>
+            <li><a href="/locations/miami">Consumer Rights Lawyer — Miami</a></li>
+            <li><a href="/locations/tampa">Consumer Rights Lawyer — Tampa</a></li>
+            <li><a href="/locations/fort-lauderdale">Consumer Rights Lawyer — Fort Lauderdale</a></li>
+            <li><a href="/locations/boynton-beach">Consumer Rights Lawyer — Boynton Beach</a></li>
+            <li><a href="/locations/port-st-lucie">Consumer Rights Lawyer — Port St. Lucie</a></li>
             <li><a href="/blog">Blog</a></li>
+            <li><a href="/blog/how-to-sue-for-robocalls-florida">How to Sue for Robocalls in Florida</a></li>
+            <li><a href="/blog/sue-debt-collector-harassment-florida">Sue a Debt Collector for Harassment in Florida</a></li>
+            <li><a href="/blog/cash-app-class-action-lawsuit-tcpa-settlement">Cash App Class Action TCPA Settlement</a></li>
+            <li><a href="/blog/at-t-settlement-update-march-2026">AT&amp;T Settlement Update</a></li>
             <li><a href="/faqs">FAQs</a></li>
+            <li><a href="/privacy-policy">Privacy Policy</a></li>
+            <li><a href="/terms-of-service">Terms of Service</a></li>
+            <li><a href="/legal-disclaimer">Legal Disclaimer</a></li>
           </ul>
         </nav>
         <MapProvider>

@@ -54,12 +54,11 @@ const formCard: Variants = {
 
 const CASES = [
   "Debt Collection Harassment",
+  "Illegal Collector Threats or Lies",
   "Credit Report Errors",
-  "Robocalls & Spam Texts",
-  "Privacy & Data Breach",
-  "Video Privacy (VPPA)",
-  "Fair Housing Violations",
-  "Mass Arbitration",
+  "Background Check Mistakes",
+  "Robocalls Without Your Consent",
+  "Texted STOP, Still Getting Texts",
 ]
 
 const STATS = [
