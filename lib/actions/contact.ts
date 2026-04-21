@@ -13,7 +13,7 @@ import { createElement } from "react"
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-const FROM_EMAIL = "Fischetti Law Group <info@consumerlawflorida.com>"
+const FROM_EMAIL = "Consumer Law Florida <info@consumerlawflorida.com>"
 const OFFICE_EMAIL = "info@consumerlawflorida.com"
 
 export type ContactFormResult = {

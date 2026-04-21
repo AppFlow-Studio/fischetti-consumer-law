@@ -9,7 +9,7 @@ import { ClientQualificationEmail } from "@/emails/client-qualification"
 import { OfficeNotificationEmail } from "@/emails/office-notification"
 import { detectLawType, generateCaseRef, calculateDeadline, getLawTypeLabel } from "@/lib/email-utils"
 
-const FROM_EMAIL = "Fischetti Law Group <info@consumerlawflorida.com>"
+const FROM_EMAIL = "Consumer Law Florida <info@consumerlawflorida.com>"
 const OFFICE_EMAIL = "info@consumerlawflorida.com"
 
 // Format submission date for email display
