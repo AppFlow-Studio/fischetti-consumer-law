@@ -235,12 +235,14 @@ export function buildLocalBusinessSchema(officeIndex: number) {
     },
     geo: { '@type': 'GeoCoordinates', latitude: o.coordinates.lat, longitude: o.coordinates.lng },
     priceRange: 'Free consultation',
-    openingHoursSpecification: {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-      opens: '09:00',
-      closes: '18:00',
-    },
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        opens: '09:00',
+        closes: '18:00',
+      },
+    ],
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: '5',
@@ -281,12 +283,14 @@ export function buildArticleSchema({
   url,
   datePublished,
   dateModified,
+  image,
 }: {
   title: string
   description: string
   url: string
   datePublished: string
   dateModified: string
+  image?: string
 }) {
   return {
     '@context': 'https://schema.org',
@@ -294,6 +298,7 @@ export function buildArticleSchema({
     headline: title,
     description,
     url,
+    image: image ?? `${SITE_CONFIG.url}/opengraph-default.png`,
     datePublished,
     dateModified,
     author: {
@@ -306,6 +311,14 @@ export function buildArticleSchema({
       '@type': 'Organization',
       name: SITE_CONFIG.name,
       url: SITE_CONFIG.url,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${SITE_CONFIG.url}/fischettilogo.png`,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': url,
     },
   }
 }

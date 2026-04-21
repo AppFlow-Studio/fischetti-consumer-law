@@ -138,10 +138,10 @@ export const legalServiceSchema = {
   },
   aggregateRating: {
     "@type": "AggregateRating",
-    ratingValue: "5",
-    reviewCount: "500",
-    bestRating: "5",
-    worstRating: "1",
+    ratingValue: 5,
+    reviewCount: 500,
+    bestRating: 5,
+    worstRating: 1,
   },
   parentOrganization: { "@id": `${SITE_URL}/#organization` },
 }

@@ -15,7 +15,7 @@ import LocationCard from "@/components/ui/location-card"
 import { buildMetadata } from "@/lib/seo/metadata"
 
 export const metadata: Metadata = buildMetadata({
-    title: "Consumer Rights Lawyers in Florida — All Locations",
+    title: "Florida Consumer Law Offices — Our Locations",
     description: `Consumer protection attorneys serving Orlando, Miami, Tampa, Fort Lauderdale, Boynton Beach, and Port St. Lucie. No fee unless we win. Call ${PRIMARY_PHONE}.`,
     pathname: "/locations",
     type: "website",
@@ -37,8 +37,9 @@ export default function LocationsPage() {
     const locations = firms.map((firm) => {
         const address = parseAddress(firm)
         return {
-            "@type": "Place",
-            name: `${SITE_NAME} - ${firm.cityDisplay} Office`,
+            "@type": "LegalService",
+            name: `${SITE_NAME} — ${firm.cityDisplay} Office`,
+            url: SITE_URL,
             address: {
                 "@type": "PostalAddress",
                 ...address,
@@ -270,7 +271,7 @@ export default function LocationsPage() {
                                 Consumer Law Practice Areas We Handle
                             </h2>
                             <p className="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
-                                {SITE_NAME} focuses exclusively on consumer protection matters, including:
+                                {SITE_NAME} focuses exclusively on FCRA, FDCPA, and TCPA consumer protection matters:
                             </p>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
                                 <Card className="p-6 rounded-2xl border hover:shadow-md transition-shadow">
@@ -278,7 +279,7 @@ export default function LocationsPage() {
                                         Credit Report Errors & Background Check Mistakes (FCRA)
                                     </h3>
                                     <p className="text-gray-700 mb-4">
-                                        Inaccurate credit reporting, mixed files, and employment background check errors.
+                                        Inaccurate credit reporting, mixed files, and employment background check errors that damage your finances or cost you a job.
                                     </p>
                                     <Link href="/consumer-law/fcra" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm">
                                         Learn more about FCRA cases <ArrowRight className="w-4 h-4" />
@@ -289,7 +290,7 @@ export default function LocationsPage() {
                                         Debt Collection Harassment (FDCPA)
                                     </h3>
                                     <p className="text-gray-700 mb-4">
-                                        Threatening calls, illegal collection practices, and harassment by debt collectors.
+                                        Threatening calls, illegal collection practices, and harassment by debt collectors — each violation may be worth up to $1,000.
                                     </p>
                                     <Link href="/consumer-law/fdcpa" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm">
                                         Learn more about FDCPA cases <ArrowRight className="w-4 h-4" />
@@ -297,10 +298,21 @@ export default function LocationsPage() {
                                 </Card>
                                 <Card className="p-6 rounded-2xl border hover:shadow-md transition-shadow">
                                     <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                                        Debt Collector Won&apos;t Stop Calling
+                                    </h3>
+                                    <p className="text-gray-700 mb-4">
+                                        Called after you asked them to stop? Every call after a cease request is a separate FDCPA violation worth up to $1,000.
+                                    </p>
+                                    <Link href="/consumer-law/fdcpa/debt-collector-keeps-calling" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm">
+                                        Debt collector keeps calling <ArrowRight className="w-4 h-4" />
+                                    </Link>
+                                </Card>
+                                <Card className="p-6 rounded-2xl border hover:shadow-md transition-shadow">
+                                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
                                         Robocalls & Spam Texts (TCPA)
                                     </h3>
                                     <p className="text-gray-700 mb-4">
-                                        Unwanted marketing calls, robotexts, and Do Not Call violations.
+                                        Unwanted marketing calls, robotexts, and Do Not Call violations — up to $1,500 per illegal call or text.
                                     </p>
                                     <Link href="/consumer-law/tcpa" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm">
                                         Learn more about TCPA cases <ArrowRight className="w-4 h-4" />
@@ -308,46 +320,24 @@ export default function LocationsPage() {
                                 </Card>
                                 <Card className="p-6 rounded-2xl border hover:shadow-md transition-shadow">
                                     <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                                        Privacy & Data Breach Violations
+                                        Texted STOP and Still Getting Texts
                                     </h3>
                                     <p className="text-gray-700 mb-4">
-                                        Exposure of personal or financial information and identity theft risks.
+                                        If a company keeps texting after you replied STOP, each additional text may be worth $500–$1,500 under the TCPA.
                                     </p>
-                                    <Link href="/consumer-law/fcra" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm">
-                                        Learn more about privacy cases <ArrowRight className="w-4 h-4" />
+                                    <Link href="/consumer-law/tcpa/texted-stop-still-getting-texts" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm">
+                                        Texted STOP still getting texts <ArrowRight className="w-4 h-4" />
                                     </Link>
                                 </Card>
                                 <Card className="p-6 rounded-2xl border hover:shadow-md transition-shadow">
                                     <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                                        Video Privacy & Tracking Pixel Lawsuits (VPPA)
+                                        Robocall Lawsuit in Florida
                                     </h3>
                                     <p className="text-gray-700 mb-4">
-                                        Illegal tracking of video viewing data through pixels and analytics tools.
+                                        Illegal robocalls without consent violate the TCPA. Find out how to file a claim and what your case may be worth.
                                     </p>
-                                    <Link href="/consumer-law/tcpa" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm">
-                                        Learn more about VPPA cases <ArrowRight className="w-4 h-4" />
-                                    </Link>
-                                </Card>
-                                <Card className="p-6 rounded-2xl border hover:shadow-md transition-shadow">
-                                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                                        Fair Housing Discrimination (FHA)
-                                    </h3>
-                                    <p className="text-gray-700 mb-4">
-                                        Housing discrimination, refusal to accommodate disabilities, and related violations.
-                                    </p>
-                                    <Link href="/consumer-law/fdcpa" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm">
-                                        Learn more about FHA cases <ArrowRight className="w-4 h-4" />
-                                    </Link>
-                                </Card>
-                                <Card className="p-6 rounded-2xl border hover:shadow-md transition-shadow md:col-span-2">
-                                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                                        Mass Arbitration Claims
-                                    </h3>
-                                    <p className="text-gray-700 mb-4">
-                                        Large-scale consumer actions involving arbitration clauses and corporate misconduct.
-                                    </p>
-                                    <Link href="/consumer-law/tcpa" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm">
-                                        Learn more about mass arbitration <ArrowRight className="w-4 h-4" />
+                                    <Link href="/consumer-law/tcpa/robocall-lawsuit-florida" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm">
+                                        Robocall lawsuit Florida <ArrowRight className="w-4 h-4" />
                                     </Link>
                                 </Card>
                             </div>

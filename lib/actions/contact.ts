@@ -6,8 +6,9 @@ import { contactSchema, type ContactFormData } from "@/components/forms/contact-
 import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
 import { PRIMARY_PHONE } from "@/lib/site"
 import { logLead } from "@/lib/logLead"
-import { ClientConfirmationEmail } from "@/emails/client-confirmation"
+import { ClientQualificationEmail } from "@/emails/client-qualification"
 import { OfficeNotificationEmail } from "@/emails/office-notification"
+import { detectLawType, generateCaseRef, calculateDeadline, getLawTypeLabel } from "@/lib/email-utils"
 import { createElement } from "react"
 
 const resend = new Resend(process.env.RESEND_API_KEY)
@@ -89,17 +90,26 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactF
         const formData = validationResult.data
         const submittedAt = formatSubmissionDate()
 
+        // Determine law type and generate intake reference / deadline for qualification email
+        const lawType = detectLawType(formData.caseType)
+        const caseRef = generateCaseRef()
+        const deadlineDate = calculateDeadline(5)
+        const lawLabel = getLawTypeLabel(lawType)
+
         // Send both emails concurrently
         const [clientEmailResult, officeEmailResult] = await Promise.allSettled([
-            // Client confirmation email
+            // Law-specific qualification email — filters serious leads post-submit
             resend.emails.send({
                 from: FROM_EMAIL,
                 to: formData.email,
-                subject: "Thank You for Contacting Fischetti Law Group - We've Received Your Case Review Request",
-                react: createElement(ClientConfirmationEmail, {
+                subject: `Action Required — Your ${lawLabel} Case Review`,
+                react: createElement(ClientQualificationEmail, {
                     firstName: formData.firstName,
                     lastName: formData.lastName,
-                    caseType: formData.caseType,
+                    lawType,
+                    caseRef,
+                    deadlineDate,
+                    submittedAt,
                 }),
             }),
             // Office notification email

@@ -13,7 +13,7 @@ import { buildPageMeta, buildBreadcrumbSchema, buildLegalServiceSchema, buildArt
 import { BreadcrumbNav } from "@/components/seo/breadcrumb-nav"
 
 export const metadata: Metadata = buildPageMeta({
-  title: "Robocall Lawsuit Florida — Sue for Up to $1,500 Per Illegal Call",
+  title: "Robocall Lawsuit Florida — TCPA Attorney",
   description: "Illegal robocalls in Florida? File a TCPA lawsuit. Up to $1,500 per call. Free case review. TCPA attorney with no fees unless we win. (561) 264-7211.",
   canonical: "https://www.consumerlawflorida.com/consumer-law/tcpa/robocall-lawsuit-florida",
   keywords: [
@@ -87,7 +87,7 @@ const timelineSteps = [
   {
     step: "4",
     title: "You Recover — We Collect Our Fee From Them",
-    body: "$500 per violation, up to $1,500 for willful violations. The TCPA also provides for attorney's fees. You pay nothing unless we win.",
+    body: "$500 per violation, up to $1,500 for willful violations. We work on contingency — you pay nothing unless we win.",
     color: "green" as const,
   },
 ]
@@ -206,7 +206,7 @@ export default function RobocallLawsuitFloridaPage() {
             {[
               { amount: "$500", label: "Per call (standard TCPA violation)", icon: Phone },
               { amount: "Up to $1,500", label: "Per call if the violation was willful", icon: Zap },
-              { amount: "Attorney's fees", label: "We typically take nothing from you", icon: Handshake },
+              { amount: "No win, no fee", label: "We work on contingency — you pay nothing unless we win", icon: Handshake },
             ].map((item) => (
               <div key={item.label} className="bg-white/10 backdrop-blur-sm rounded-xl p-5 text-center border border-white/10">
                 <div className="flex justify-center mb-2">

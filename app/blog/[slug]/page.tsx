@@ -38,7 +38,13 @@ export async function generateMetadata({ params }: BlogDetailPageParams): Promis
     return { title: "Blog Post Not Found" }
   }
 
-  const title = post.meta_title || post.title
+  const rawTitle = post.meta_title || post.title
+  // Keep full title under ~70 chars after template appends " | Consumer Law Florida" (22 chars).
+  // Truncate at last word boundary before 48 chars so combined title stays ≤70 chars.
+  const title =
+    rawTitle.length <= 48
+      ? rawTitle
+      : rawTitle.slice(0, 48).replace(/\s+\S*$/, "").trimEnd() + "…"
   const description = post.meta_description || post.summary || ""
   const canonicalPath = `/blog/${slug}`
   const url = `${SITE_URL}${canonicalPath}`

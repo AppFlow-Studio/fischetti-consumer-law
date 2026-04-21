@@ -42,7 +42,7 @@ export default function ConsumerLawHero({ h1Title, title, summary }: ConsumerLaw
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
                     {/* Left: Hero Content */}
                     <motion.div 
-                        initial={{ opacity: 0, x: -20 }}
+                        initial={{ opacity: 1, x: 0 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.6 }}
                         className="space-y-6"

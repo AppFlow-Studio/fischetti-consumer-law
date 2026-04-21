@@ -102,14 +102,9 @@ export default function Home() {
 
                 {/* Main Headline */}
                 <div className="space-y-2 mb-4 xl:mb-8 text-start">
-                  {/* Keyword-optimized H1 — present in first-wave SSR HTML for Googlebot, invisible to sighted users */}
-                  <h1 className="sr-only">
-                    Florida Consumer Protection Attorney — FDCPA, TCPA &amp; FCRA Lawyer | No Fees Unless We Win
-                  </h1>
-                  {/* Visible brand slogan — styled identically to the former H1, purely presentational */}
-                  <p aria-hidden="false" className="text-5xl md:text-6xl xl:text-7xl font-bold text-white leading-tight">
+                  <h1 className="text-5xl md:text-6xl xl:text-7xl font-bold text-white leading-tight">
                     Big Companies Play Unfair.
-                  </p>
+                  </h1>
                   <div className="rounded-xl text-start items-start justify-start w-full relative">
                     <MorphingText texts={texts} className="text-[2rem] md:text-[3rem] xl:text-[4rem] self-start italic font-bold text-[#439cfc] text-start leading-tight" />
                   </div>

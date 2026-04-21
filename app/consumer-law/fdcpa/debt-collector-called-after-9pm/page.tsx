@@ -12,8 +12,8 @@ import { buildPageMeta, buildBreadcrumbSchema, buildLegalServiceSchema, buildArt
 import { BreadcrumbNav } from "@/components/seo/breadcrumb-nav"
 
 export const metadata: Metadata = buildPageMeta({
-  title: "Debt Collector Called After 9 PM? Your FDCPA Rights | FL",
-  description: "Debt collector called after 9 PM or before 8 AM in Florida? That's an FDCPA violation. Up to $1,000 per lawsuit. Free case review. No fees unless we win. (561) 264-7211.",
+  title: "Debt Collector Called After 9 PM — FDCPA Florida",
+  description: "Debt collector called after 9 PM or before 8 AM in Florida? That's an FDCPA violation. Up to $1,000. Free case review. No fees unless we win.",
   canonical: "https://www.consumerlawflorida.com/consumer-law/fdcpa/debt-collector-called-after-9pm",
   keywords: [
     "debt collector called after 9pm",

@@ -17,9 +17,9 @@ type BlogIndexPageProps = {
 export const revalidate = 60
 
 export const metadata: Metadata = buildMetadata({
-  title: "Consumer Protection Law Blog — FDCPA, TCPA & FCRA",
+  title: "Consumer Protection Law Blog — FDCPA & TCPA",
   description:
-    "Consumer protection insights covering FDCPA, TCPA, FCRA, VPPA, Fair Housing, and consumer rights issues in Florida. Written by attorney Michael J. Fischetti.",
+    "Consumer protection insights covering FDCPA, TCPA, and FCRA — debt collector harassment, robocalls, spam texts, and credit report errors in Florida. Written by attorney Michael J. Fischetti.",
   pathname: "/blog",
   type: "website",
 })

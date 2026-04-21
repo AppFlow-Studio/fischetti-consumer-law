@@ -11,12 +11,13 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { contactSchema, defaultContactValues, caseTypes, urgencyLevels, type ContactFormData } from "@/components/forms/contact-schema"
+import { contactSchema, defaultContactValues, caseTypes, urgencyLevels, type ContactFormData, caseTypeGuidanceMap, defaultCaseTypeGuidance } from "@/components/forms/contact-schema"
 import { submitContactForm } from "@/lib/actions/contact"
 import { Loader2, AlertCircle } from "lucide-react"
 import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
 import { PRIMARY_PHONE, PRIMARY_PHONE_E164 } from "@/lib/site"
 import { getAttributionData } from "@/lib/gclid"
+import { DescriptionGuidance } from "@/components/forms/description-guidance"
 
 type FreeCaseReviewDialogProps = {
     children?: React.ReactNode
@@ -34,6 +35,9 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
         resolver: zodResolver(contactSchema),
         defaultValues: defaultContactValues
     })
+
+    const watchedCaseType = form.watch("caseType")
+    const guidance = caseTypeGuidanceMap[watchedCaseType] ?? defaultCaseTypeGuidance
 
     useEffect(() => {
         setIsDialogOpen(open)
@@ -248,6 +252,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                             )} />
                         </div>
 
+                        {/* Case Type with law-family tip */}
                         <FormField control={form.control} name="caseType" render={({ field }) => (
                             <FormItem className="w-full">
                                 <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">Case type *</FormLabel>
@@ -261,6 +266,11 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                                         </SelectContent>
                                     </Select>
                                 </FormControl>
+                                {guidance.caseTypeTip && (
+                                    <p className="text-[11px] text-slate-400 mt-1 leading-snug">
+                                        {guidance.caseTypeTip}
+                                    </p>
+                                )}
                                 <FormMessage className="text-xs" />
                             </FormItem>
                         )} />
@@ -282,23 +292,23 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                             </FormItem>
                         )} />
 
+                        {/* Brief Details — dynamic placeholder + animated helper guidance */}
                         <FormField control={form.control} name="description" render={({ field }) => (
                             <FormItem className="w-full">
                                 <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">Brief details *</FormLabel>
                                 <FormControl>
                                     <Textarea
-                                        placeholder="Describe what happened in a few sentences…"
+                                        placeholder={guidance.placeholder}
                                         className="min-h-[80px] sm:min-h-[110px] w-full resize-y text-sm"
                                         disabled={isPending}
                                         {...field}
                                     />
                                 </FormControl>
-                                <div className="flex justify-between items-center mt-1">
-                                    <span className="text-xs text-gray-500">Minimum 10 characters</span>
-                                    <span className={`text-xs ${field.value.length >= 10 ? 'text-gray-500' : 'text-amber-600'}`}>
-                                        {field.value.length}/10
-                                    </span>
-                                </div>
+                                <DescriptionGuidance
+                                    helperText={guidance.helperText}
+                                    caseTypeKey={watchedCaseType}
+                                    charLength={field.value.length}
+                                />
                                 <FormMessage className="text-xs" />
                             </FormItem>
                         )} />

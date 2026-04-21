@@ -11,9 +11,9 @@ import { PRIMARY_PHONE_E164, SITE_URL, SITE_NAME } from '@/lib/site'
 const PAGE_URL = `${SITE_URL}/locations/miami`
 
 export const metadata: Metadata = buildPageMeta({
-  title: 'Consumer Law Lawyer Serving Miami FL — FDCPA, TCPA & FCRA Attorney | Consumer Law Florida',
+  title: 'Miami Consumer Rights Lawyer — FDCPA, TCPA & FCRA Attorney',
   description:
-    'Consumer Law Florida serves Miami consumers remotely for debt collector harassment, robocalls, spam texts, and credit report errors. Free case review. (561) 264-7211.',
+    'Consumer Law Florida represents Miami consumers for debt collection harassment, robocalls, spam texts, and credit report errors. Free case review. (561) 264-7211.',
   canonical: PAGE_URL,
   keywords: [
     'consumer lawyer miami florida',

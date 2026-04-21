@@ -71,7 +71,7 @@ export function ConsumerLawJsonLd({
             addressCountry: string
         }
         areaServed: { '@type': string; name: string }
-        provider: { '@type': string; name: string; url: string }
+        parentOrganization: { '@type': string; name: string; url: string }
         description: string
         serviceType: string
         hasOfferCatalog?: typeof offerCatalog
@@ -92,8 +92,8 @@ export function ConsumerLawJsonLd({
             addressCountry: 'US',
         },
         areaServed: { '@type': 'AdministrativeArea', name: 'Florida' },
-        provider: {
-            '@type': 'LegalService',
+        parentOrganization: {
+            '@type': 'Organization',
             name: SITE_NAME,
             url: SITE_URL,
         },
