@@ -672,19 +672,38 @@ export function ClientQualificationEmail({
                                                                 />
                                                             </td>
                                                             <td style={{ textAlign: "right" as const, verticalAlign: "middle" }}>
-                                                                <span style={{
-                                                                    display: "inline-block",
-                                                                    backgroundColor: accent,
-                                                                    color: "#ffffff",
-                                                                    fontSize: "10px",
-                                                                    fontWeight: "700",
-                                                                    padding: "6px 12px",
-                                                                    borderRadius: "3px",
-                                                                    letterSpacing: "1.5px",
-                                                                    textTransform: "uppercase" as const,
-                                                                }}>
-                                                                    Action Required
-                                                                </span>
+                                                                <table
+                                                                    role="presentation"
+                                                                    cellPadding="0"
+                                                                    cellSpacing="0"
+                                                                    align="right"
+                                                                >
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td
+                                                                                style={{
+                                                                                    width: "3px",
+                                                                                    minWidth: "3px",
+                                                                                    backgroundColor: "#dc2626",
+                                                                                }}
+                                                                            >
+                                                                                &nbsp;
+                                                                            </td>
+                                                                            <td style={{ paddingLeft: "12px", verticalAlign: "middle" }}>
+                                                                                <span style={{
+                                                                                    fontSize: "11px",
+                                                                                    fontWeight: "800",
+                                                                                    color: "#f8fafc",
+                                                                                    letterSpacing: "2px",
+                                                                                    textTransform: "uppercase" as const,
+                                                                                    lineHeight: "1.25",
+                                                                                }}>
+                                                                                    Action Required
+                                                                                </span>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -849,49 +868,49 @@ export function ClientQualificationEmail({
                                                         <tr>
                                                             <td style={{
                                                                 backgroundColor: "#0f172a",
-                                                                borderLeft: `5px solid ${accent}`,
+                                                                borderLeft: `6px solid ${accent}`,
                                                                 borderRadius: "6px",
                                                                 padding: "0",
                                                                 overflow: "hidden",
                                                             }}>
                                                                 <table role="presentation" width="100%" cellPadding="0" cellSpacing="0">
                                                                     <tbody>
-                                                                        {/* Top label row */}
                                                                         <tr>
-                                                                            <td style={{ padding: "18px 24px 0 24px" }}>
-                                                                                <table role="presentation" cellPadding="0" cellSpacing="0">
-                                                                                    <tbody>
-                                                                                        <tr>
-                                                                                            <td style={{
-                                                                                                backgroundColor: accent,
-                                                                                                borderRadius: "3px",
-                                                                                                padding: "4px 10px",
-                                                                                            }}>
-                                                                                                <span style={{
-                                                                                                    fontSize: "10px",
-                                                                                                    fontWeight: "700",
-                                                                                                    color: "#ffffff",
-                                                                                                    letterSpacing: "1.5px",
-                                                                                                    textTransform: "uppercase" as const,
-                                                                                                }}>
-                                                                                                    Response Required By
-                                                                                                </span>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    </tbody>
-                                                                                </table>
+                                                                            <td
+                                                                                style={{
+                                                                                    height: "3px",
+                                                                                    lineHeight: "3px",
+                                                                                    fontSize: "1px",
+                                                                                    backgroundColor: accent,
+                                                                                }}
+                                                                            >
+                                                                                &nbsp;
                                                                             </td>
                                                                         </tr>
-                                                                        {/* Date row */}
                                                                         <tr>
-                                                                            <td style={{ padding: "10px 24px 4px 24px" }}>
+                                                                            <td style={{ padding: "18px 24px 0 24px" }}>
                                                                                 <p style={{
                                                                                     margin: 0,
-                                                                                    fontSize: "22px",
+                                                                                    fontSize: "10px",
                                                                                     fontWeight: "700",
-                                                                                    color: "#ffffff",
-                                                                                    lineHeight: "1.2",
-                                                                                    letterSpacing: "-0.3px",
+                                                                                    color: "#94a3b8",
+                                                                                    letterSpacing: "2px",
+                                                                                    textTransform: "uppercase" as const,
+                                                                                    lineHeight: "1.4",
+                                                                                }}>
+                                                                                    Response Required By
+                                                                                </p>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td style={{ padding: "8px 24px 0 24px" }}>
+                                                                                <p style={{
+                                                                                    margin: 0,
+                                                                                    fontSize: "26px",
+                                                                                    fontWeight: "700",
+                                                                                    color: "#f8fafc",
+                                                                                    lineHeight: "1.15",
+                                                                                    letterSpacing: "-0.4px",
                                                                                 }}>
                                                                                     {deadlineDate}
                                                                                 </p>
@@ -899,21 +918,21 @@ export function ClientQualificationEmail({
                                                                         </tr>
                                                                         {/* Divider */}
                                                                         <tr>
-                                                                            <td style={{ padding: "12px 24px 0 24px" }}>
+                                                                            <td style={{ padding: "14px 24px 0 24px" }}>
                                                                                 <div style={{
                                                                                     height: "1px",
-                                                                                    backgroundColor: "#1e293b",
+                                                                                    backgroundColor: "#334155",
                                                                                 }} />
                                                                             </td>
                                                                         </tr>
                                                                         {/* Body row */}
                                                                         <tr>
-                                                                            <td style={{ padding: "12px 24px 18px 24px" }}>
+                                                                            <td style={{ padding: "12px 24px 20px 24px" }}>
                                                                                 <p style={{
                                                                                     margin: 0,
                                                                                     fontSize: "12px",
-                                                                                    color: "#94a3b8",
-                                                                                    lineHeight: "1.6",
+                                                                                    color: "#cbd5e1",
+                                                                                    lineHeight: "1.65",
                                                                                 }}>
                                                                                     5 business days from submission. If we do not receive your information by this date, this intake will be closed without further review.
                                                                                 </p>
