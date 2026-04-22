@@ -9,7 +9,7 @@ function AutoOpenDialogInner() {
     const { setOpenDialogRequest } = useUIState()
 
     useEffect(() => {
-        if (searchParams.get("open") === "true") {
+        if (searchParams?.get("open") === "true") {
             setOpenDialogRequest(true)
         }
     }, [searchParams, setOpenDialogRequest])
