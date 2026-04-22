@@ -66,7 +66,7 @@ function FcraRequiredInfo({ accent }: { accent: string }) {
                                                                         <div style={{
                                                                             width: "26px",
                                                                             height: "26px",
-                                                                            backgroundColor: accent,
+                                                                            backgroundColor: '#dc2626',
                                                                             borderRadius: "4px",
                                                                             color: "#ffffff",
                                                                             fontSize: "13px",
@@ -116,7 +116,7 @@ function FcraRequiredInfo({ accent }: { accent: string }) {
                                                                         <div style={{
                                                                             width: "26px",
                                                                             height: "26px",
-                                                                            backgroundColor: accent,
+                                                                            backgroundColor: '#dc2626',
                                                                             borderRadius: "4px",
                                                                             color: "#ffffff",
                                                                             fontSize: "13px",
@@ -230,7 +230,7 @@ function FdcpaRequiredInfo({ accent }: { accent: string }) {
                                                                             <div style={{
                                                                                 width: "26px",
                                                                                 height: "26px",
-                                                                                backgroundColor: accent,
+                                                                                backgroundColor: '#dc2626',
                                                                                 borderRadius: "4px",
                                                                                 color: "#ffffff",
                                                                                 fontSize: "13px",
@@ -328,7 +328,7 @@ function TcpaRequiredInfo({ accent }: { accent: string }) {
                                                                             <div style={{
                                                                                 width: "26px",
                                                                                 height: "26px",
-                                                                                backgroundColor: accent,
+                                                                                backgroundColor: '#dc2626',
                                                                                 borderRadius: "4px",
                                                                                 color: "#ffffff",
                                                                                 fontSize: "13px",
@@ -377,7 +377,7 @@ function TcpaRequiredInfo({ accent }: { accent: string }) {
                                                                             <div style={{
                                                                                 width: "26px",
                                                                                 height: "26px",
-                                                                                backgroundColor: accent,
+                                                                                backgroundColor: '#dc2626',
                                                                                 borderRadius: "4px",
                                                                                 color: "#ffffff",
                                                                                 fontSize: "13px",
@@ -525,7 +525,7 @@ function OtherRequiredInfo({ accent }: { accent: string }) {
                                                                             <div style={{
                                                                                 width: "26px",
                                                                                 height: "26px",
-                                                                                backgroundColor: accent,
+                                                                                backgroundColor: '#dc2626',
                                                                                 borderRadius: "4px",
                                                                                 color: "#ffffff",
                                                                                 fontSize: "13px",
@@ -606,7 +606,7 @@ export function ClientQualificationEmail({
     const accent = getLawTypeAccent(lawType)
     const lawLabel = getLawTypeLabel(lawType)
     const introCopy = getIntroCopy(lawType)
-
+  
     return (
         <html>
             <head>
