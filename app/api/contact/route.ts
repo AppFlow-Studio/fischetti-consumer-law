@@ -68,6 +68,7 @@ export async function POST(req: NextRequest) {
                 urgency: formDataObj.get("urgency") as string,
                 gclid: (formDataObj.get("gclid") as string) || undefined,
                 agreeToTerms: formDataObj.get("agreeToTerms") === "true",
+                outsidePracticeAcknowledged: formDataObj.get("outsidePracticeAcknowledged") === "true",
                 utm_source: (formDataObj.get("utm_source") as string) || undefined,
                 utm_medium: (formDataObj.get("utm_medium") as string) || undefined,
                 utm_campaign: (formDataObj.get("utm_campaign") as string) || undefined,
