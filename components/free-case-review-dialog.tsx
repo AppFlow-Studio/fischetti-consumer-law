@@ -11,7 +11,18 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { contactSchema, defaultContactValues, caseTypes, urgencyLevels, type ContactFormData, caseTypeGuidanceMap, defaultCaseTypeGuidance } from "@/components/forms/contact-schema"
+import {
+    contactSchema,
+    defaultContactValues,
+    caseTypes,
+    urgencyLevels,
+    type ContactFormData,
+    caseTypeGuidanceMap,
+    defaultCaseTypeGuidance,
+    UNLISTED_CASE_TYPE,
+    UNLISTED_CASE_NOTICE,
+    UNLISTED_CASE_ACKNOWLEDGMENT,
+} from "@/components/forms/contact-schema"
 import { submitContactForm } from "@/lib/actions/contact"
 import { Loader2, AlertCircle } from "lucide-react"
 import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
@@ -37,7 +48,10 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
     })
 
     const watchedCaseType = form.watch("caseType")
+    const outsidePracticeAcknowledged = form.watch("outsidePracticeAcknowledged")
     const guidance = caseTypeGuidanceMap[watchedCaseType] ?? defaultCaseTypeGuidance
+    const isUnlistedCaseType = watchedCaseType === UNLISTED_CASE_TYPE
+    const isSubmitDisabled = isPending || (isUnlistedCaseType && !outsidePracticeAcknowledged)
 
     useEffect(() => {
         setIsDialogOpen(open)
@@ -257,7 +271,16 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                             <FormItem className="w-full">
                                 <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">Case type *</FormLabel>
                                 <FormControl>
-                                    <Select onValueChange={field.onChange} value={field.value} disabled={isPending}>
+                                    <Select
+                                        onValueChange={(value) => {
+                                            field.onChange(value)
+                                            if (value !== UNLISTED_CASE_TYPE) {
+                                                form.setValue("outsidePracticeAcknowledged", false, { shouldValidate: true })
+                                            }
+                                        }}
+                                        value={field.value}
+                                        disabled={isPending}
+                                    >
                                         <SelectTrigger className="w-full text-sm py-2 sm:py-2.5"><SelectValue placeholder="Select case type" /></SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
@@ -270,6 +293,43 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                                     <p className="text-[11px] text-slate-400 mt-1 leading-snug">
                                         {guidance.caseTypeTip}
                                     </p>
+                                )}
+                                {isUnlistedCaseType && (
+                                    <div className="mt-2 space-y-3">
+                                        <div
+                                            role="note"
+                                            aria-live="polite"
+                                            className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-900"
+                                        >
+                                            {UNLISTED_CASE_NOTICE}
+                                        </div>
+                                        <FormField control={form.control} name="outsidePracticeAcknowledged" render={({ field: acknowledgmentField }) => (
+                                            <FormItem className="w-full">
+                                                <div className="flex items-start gap-2 rounded-lg border border-gray-200 bg-white/70 p-3">
+                                                    <FormControl>
+                                                        <input
+                                                            id="outside-practice-acknowledgment-dialog"
+                                                            type="checkbox"
+                                                            className="mt-0.5 h-4 w-4 shrink-0 rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                                                            checked={acknowledgmentField.value}
+                                                            onChange={(event) => acknowledgmentField.onChange(event.target.checked)}
+                                                            onBlur={acknowledgmentField.onBlur}
+                                                            name={acknowledgmentField.name}
+                                                            ref={acknowledgmentField.ref}
+                                                            disabled={isPending}
+                                                        />
+                                                    </FormControl>
+                                                    <label
+                                                        htmlFor="outside-practice-acknowledgment-dialog"
+                                                        className="text-sm leading-relaxed text-gray-700"
+                                                    >
+                                                        {UNLISTED_CASE_ACKNOWLEDGMENT}
+                                                    </label>
+                                                </div>
+                                                <FormMessage className="text-xs" />
+                                            </FormItem>
+                                        )} />
+                                    </div>
                                 )}
                                 <FormMessage className="text-xs" />
                             </FormItem>
@@ -325,8 +385,8 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                             </Button>
                             <Button
                                 type="submit"
-                                className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto order-1 sm:order-2"
-                                disabled={isPending}
+                                className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto order-1 sm:order-2 disabled:cursor-not-allowed disabled:hover:bg-blue-600"
+                                disabled={isSubmitDisabled}
                             >
                                 {isPending ? (
                                     <span className="flex items-center gap-2">
