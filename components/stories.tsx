@@ -41,7 +41,7 @@ const stories: StoryData[] = [
         author: "Michael Fischetti",
         avatar: "/fischettiheadshots.jpg",
         fallback: "MF",
-        video: "/hiding-from-your-debt.mp4",
+        video: "https://laza-dessert-cafe.b-cdn.net/consumer-law/Hiding%20from%20Your%20Debt.mp4",
         title: "Hiding From Your Debt"
     },
     {
@@ -49,7 +49,7 @@ const stories: StoryData[] = [
         author: "Michael Fischetti",
         avatar: "/fischettiheadshots.jpg",
         fallback: "MF",
-        video: "/is-debt-destroying-your-life.mp4",
+        video: "https://laza-dessert-cafe.b-cdn.net/consumer-law/Is%20Debt%20Destroying%20Your%20Life%20(1).mp4",
         title: "Is Debt Destroying Your Life?"
     },
     {
@@ -57,7 +57,7 @@ const stories: StoryData[] = [
         author: "Michael Fischetti",
         avatar: "/fischettiheadshots.jpg",
         fallback: "MF",
-        video: "/medical-debt.mp4",
+        video: "https://laza-dessert-cafe.b-cdn.net/consumer-law/Medical%20Debt%20Video.mp4",
         title: "Medical Debt"
     },
     {
@@ -65,7 +65,7 @@ const stories: StoryData[] = [
         author: "Michael Fischetti",
         avatar: "/fischettiheadshots.jpg",
         fallback: "MF",
-        video: "/out-to-dinner.mp4",
+        video: "https://laza-dessert-cafe.b-cdn.net/consumer-law/Out%20to%20Dinner.mp4",
         title: "Out to Dinner"
     },
     {
@@ -73,7 +73,7 @@ const stories: StoryData[] = [
         author: "Michael Fischetti",
         avatar: "/fischettiheadshots.jpg",
         fallback: "MF",
-        video: "/stop-harresing-calls.mp4",
+        video: "https://laza-dessert-cafe.b-cdn.net/consumer-law/Stop%20Harassing%20Calls.mp4",
         title: "Stop Harassing Calls"
     },
     {
@@ -81,7 +81,7 @@ const stories: StoryData[] = [
         author: "Michael Fischetti",
         avatar: "/fischettiheadshots.jpg",
         fallback: "MF",
-        video: "/debt-collectors-law-violations.mp4",
+        video: "https://laza-dessert-cafe.b-cdn.net/consumer-law/Debt%20Collectors%20Law%20Violations.mp4",
         title: "Debt Collectors Law Violations"
     },
 
