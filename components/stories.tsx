@@ -38,50 +38,50 @@ type StoryData = {
 const stories: StoryData[] = [
     {
         id: 1,
-        author: "Micheal Fischetti",
+        author: "Michael Fischetti",
         avatar: "/fischettiheadshots.jpg",
         fallback: "MF",
-        video: "/hiding-from-your-debt.mp4",
+        video: "https://laza-dessert-cafe.b-cdn.net/consumer-law/Hiding%20from%20Your%20Debt.mp4",
         title: "Hiding From Your Debt"
     },
     {
         id: 2,
-        author: "Micheal Fischetti",
+        author: "Michael Fischetti",
         avatar: "/fischettiheadshots.jpg",
         fallback: "MF",
-        video: "/is-debt-destroying-your-life.mp4",
+        video: "https://laza-dessert-cafe.b-cdn.net/consumer-law/Is%20Debt%20Destroying%20Your%20Life%20(1).mp4",
         title: "Is Debt Destroying Your Life?"
     },
     {
         id: 3,
-        author: "Micheal Fischetti",
+        author: "Michael Fischetti",
         avatar: "/fischettiheadshots.jpg",
         fallback: "MF",
-        video: "/medical-debt.mp4",
+        video: "https://laza-dessert-cafe.b-cdn.net/consumer-law/Medical%20Debt%20Video.mp4",
         title: "Medical Debt"
     },
     {
         id: 4,
-        author: "Micheal Fischetti",
+        author: "Michael Fischetti",
         avatar: "/fischettiheadshots.jpg",
         fallback: "MF",
-        video: "/out-to-dinner.mp4",
+        video: "https://laza-dessert-cafe.b-cdn.net/consumer-law/Out%20to%20Dinner.mp4",
         title: "Out to Dinner"
     },
     {
         id: 5,
-        author: "Micheal Fischetti",
+        author: "Michael Fischetti",
         avatar: "/fischettiheadshots.jpg",
         fallback: "MF",
-        video: "/stop-harresing-calls.mp4",
+        video: "https://laza-dessert-cafe.b-cdn.net/consumer-law/Stop%20Harassing%20Calls.mp4",
         title: "Stop Harassing Calls"
     },
     {
         id: 6,
-        author: "Micheal Fischetti",
+        author: "Michael Fischetti",
         avatar: "/fischettiheadshots.jpg",
         fallback: "MF",
-        video: "/debt-collectors-law-violations.mp4",
+        video: "https://laza-dessert-cafe.b-cdn.net/consumer-law/Debt%20Collectors%20Law%20Violations.mp4",
         title: "Debt Collectors Law Violations"
     },
 
@@ -337,7 +337,7 @@ const StoriesScroller = () => {
             </div>
 
             <div className="w-full max-w-8xl mx-auto px-8 py-4">
-                <h4 className="text-sm font-semibold text-gray-900 mb-2 ">Follow Us on Our Socials</h4>
+                <p className="text-sm font-semibold text-gray-900 mb-2">Follow Us on Our Socials</p>
                 <div className="flex gap-3">
                     {socialLinks.map((social, index) => (
                         <motion.a

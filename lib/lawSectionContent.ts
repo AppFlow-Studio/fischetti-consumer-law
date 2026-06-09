@@ -58,81 +58,9 @@ export const TCPA_CONTENT: LawSectionContent = {
     "**TCPA claims** may allow recovery on a per-call or per-text basis, making it worthwhile to evaluate potential violations."
 };
 
-// Privacy & Data Breach
-export const PRIVACY_CONTENT: LawSectionContent = {
-  keyStatutes: [
-    "**Federal & State Consumer Privacy Laws**"
-  ],
-  whoIsProtected:
-    "Privacy laws protect consumers whose **personal or sensitive information** is improperly accessed, exposed, or shared.",
-  commonViolations:
-    "Common violations include failing to safeguard data, improper sharing, delayed breach notifications, and weak security practices.",
-  yourRights:
-    "Consumers have the right to transparency and accountability when data is compromised, often with **consumer-friendly enforcement mechanisms**.",
-  whatToDoNext:
-    "Review breach notices and monitor accounts. A **free case review** can determine whether legal remedies may apply.",
-  damagesAndRemedies:
-    "Depending on circumstances, privacy violations may allow recovery designed to hold companies accountable."
-};
-
-// VPPA — Video Privacy Protection Act
-export const VPPA_CONTENT: LawSectionContent = {
-  keyStatutes: [
-    "**Video Privacy Protection Act (VPPA)** — 18 U.S.C. § 2710"
-  ],
-  whoIsProtected:
-    "The **VPPA** protects consumers whose **video viewing activity** is tracked or shared without consent.",
-  commonViolations:
-    "**VPPA violations** include sharing viewing history with third parties, tracking pixels, and linking video data to personal identifiers.",
-  yourRights:
-    "Consumers have strong privacy rights over viewing habits, even when tracking is not obvious.",
-  whatToDoNext:
-    "Identify websites where video content was viewed and review disclosures. A **free case review** can clarify whether tracking crossed legal lines.",
-  damagesAndRemedies:
-    "**VPPA claims** may allow statutory recovery, making review worthwhile even when harm is not obvious."
-};
-
-// FHA — Fair Housing Act
-export const FHA_CONTENT: LawSectionContent = {
-  keyStatutes: [
-    "**Fair Housing Act (FHA)** — 42 U.S.C. § 3601 et seq."
-  ],
-  whoIsProtected:
-    "The **Fair Housing Act** protects renters and buyers from housing discrimination based on disability, family status, and other protected characteristics.",
-  commonViolations:
-    "Common **FHA violations** include refusing reasonable accommodations, unequal rental terms, discriminatory statements, and retaliation.",
-  yourRights:
-    "Consumers have the right to equal housing access and enforcement mechanisms designed to correct discriminatory practices.",
-  whatToDoNext:
-    "Save communications, accommodation requests, and listings. A **free case review** can help evaluate next steps.",
-  damagesAndRemedies:
-    "**FHA remedies** may include corrective action and recovery depending on the circumstances."
-};
-
-// Mass Arbitration
-export const MASS_ARBITRATION_CONTENT: LawSectionContent = {
-  keyStatutes: [
-    "**Federal Arbitration Act & Consumer Protection Laws**"
-  ],
-  whoIsProtected:
-    "Mass arbitration applies to consumers bound by **forced arbitration clauses** who experienced similar harm from the same company.",
-  commonViolations:
-    "Issues often involve unfair contract terms, systemic misconduct, or widespread consumer harm.",
-  yourRights:
-    "Consumers may assert rights collectively through coordinated arbitration, often with minimal individual burden.",
-  whatToDoNext:
-    "Review agreements and identify shared issues. A **free case review** can determine whether mass arbitration applies.",
-  damagesAndRemedies:
-    "Outcomes depend on scale and process, but many cases proceed without upfront legal costs."
-};
-
 // Law slug → Content mapping
 export const LAW_CONTENT_MAP: Record<string, LawSectionContent> = {
   fcra: FCRA_CONTENT,
   fdcpa: FDCPA_CONTENT,
-  tcpa: TCPA_CONTENT,
-  privacy: PRIVACY_CONTENT,
-  vppa: VPPA_CONTENT,
-  fha: FHA_CONTENT,
-  "mass-arbitration": MASS_ARBITRATION_CONTENT
+  tcpa: TCPA_CONTENT
 };

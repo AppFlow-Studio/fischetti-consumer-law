@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 import { AnimatedThemeToggler } from "./ui/animated-theme-toggler"
 import Image from "next/image"
 import FreeCaseReview from "./free-case-review-button"
-import { Phone, Menu, X, Info, Users, MapPin as MapPinIcon, Star, Quote, Shield, FileText, MessageSquareWarning, PhoneCall, Video, Home, Gavel, HelpCircle, Building2, BookOpen } from "lucide-react"
+import { Phone, Menu, X, Info, Users, MapPin as MapPinIcon, Star, Quote, Shield, FileText, MessageSquareWarning, PhoneCall, HelpCircle, Building2, BookOpen } from "lucide-react"
 import { useEffect, useState, useRef } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import FreeCaseReviewDialog from "./free-case-review-dialog"
@@ -248,34 +248,25 @@ export default function Navbar({ className }: NavbarProps) {
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href="/consumer-law/fdcpa" className="block px-4 py-2.5 text-[15px] text-gray-900 hover:bg-blue-50 rounded-xl mx-1">
+                                        <Link href="/consumer-law/fdcpa" className="block px-4 py-2 text-[15px] text-gray-900 hover:bg-blue-50 rounded-xl mx-1">
                                             <span className="flex items-center gap-2"><MessageSquareWarning className="w-4 h-4 text-blue-600" /> FDCPA — Debt Collection</span>
                                         </Link>
+                                        <div className="pl-7 pb-1 space-y-0.5">
+                                            <Link href="/consumer-law/fdcpa/debt-collector-keeps-calling" className="block px-3 py-1 text-[12px] text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg mx-1">Won&apos;t Stop Calling</Link>
+                                            <Link href="/consumer-law/fdcpa/debt-collector-called-after-9pm" className="block px-3 py-1 text-[12px] text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg mx-1">Called After 9 PM</Link>
+                                            <Link href="/consumer-law/fdcpa/debt-collector-threatened-me" className="block px-3 py-1 text-[12px] text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg mx-1">Made Illegal Threats</Link>
+                                            <Link href="/consumer-law/fdcpa/debt-collector-called-my-work" className="block px-3 py-1 text-[12px] text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg mx-1">Called My Workplace</Link>
+                                        </div>
                                     </li>
                                     <li>
-                                        <Link href="/consumer-law/tcpa" className="block px-4 py-2.5 text-[15px] text-gray-900 hover:bg-blue-50 rounded-xl mx-1">
+                                        <Link href="/consumer-law/tcpa" className="block px-4 py-2 text-[15px] text-gray-900 hover:bg-blue-50 rounded-xl mx-1">
                                             <span className="flex items-center gap-2"><PhoneCall className="w-4 h-4 text-blue-600" /> TCPA — Robocalls & Texts</span>
                                         </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/consumer-law/privacy" className="block px-4 py-2.5 text-[15px] text-gray-900 hover:bg-blue-50 rounded-xl mx-1">
-                                            <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-blue-600" /> Privacy & Data Breach</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/consumer-law/vppa" className="block px-4 py-2.5 text-[15px] text-gray-900 hover:bg-blue-50 rounded-xl mx-1">
-                                            <span className="flex items-center gap-2"><Video className="w-4 h-4 text-blue-600" /> VPPA — Video Privacy</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/consumer-law/fha" className="block px-4 py-2.5 text-[15px] text-gray-900 hover:bg-blue-50 rounded-xl mx-1">
-                                            <span className="flex items-center gap-2"><Home className="w-4 h-4 text-blue-600" /> FHA — Fair Housing</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/consumer-law/mass-arbitration" className="block px-4 py-2.5 text-[15px] text-gray-900 hover:bg-blue-50 rounded-xl mx-1">
-                                            <span className="flex items-center gap-2"><Gavel className="w-4 h-4 text-blue-600" /> Mass Arbitration</span>
-                                        </Link>
+                                        <div className="pl-7 pb-1 space-y-0.5">
+                                            <Link href="/consumer-law/tcpa/robocall-lawsuit-florida" className="block px-3 py-1 text-[12px] text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg mx-1">Robocall Lawsuit Florida</Link>
+                                            <Link href="/consumer-law/tcpa/spam-texts-florida" className="block px-3 py-1 text-[12px] text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg mx-1">Spam Texts Florida</Link>
+                                            <Link href="/consumer-law/tcpa/texted-stop-still-getting-texts" className="block px-3 py-1 text-[12px] text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg mx-1">Texted STOP, Still Getting Texts</Link>
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
@@ -315,7 +306,7 @@ export default function Navbar({ className }: NavbarProps) {
                                             <Shield className="w-4 h-4 mt-0.5 text-blue-600" />
                                             <div>
                                                 <span className="block font-medium">What we do</span>
-                                                <span className="block text-gray-600 text-[13px]">FCRA, FDCPA, TCPA, privacy.</span>
+                                                <span className="block text-gray-600 text-[13px]">FCRA, FDCPA, and TCPA.</span>
                                             </div>
                                         </Link>
                                     </li>
@@ -366,15 +357,27 @@ export default function Navbar({ className }: NavbarProps) {
                                             </li>
                                         ))
                                     }
-                                    {/* <li>
-                                        <Link href="/#locations" className="flex items-start gap-3 px-4 py-2.5 text-[15px] text-gray-900 hover:bg-blue-50 rounded-xl mx-1">
+                                    <li className="px-4 pt-2 pb-0.5">
+                                        <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">Service Areas</span>
+                                    </li>
+                                    <li>
+                                        <Link href="/locations/miami" className="flex items-start gap-3 px-4 py-2 text-[15px] text-gray-900 hover:bg-blue-50 rounded-xl mx-1">
                                             <MapPinIcon className="w-4 h-4 mt-0.5 text-blue-600" />
-                                            <div>
-                                                <span className="block font-medium">Fort Lauderdale</span>
-                                                <span className="block text-gray-600 text-[13px]">Consults available 7 days a week.</span>
-                                            </div>
+                                            <span className="font-medium">Miami</span>
                                         </Link>
-                                    </li> */}
+                                    </li>
+                                    <li>
+                                        <Link href="/locations/fort-lauderdale" className="flex items-start gap-3 px-4 py-2 text-[15px] text-gray-900 hover:bg-blue-50 rounded-xl mx-1">
+                                            <MapPinIcon className="w-4 h-4 mt-0.5 text-blue-600" />
+                                            <span className="font-medium">Fort Lauderdale</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/locations/tampa" className="flex items-start gap-3 px-4 py-2 text-[15px] text-gray-900 hover:bg-blue-50 rounded-xl mx-1">
+                                            <MapPinIcon className="w-4 h-4 mt-0.5 text-blue-600" />
+                                            <span className="font-medium">Tampa</span>
+                                        </Link>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -434,7 +437,7 @@ export default function Navbar({ className }: NavbarProps) {
                     {/* CTA */}
                     <div className="ml-auto sm:ml-0 w-fit sm:flex hidden">
                         {/* <Link
-                        href="#consultation"
+                        href="#case-review-form"
                         className="inline-flex items-center gap-2 rounded-[12px] bg-blue-600 px-4 py-2 text-[17px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_4px_12px_rgba(0,0,0,0.25)] ring-1 ring-inset ring-blue-500/50 hover:bg-blue-700"
                     >
                         Free Case Review
@@ -518,11 +521,18 @@ export default function Navbar({ className }: NavbarProps) {
                             <motion.div variants={itemVariants} className="grid grid-cols-1 gap-1 pl-2">
                                 <Link href="/consumer-law/fcra" onClick={closeSidebar} className="py-2 text-[15px] text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-2"><FileText className="w-4 h-4 text-blue-600" /> FCRA — Credit Reporting</Link>
                                 <Link href="/consumer-law/fdcpa" onClick={closeSidebar} className="py-2 text-[15px] text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-2"><MessageSquareWarning className="w-4 h-4 text-blue-600" /> FDCPA — Debt Collection</Link>
+                                <div className="pl-5 grid grid-cols-1 gap-0.5">
+                                    <Link href="/consumer-law/fdcpa/debt-collector-keeps-calling" onClick={closeSidebar} className="py-1 text-[13px] text-gray-500 hover:text-blue-600 transition-colors">Won&apos;t Stop Calling</Link>
+                                    <Link href="/consumer-law/fdcpa/debt-collector-called-after-9pm" onClick={closeSidebar} className="py-1 text-[13px] text-gray-500 hover:text-blue-600 transition-colors">Called After 9 PM</Link>
+                                    <Link href="/consumer-law/fdcpa/debt-collector-threatened-me" onClick={closeSidebar} className="py-1 text-[13px] text-gray-500 hover:text-blue-600 transition-colors">Made Illegal Threats</Link>
+                                    <Link href="/consumer-law/fdcpa/debt-collector-called-my-work" onClick={closeSidebar} className="py-1 text-[13px] text-gray-500 hover:text-blue-600 transition-colors">Called My Workplace</Link>
+                                </div>
                                 <Link href="/consumer-law/tcpa" onClick={closeSidebar} className="py-2 text-[15px] text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-2"><PhoneCall className="w-4 h-4 text-blue-600" /> TCPA — Robocalls & Texts</Link>
-                                <Link href="/consumer-law/privacy" onClick={closeSidebar} className="py-2 text-[15px] text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-2"><Shield className="w-4 h-4 text-blue-600" /> Privacy & Data Breach</Link>
-                                <Link href="/consumer-law/vppa" onClick={closeSidebar} className="py-2 text-[15px] text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-2"><Video className="w-4 h-4 text-blue-600" /> VPPA — Video Privacy</Link>
-                                <Link href="/consumer-law/fha" onClick={closeSidebar} className="py-2 text-[15px] text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-2"><Home className="w-4 h-4 text-blue-600" /> FHA — Fair Housing</Link>
-                                <Link href="/consumer-law/mass-arbitration" onClick={closeSidebar} className="py-2 text-[15px] text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-2"><Gavel className="w-4 h-4 text-blue-600" /> Mass Arbitration</Link>
+                                <div className="pl-5 grid grid-cols-1 gap-0.5">
+                                    <Link href="/consumer-law/tcpa/robocall-lawsuit-florida" onClick={closeSidebar} className="py-1 text-[13px] text-gray-500 hover:text-blue-600 transition-colors">Robocall Lawsuit Florida</Link>
+                                    <Link href="/consumer-law/tcpa/spam-texts-florida" onClick={closeSidebar} className="py-1 text-[13px] text-gray-500 hover:text-blue-600 transition-colors">Spam Texts Florida</Link>
+                                    <Link href="/consumer-law/tcpa/texted-stop-still-getting-texts" onClick={closeSidebar} className="py-1 text-[13px] text-gray-500 hover:text-blue-600 transition-colors">Texted STOP, Still Getting Texts</Link>
+                                </div>
                             </motion.div>
 
                             {/* About quick links */}
@@ -557,6 +567,10 @@ export default function Navbar({ className }: NavbarProps) {
                                             <Link key={firm.slug} href={`/locations/${firm.slug}`} onClick={closeSidebar} className="py-1 flex items-center gap-2"><Building2 className="w-4 h-4 text-blue-600" /> {firm.cityDisplay}</Link>
                                         ))
                                     }
+                                    <span className="pt-1 text-[11px] font-semibold uppercase tracking-wider text-gray-400">Service Areas</span>
+                                    <Link href="/locations/miami" onClick={closeSidebar} className="py-1 flex items-center gap-2"><MapPinIcon className="w-4 h-4 text-blue-600" /> Miami</Link>
+                                    <Link href="/locations/fort-lauderdale" onClick={closeSidebar} className="py-1 flex items-center gap-2"><MapPinIcon className="w-4 h-4 text-blue-600" /> Fort Lauderdale</Link>
+                                    <Link href="/locations/tampa" onClick={closeSidebar} className="py-1 flex items-center gap-2"><MapPinIcon className="w-4 h-4 text-blue-600" /> Tampa</Link>
                                 </div>
                             </motion.div>
 
@@ -597,7 +611,7 @@ export default function Navbar({ className }: NavbarProps) {
                             >
                                 Call {PRIMARY_PHONE}
                             </motion.a>
-                            <div className="relative w-full h-32"><Image src="/fischettilogo.png" alt="Navbar Background" width={1000} height={1000} className="absolute bottom-0 left-0 w-full h-full object-cover" /></div>
+                            <div className="relative w-full h-32"><Image src="/fischettilogo.png" alt="Consumer Law Florida — Fischetti Law Group" width={1000} height={1000} className="absolute bottom-0 left-0 w-full h-full object-cover" /></div>
                         </motion.nav>
                     </motion.aside>
                 )}

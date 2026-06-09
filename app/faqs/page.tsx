@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { SITE_NAME, PRIMARY_PHONE, PRIMARY_PHONE_E164 } from "@/lib/site"
+import { SITE_NAME, SITE_URL, PRIMARY_PHONE, PRIMARY_PHONE_E164 } from "@/lib/site"
 import HeroBarTrans from "@/components/hero-bar-trans"
 import ContactFormSection from "@/components/ui/contact-form-section"
 import { Card } from "@/components/ui/card"
@@ -12,8 +12,8 @@ import SeoInsightBlock from "@/components/sections/SeoInsightBlock"
 import { buildMetadata } from "@/lib/seo/metadata"
 
 export const metadata: Metadata = buildMetadata({
-    title: "Florida Consumer Law FAQs | Consumer Law Florida",
-    description: `Florida consumer law FAQs covering FCRA, FDCPA, TCPA, and other consumer protection laws. Get answers about credit reports, debt collection, robocalls, and privacy violations. No fee unless we win.`,
+    title: "Florida Consumer Law FAQs — FCRA, FDCPA & TCPA",
+    description: `Florida consumer law FAQs covering FCRA, FDCPA, and TCPA. Get answers about credit reports, debt collection, and robocalls. No fee unless we win.`,
     pathname: "/faqs",
     type: "website",
 })
@@ -125,98 +125,19 @@ const faqs: FAQ[] = [
         category: "Robocalls & Texts",
         slug: "tcpa",
     },
-    // Privacy & Data Breach - 4 FAQs
-    {
-        question: "What should I do if my personal information was exposed in a data breach?",
-        answer: "You may have legal options if a company failed to protect your personal or financial information.",
-        category: "Privacy & Data Breach",
-        slug: "privacy",
-    },
-    {
-        question: "Do I need identity theft to file a data breach claim?",
-        answer: "In some cases, exposure alone may be enough, depending on the law and facts.",
-        category: "Privacy & Data Breach",
-        slug: "privacy",
-    },
-    {
-        question: "Is a company responsible for protecting my personal data?",
-        answer: "Companies have a duty to safeguard consumer information. Failure may result in liability.",
-        category: "Privacy & Data Breach",
-        slug: "privacy",
-    },
-    {
-        question: "What types of data breaches lead to lawsuits?",
-        answer: "Breaches involving financial, medical, or sensitive personal data often lead to legal claims.",
-        category: "Privacy & Data Breach",
-        slug: "privacy",
-    },
-    // Video Privacy & Tracking Pixels (VPPA) - 4 FAQs
-    {
-        question: "What is the Video Privacy Protection Act (VPPA)?",
-        answer: "The VPPA protects consumers from having their video viewing information shared without consent.",
-        category: "Video Privacy & Tracking Pixels",
-        slug: "vppa",
-    },
-    {
-        question: "How do tracking pixels violate privacy laws?",
-        answer: "Tracking pixels can improperly transmit video viewing data to third parties without user authorization.",
-        category: "Video Privacy & Tracking Pixels",
-        slug: "vppa",
-    },
-    {
-        question: "What types of websites can violate the VPPA?",
-        answer: "Streaming services, video platforms, and websites with embedded video content.",
-        category: "Video Privacy & Tracking Pixels",
-        slug: "vppa",
-    },
-    {
-        question: "Does the VPPA apply to online tracking tools?",
-        answer: "Yes, when tracking tools transmit video viewing data without consent.",
-        category: "Video Privacy & Tracking Pixels",
-        slug: "vppa",
-    },
-    // Fair Housing (FHA) - 3 FAQs
-    {
-        question: "What is considered housing discrimination?",
-        answer: "Discrimination based on disability, familial status, or refusal to provide reasonable accommodations may violate the Fair Housing Act.",
-        category: "Fair Housing",
-        slug: "fha",
-    },
-    {
-        question: "What is a reasonable accommodation in housing?",
-        answer: "Changes or exceptions that allow equal housing access for individuals with disabilities.",
-        category: "Fair Housing",
-        slug: "fha",
-    },
-    {
-        question: "Can landlords deny emotional support animals?",
-        answer: "In many cases, refusal may violate the Fair Housing Act.",
-        category: "Fair Housing",
-        slug: "fha",
-    },
-    // Mass Arbitration - 3 FAQs
-    {
-        question: "What is mass arbitration?",
-        answer: "Mass arbitration involves many consumers filing individual arbitration claims against the same company at the same time.",
-        category: "Mass Arbitration",
-        slug: "mass-arbitration",
-    },
-    {
-        question: "Why do companies use arbitration clauses?",
-        answer: "Arbitration clauses often limit class actions and shift costs to consumers.",
-        category: "Mass Arbitration",
-        slug: "mass-arbitration",
-    },
-    {
-        question: "How does mass arbitration pressure companies?",
-        answer: "Filing many individual claims at once can force companies to address systemic issues.",
-        category: "Mass Arbitration",
-        slug: "mass-arbitration",
-    },
 ]
 
 
 export default function FAQsPage() {
+    const breadcrumbSchema = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+            { "@type": "ListItem", position: 2, name: "FAQs", item: `${SITE_URL}/faqs` },
+        ],
+    }
+
     // FAQPage schema
     const faqSchema = {
         "@context": "https://schema.org",
@@ -233,6 +154,7 @@ export default function FAQsPage() {
 
     return (
         <>
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
@@ -258,10 +180,10 @@ export default function FAQsPage() {
                         <div className="relative w-full max-w-[95%] xl:max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
                             <div className="max-w-4xl mx-auto text-center">
                                 <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight mb-6">
-                                    Consumer Law FAQs
+                                    Florida Consumer Law FAQs — FCRA, FDCPA & TCPA
                                 </h1>
                                 <p className="text-lg md:text-xl lg:text-2xl text-white/90 leading-relaxed mb-8 max-w-3xl mx-auto">
-                                    Answers to common questions about consumer protection laws, credit reporting errors, debt collection harassment, robocalls, privacy violations, and more. {SITE_NAME} serves clients statewide through phone and video consultations.
+                                    Answers to common questions about consumer protection laws, credit reporting errors, debt collection harassment, and robocalls. {SITE_NAME} serves clients statewide through phone and video consultations.
                                 </p>
 
                                 {/* CTA Buttons */}
@@ -292,7 +214,7 @@ export default function FAQsPage() {
                             </h2>
                             <div className="max-w-4xl mx-auto space-y-4 text-lg text-gray-700 leading-relaxed">
                                 <p>
-                                    Consumer protection laws exist to prevent companies from engaging in unfair, deceptive, or abusive practices. Many people are unaware that they may have legal rights when dealing with inaccurate credit reports, aggressive debt collectors, unwanted robocalls, or privacy violations.
+                                    Consumer protection laws exist to prevent companies from engaging in unfair, deceptive, or abusive practices. Many people are unaware that they may have legal rights when dealing with inaccurate credit reports, aggressive debt collectors, or unwanted robocalls.
                                 </p>
                                 <p>
                                     Below are answers to frequently asked questions about consumer law cases we handle for clients throughout Florida.
@@ -314,11 +236,10 @@ export default function FAQsPage() {
                                             "Consumers denied jobs or housing due to credit errors",
                                             "Individuals harassed by debt collectors",
                                             "People receiving unwanted spam calls or texts",
-                                            "Renters facing housing discrimination",
-                                            "Users affected by data breaches or privacy violations",
                                             "Consumers with mixed credit files or identity theft",
                                             "People who disputed credit errors that weren't fixed",
                                             "Individuals contacted at work after requesting otherwise",
+                                            "Consumers facing false threats from debt buyers",
                                         ],
                                     }}
                                 />

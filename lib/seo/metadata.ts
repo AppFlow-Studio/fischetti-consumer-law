@@ -4,7 +4,7 @@
  */
 
 import type { Metadata } from "next"
-import { SITE_URL } from "@/lib/site"
+import { SITE_URL, SITE_NAME } from "@/lib/site"
 
 export interface BuildMetadataOptions {
     title: string
@@ -38,6 +38,8 @@ export function buildMetadata({
         },
         openGraph: {
             type,
+            locale: "en_US",
+            siteName: SITE_NAME,
             title,
             description,
             url: fullUrl,
@@ -55,6 +57,12 @@ export function buildMetadata({
             title,
             description,
             images: [imageUrl],
+        },
+        other: {
+            "geo.region": "US-FL",
+            "geo.placename": "Orlando, Florida",
+            "geo.position": "28.5383;-81.3792",
+            "ICBM": "28.5383, -81.3792",
         },
     }
 

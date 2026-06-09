@@ -22,10 +22,6 @@ const categories = [
     { name: "Credit Reporting", slug: "fcra" },
     { name: "Debt Collection", slug: "fdcpa" },
     { name: "Robocalls & Texts", slug: "tcpa" },
-    { name: "Privacy & Data Breach", slug: "privacy" },
-    { name: "Video Privacy & Tracking Pixels", slug: "vppa" },
-    { name: "Fair Housing", slug: "fha" },
-    { name: "Mass Arbitration", slug: "mass-arbitration" },
 ]
 
 export default function FAQSearchClient({ faqs }: FAQSearchClientProps) {
@@ -107,7 +103,7 @@ export default function FAQSearchClient({ faqs }: FAQSearchClientProps) {
                                                 href={`/consumer-law/${category.slug}`}
                                                 className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm"
                                             >
-                                                Learn more about {category.name === "Credit Reporting" ? "FCRA" : category.name === "Debt Collection" ? "FDCPA" : category.name === "Robocalls & Texts" ? "TCPA" : category.name === "Video Privacy & Tracking Pixels" ? "VPPA" : category.name === "Fair Housing" ? "FHA" : category.name} cases <ArrowRight className="w-4 h-4" />
+                                                Learn more about {category.name === "Credit Reporting" ? "FCRA" : category.name === "Debt Collection" ? "FDCPA" : category.name === "Robocalls & Texts" ? "TCPA" : category.name} cases <ArrowRight className="w-4 h-4" />
                                             </Link>
                                         </div>
                                     )}
@@ -140,7 +136,7 @@ export default function FAQSearchClient({ faqs }: FAQSearchClientProps) {
                                             href={`/consumer-law/${category.slug}`}
                                             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm"
                                         >
-                                            Learn more about {category.name === "Credit Reporting" ? "FCRA" : category.name === "Debt Collection" ? "FDCPA" : category.name === "Robocalls & Texts" ? "TCPA" : category.name === "Video Privacy & Tracking Pixels" ? "VPPA" : category.name === "Fair Housing" ? "FHA" : category.name} cases <ArrowRight className="w-4 h-4" />
+                                            Learn more about {category.name === "Credit Reporting" ? "FCRA" : category.name === "Debt Collection" ? "FDCPA" : category.name === "Robocalls & Texts" ? "TCPA" : category.name} cases <ArrowRight className="w-4 h-4" />
                                         </Link>
                                     </div>
                                 )}

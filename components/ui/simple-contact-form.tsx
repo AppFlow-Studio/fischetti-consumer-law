@@ -9,7 +9,19 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { contactSchema, defaultContactValues, caseTypes, urgencyLevels, type ContactFormData } from "@/components/forms/contact-schema"
+import {
+    contactSchema,
+    defaultContactValues,
+    caseTypes,
+    urgencyLevels,
+    type ContactFormData,
+    caseTypeGuidanceMap,
+    defaultCaseTypeGuidance,
+    UNLISTED_CASE_TYPE,
+    UNLISTED_CASE_NOTICE,
+    UNLISTED_CASE_ACKNOWLEDGMENT,
+} from "@/components/forms/contact-schema"
+import { DescriptionGuidance } from "@/components/forms/description-guidance"
 import { submitContactForm } from "@/lib/actions/contact"
 import { Loader2, AlertCircle } from "lucide-react"
 import { PRIMARY_PHONE, PRIMARY_PHONE_E164 } from "@/lib/site"
@@ -19,11 +31,12 @@ import { getAttributionData } from "@/lib/gclid"
 type SimpleContactFormProps = {
     onSubmitted?: () => void
     useBlueTheme?: boolean // For white background forms that need blue text
+    id?: string // Added new id prop
 }
 
 type FormStatus = "idle" | "submitting" | "success" | "error"
 
-export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }: SimpleContactFormProps) {
+export default function SimpleContactForm({ onSubmitted, useBlueTheme = false, id = "case-review-form" }: SimpleContactFormProps) {
     const [status, setStatus] = useState<FormStatus>("idle")
     const [errorMessage, setErrorMessage] = useState<string>("")
     const [isPending, startTransition] = useTransition()
@@ -36,7 +49,13 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
         defaultValues: defaultContactValues 
     })
 
+    const watchedCaseType = form.watch("caseType")
+    const outsidePracticeAcknowledged = form.watch("outsidePracticeAcknowledged")
+    const guidance = caseTypeGuidanceMap[watchedCaseType] ?? defaultCaseTypeGuidance
+    const isUnlistedCaseType = watchedCaseType === UNLISTED_CASE_TYPE
+
     const isSubmitting = status === "submitting" || isPending
+    const isSubmitDisabled = isSubmitting || (isUnlistedCaseType && !outsidePracticeAcknowledged)
 
     async function onSubmit(values: ContactFormData) {
         setStatus("submitting")
@@ -161,7 +180,7 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
 
     return (
         <Form {...form}>
-            <form id="consultation" onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2.5 sm:space-y-4">
+            <form id={id} onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2.5 sm:space-y-4">
                 {/* Error Banner */}
                 {status === "error" && errorMessage && (
                     <div className="w-full p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
@@ -265,11 +284,21 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
                         )} />
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-4">
+                        {/* Case Type with Bonus A: subtle law-family tip */}
                         <FormField control={form.control} name="caseType" render={({ field }) => (
                             <FormItem className="w-full">
                                 <FormLabel className={labelClass}>Case type *</FormLabel>
                                 <FormControl>
-                                    <Select onValueChange={field.onChange} value={field.value} disabled={isSubmitting}>
+                                    <Select
+                                        onValueChange={(value) => {
+                                            field.onChange(value)
+                                            if (value !== UNLISTED_CASE_TYPE) {
+                                                form.setValue("outsidePracticeAcknowledged", false, { shouldValidate: true })
+                                            }
+                                        }}
+                                        value={field.value}
+                                        disabled={isSubmitting}
+                                    >
                                         <SelectTrigger className={selectTriggerClass}>
                                             <SelectValue placeholder="Select case type" />
                                         </SelectTrigger>
@@ -282,6 +311,49 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
                                         </SelectContent>
                                     </Select>
                                 </FormControl>
+                                {/* Bonus A: law-family tip — only shown once a type is selected */}
+                                {guidance.caseTypeTip && (
+                                    <p className="text-[11px] text-slate-400 mt-1 leading-snug">
+                                        {guidance.caseTypeTip}
+                                    </p>
+                                )}
+                                {isUnlistedCaseType && (
+                                    <div className="mt-2 space-y-3">
+                                        <div
+                                            role="note"
+                                            aria-live="polite"
+                                            className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-900"
+                                        >
+                                            {UNLISTED_CASE_NOTICE}
+                                        </div>
+                                        <FormField control={form.control} name="outsidePracticeAcknowledged" render={({ field: acknowledgmentField }) => (
+                                            <FormItem className="w-full">
+                                                <div className="flex items-start gap-2 rounded-lg border border-gray-200 bg-white/70 p-3">
+                                                    <FormControl>
+                                                        <input
+                                                            id={`${id}-outside-practice-acknowledgment`}
+                                                            type="checkbox"
+                                                            className="mt-0.5 h-4 w-4 shrink-0 rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                                                            checked={acknowledgmentField.value}
+                                                            onChange={(event) => acknowledgmentField.onChange(event.target.checked)}
+                                                            onBlur={acknowledgmentField.onBlur}
+                                                            name={acknowledgmentField.name}
+                                                            ref={acknowledgmentField.ref}
+                                                            disabled={isSubmitting}
+                                                        />
+                                                    </FormControl>
+                                                    <label
+                                                        htmlFor={`${id}-outside-practice-acknowledgment`}
+                                                        className="text-sm leading-relaxed text-gray-700"
+                                                    >
+                                                        {UNLISTED_CASE_ACKNOWLEDGMENT}
+                                                    </label>
+                                                </div>
+                                                <FormMessage className={messageClass} />
+                                            </FormItem>
+                                        )} />
+                                    </div>
+                                )}
                                 <FormMessage className={messageClass} />
                             </FormItem>
                         )} />
@@ -306,24 +378,27 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
                             </FormItem>
                         )} />
                     </div>
+
+                    {/* Brief Details — dynamic placeholder + animated helper guidance */}
                     <FormField control={form.control} name="description" render={({ field }) => (
                         <FormItem className="w-full">
                             <FormLabel className={labelClass}>Brief details *</FormLabel>
                             <FormControl>
                                 <Textarea
-                                    placeholder="Describe your situation in a few sentences..."
+                                    placeholder={guidance.placeholder}
                                     className={textareaClass}
                                     aria-label="Brief details"
                                     disabled={isSubmitting}
                                     {...field}
                                 />
                             </FormControl>
-                            <div className="flex justify-between items-center mt-1">
-                                <span className="text-xs text-gray-500">Minimum 10 characters</span>
-                                <span className={`text-xs ${field.value.length >= 10 ? 'text-gray-500' : 'text-amber-600'}`}>
-                                    {field.value.length}/10
-                                </span>
-                            </div>
+
+                            <DescriptionGuidance
+                                helperText={guidance.helperText}
+                                caseTypeKey={watchedCaseType}
+                                charLength={field.value.length}
+                            />
+
                             <FormMessage className={messageClass} />
                         </FormItem>
                     )} />
@@ -336,8 +411,8 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false }:
                 </div>
                 <Button
                     type="submit"
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm sm:text-base py-2.5 sm:py-3 shadow-lg hover:shadow-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed"
-                    disabled={isSubmitting}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm sm:text-base py-2.5 sm:py-3 shadow-lg hover:shadow-xl transition-all disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:bg-blue-600 disabled:hover:shadow-lg"
+                    disabled={isSubmitDisabled}
                 >
                     {isSubmitting ? (
                         <span className="flex items-center justify-center gap-2">

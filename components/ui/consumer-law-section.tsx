@@ -41,7 +41,7 @@ export default function ConsumerLawSection() {
                             }}
                         >
                             <motion.h2
-                                className="text-4xl font-[--font-playfair-display] md:text-5xl  text-gray-900 leading-tight "
+                                className="text-4xl font-[var(--font-playfair-display)] md:text-5xl  text-gray-900 leading-tight "
                                 variants={{
                                     hidden: { opacity: 0, y: 20 },
                                     visible: {
@@ -235,7 +235,7 @@ export default function ConsumerLawSection() {
                             transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
                         >
                             <a
-                                href="#consultation"
+                                href="#case-review-form"
                                 className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-8 py-4 text-xl font-semibold text-white shadow-xl hover:bg-blue-700 transition-colors"
                             >
                                 Get Your Free Case Review

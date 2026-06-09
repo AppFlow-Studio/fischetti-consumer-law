@@ -1,3 +1,4 @@
+// @ts-nocheck — auto-generated Framer component; type errors are expected and non-critical.
 import{jsx as _jsx}from"react/jsx-runtime";import{addPropertyControls,ControlType}from"framer";import React,{useRef,useEffect,useMemo,useState}from"react";import*as THREE from"three";const RAY_Y_POSITION_1=-.4;const RAY_Y_POSITION_2=-.5;/**
  * @framerSupportedLayoutWidth fixed
  * @framerSupportedLayoutHeight fixed

@@ -9,6 +9,8 @@ type Review = {
     name: string
     date: string
     text: string
+    role?: string
+    rating?: number
 }
 
 const reviews: Review[] = [
@@ -102,7 +104,7 @@ export default function Testimonials() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
                 {/* Header */}
                 <div className="text-center mb-12">
-                    <h2 className="text-4xl font-[--font-playfair-display] md:text-5xl text-gray-900">
+                    <h2 className="text-4xl font-[var(--font-playfair-display)] md:text-5xl text-gray-900">
                         Trusted by <span className="text-blue-600 italic">Florida clients</span>
                     </h2>
                     <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-6">

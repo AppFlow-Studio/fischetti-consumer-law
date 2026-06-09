@@ -38,7 +38,7 @@ export default function OfficeLocationsMap({ startingClinic }: {
         libraries: libraries,
     });
     // Optional: State to hold map instance
-    const [map, setMap] = useState(null);
+    const [map, setMap] = useState<google.maps.Map | null>(null);
     // No selection state – overlays always visible as part of marker icons
     const [selectedClinc, setSeletecedClinic] = useState<{ id: number, name: string, lat: number, lng: number, address: string } | undefined>(undefined)
 
@@ -50,16 +50,11 @@ export default function OfficeLocationsMap({ startingClinic }: {
             setMapCenter({ lat: startingClinic.lat, lng: startingClinic.lng })
         }
     }, [startingClinic])
-    const onLoad = useCallback(function callback(mapInstance) {
-        // You can save the map instance if you need to interact with it
+    const onLoad = useCallback(function callback(mapInstance: google.maps.Map) {
         setMap(mapInstance);
-        // Example: Adjust bounds to fit markers after load (optional)
-        // const bounds = new window.google.maps.LatLngBounds();
-        // officeLocations.forEach(({ lat, lng }) => bounds.extend({ lat, lng }));
-        // mapInstance.fitBounds(bounds);
     }, []);
 
-    const onUnmount = useCallback(function callback(mapInstance) {
+    const onUnmount = useCallback(function callback(_mapInstance: google.maps.Map) {
         setMap(null);
     }, []);
 
@@ -134,7 +129,7 @@ export default function OfficeLocationsMap({ startingClinic }: {
             // anchor: new window.google.maps.Point((internalPaddingX + internalIconWidth / 2) * (targetScaledWidth / internalSvgWidth), targetScaledHeight), // More complex calculation
         };
 
-        selectedIconCache[name] = iconObject;
+        (selectedIconCache as Record<string, unknown>)[labelText] = iconObject;
         return iconObject;
     };
 

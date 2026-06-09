@@ -20,7 +20,7 @@ const fadeIn = {
 
 function ThankYouContent() {
     const searchParams = useSearchParams()
-    const firstName = searchParams.get("name") || ""
+    const firstName = searchParams?.get("name") || ""
 
     return (
         <main className="min-h-screen bg-white">

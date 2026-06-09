@@ -3,6 +3,14 @@ import React from "react";
 import { motion } from "motion/react";
 import { Star } from "lucide-react";
 import Google from "../google";
+
+type Review = {
+  name: string
+  text: string
+  role?: string
+  date?: string
+  rating?: number
+}
 function Stars() {
   return (
     <div className="flex items-center gap-1 text-amber-500">

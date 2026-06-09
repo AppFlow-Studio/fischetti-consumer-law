@@ -87,9 +87,9 @@ export default function CaseResultsCards() {
                                     />
                                     <span className="text-gray-700 text-base italic font-[--font-playfair-display]">collected for our clients</span>
                                 </div>
-                                <h3 className="text-xl font-bold text-gray-700 uppercase tracking-wide">
+                                <p className="text-xl font-bold text-gray-700 uppercase tracking-wide">
                                     {caseResult.category}
-                                </h3>
+                                </p>
                                 <p className="text-gray-600 leading-relaxed">
                                     {caseResult.description}
                                 </p>

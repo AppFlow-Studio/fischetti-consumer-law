@@ -1,5 +1,23 @@
 import * as z from "zod"
 
+export const UNLISTED_CASE_TYPE = "My issue is not listed"
+
+export const CASE_TYPE_OPTIONS = [
+    "Credit report error",
+    "Background check error",
+    "Debt collector harassment",
+    "Debt collector threats or illegal calls",
+    "Robocalls",
+    "Spam texts after replying STOP",
+    UNLISTED_CASE_TYPE,
+] as const
+
+export const UNLISTED_CASE_NOTICE =
+    "We may not be the right firm for this issue. We currently focus on credit report errors, debt collector harassment, robocalls, and spam texts. If your issue is unrelated, please do not submit this form."
+
+export const UNLISTED_CASE_ACKNOWLEDGMENT =
+    "I understand this firm only reviews FCRA, FDCPA, and TCPA consumer protection matters."
+
 // Contact form schema - agreeToTerms is always true (implicit consent via form submission text)
 export const contactSchema = z.object({
     firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -15,6 +33,7 @@ export const contactSchema = z.object({
     urgency: z.string().min(1, "Please select urgency level"),
     // Always true - consent is given by submitting the form (stated in form text)
     agreeToTerms: z.boolean(),
+    outsidePracticeAcknowledged: z.boolean(),
     // Attribution fields — optional, captured from URL params / sessionStorage
     gclid: z.string().optional(),
     utm_source: z.string().optional(),
@@ -23,6 +42,14 @@ export const contactSchema = z.object({
     utm_term: z.string().optional(),
     utm_content: z.string().optional(),
     form_source: z.string().optional(),
+}).superRefine((data, ctx) => {
+    if (data.caseType === UNLISTED_CASE_TYPE && !data.outsidePracticeAcknowledged) {
+        ctx.addIssue({
+            code: "custom",
+            path: ["outsidePracticeAcknowledged"],
+            message: "Please acknowledge the firm's practice-area limits before submitting.",
+        })
+    }
 })
 
 export type ContactFormData = z.infer<typeof contactSchema>
@@ -37,18 +64,10 @@ export const defaultContactValues: ContactFormData = {
     description: "",
     urgency: "",
     agreeToTerms: true, // Implicit consent via form submission text
+    outsidePracticeAcknowledged: false,
 }
 
-export const caseTypes = [
-    "FCRA Violations",
-    "FDCPA Defense",
-    "TCPA Violations",
-    "Privacy & Data Breach",
-    "VPPA Violations",
-    "Fair Housing Act",
-    "Mass Arbitration",
-    "Other",
-]
+export const caseTypes = CASE_TYPE_OPTIONS
 
 export const urgencyLevels = [
     "Immediate - Need help now",
@@ -56,3 +75,69 @@ export const urgencyLevels = [
     "Moderate - Within a month",
     "Not urgent - Just exploring options",
 ]
+
+// ---------------------------------------------------------------------------
+// Case-type guidance — single source of truth for dynamic form copy.
+// Edit placeholder, helperText, or caseTypeTip here; the form picks it up.
+// ---------------------------------------------------------------------------
+
+export type CaseTypeGuidance = {
+    /** Textarea placeholder shown when this case type is selected. */
+    placeholder: string
+    /** Helper text shown below the textarea — steers users toward useful facts. */
+    helperText: string
+    /** One-liner shown under the Case Type dropdown — brief law-family label. */
+    caseTypeTip: string
+}
+
+export const caseTypeGuidanceMap: Readonly<Record<string, CaseTypeGuidance>> = {
+    "Credit report error": {
+        placeholder:
+            "Describe the credit report error, which bureau it appeared on (Equifax, Experian, or TransUnion), whether you disputed it already, and any response you received.",
+        helperText: "Include the bureau name, dispute status, and any bureau response.",
+        caseTypeTip: "Credit report or background check errors",
+    },
+    "Background check error": {
+        placeholder:
+            "Describe the background check error, who ran the report (employer or screening company), what was inaccurate, and how it affected your job or opportunity.",
+        helperText: "Include who ran the report, what was wrong, and the impact.",
+        caseTypeTip: "Credit report or background check errors",
+    },
+    "Debt collector harassment": {
+        placeholder:
+            "Tell us the debt collector or company name, the number they used, what they did, and how they contacted you.",
+        helperText: "Include the company name, number they used, and what happened.",
+        caseTypeTip: "Debt collector harassment or illegal threats",
+    },
+    "Debt collector threats or illegal calls": {
+        placeholder:
+            "Describe the collector or company name, the number they used, what threats were made, and when or how they contacted you.",
+        helperText: "Include the company name, number used, and the specific threats made.",
+        caseTypeTip: "Debt collector harassment or illegal threats",
+    },
+    Robocalls: {
+        placeholder:
+            "Tell us the company or caller name, whether your number is on the Do Not Call Registry, and what happened during the robocalls.",
+        helperText: "Include the company name and your Do Not Call Registry status.",
+        caseTypeTip: "Robocalls or spam texts",
+    },
+    "Spam texts after replying STOP": {
+        placeholder:
+            "Tell us the company name, whether your number is on the Do Not Call Registry, whether you replied STOP, and what happened after that.",
+        helperText: "Include the company name, your DNC status, and whether texts continued after replying STOP.",
+        caseTypeTip: "Robocalls or spam texts",
+    },
+    [UNLISTED_CASE_TYPE]: {
+        placeholder:
+            "Briefly describe what happened, who was involved, how they contacted you, and the main issue you want reviewed.",
+        helperText: "Include the company name if known and the main issue.",
+        caseTypeTip: "",
+    },
+}
+
+export const defaultCaseTypeGuidance: CaseTypeGuidance = {
+    placeholder:
+        "Describe your situation in a few sentences. Include the company name if you know it, how they contacted you, and the main problem.",
+    helperText: "Include the company name if you know it and the main issue.",
+    caseTypeTip: "",
+}
