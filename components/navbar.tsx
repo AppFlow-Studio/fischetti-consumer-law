@@ -620,4 +620,3 @@ export default function Navbar({ className }: NavbarProps) {
     )
 }
 
-

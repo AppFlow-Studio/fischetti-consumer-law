@@ -7,6 +7,7 @@ interface OfficeNotificationEmailProps {
     phone: string
     zip: string
     caseType: string
+    callerIdentification?: string
     urgency: string
     description: string
     submittedAt: string
@@ -32,6 +33,7 @@ export function OfficeNotificationEmail({
     phone,
     zip,
     caseType,
+    callerIdentification,
     urgency,
     description,
     submittedAt,
@@ -335,6 +337,16 @@ export function OfficeNotificationEmail({
                                                                 </span>
                                                             </td>
                                                         </tr>
+                                                        {callerIdentification && (
+                                                            <tr>
+                                                                <td style={{ padding: "12px 0", color: "#64748b", fontSize: "14px", borderTop: "1px solid #f1f5f9", verticalAlign: "top" }}>
+                                                                    Caller / Company
+                                                                </td>
+                                                                <td style={{ padding: "12px 0", fontSize: "14px", color: "#0f172a", borderTop: "1px solid #f1f5f9" }}>
+                                                                    {callerIdentification}
+                                                                </td>
+                                                            </tr>
+                                                        )}
                                                     </tbody>
                                                 </table>
 

@@ -71,7 +71,7 @@ export const firms: Firm[] = [
         serviceAreaSummary: SERVE_STATEMENT,
         primaryServices: ["FCRA", "FDCPA", "TCPA"],
         nearbyAreas: ["Delray Beach", "Boca Raton", "West Palm Beach", "Lake Worth"],
-        description: "Our Boynton Beach location supports clients throughout South Florida who need help enforcing their consumer rights. If you are experiencing debt collection harassment, credit report errors, or unwanted robocalls, our attorneys can help determine whether you have a valid claim. We represent Boynton Beach clients in individual and mass consumer actions and handle cases entirely through phone and video consultations. This approach allows us to serve clients efficiently while focusing on results.",
+        description: "Our Boynton Beach location supports clients throughout South Florida who need help enforcing their consumer rights. If you are experiencing debt collection harassment, credit report errors, background check errors, or unwanted robocalls and spam texts, our attorneys can help determine whether you have a valid FCRA, FDCPA, or TCPA claim. We handle cases entirely through phone and video consultations, allowing us to serve clients efficiently while focusing on results.",
         introBlurb: "Consumer Law Florida represents Boynton Beach clients in consumer protection matters involving credit reporting errors, debt collection harassment, and robocalls. We serve clients statewide in Florida through phone and video consultations, making it easy to get answers quickly and take action when your rights are violated.",
     },
 ]

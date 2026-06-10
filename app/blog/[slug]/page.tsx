@@ -154,7 +154,6 @@ export default async function BlogDetailPage({ params }: BlogDetailPageParams) {
       "debt collection harassment lawyer",
       "credit report error lawyer",
       "robocall lawsuit attorney",
-      "data breach attorney",
     ],
     priceRange: "Free consultation — no fee unless we win",
   }
