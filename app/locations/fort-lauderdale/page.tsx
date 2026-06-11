@@ -41,7 +41,7 @@ const faqs = [
   {
     question: 'What consumer protection cases are most common in Broward County?',
     answer:
-      'Broward County consumers frequently contact us about debt collector harassment, illegal robocalls and spam texts, credit report errors from Equifax, Experian, and TransUnion, and data breach claims.',
+      'Broward County consumers frequently contact us about debt collector harassment, illegal robocalls and spam texts, and credit report or background check errors.',
   },
   {
     question: 'Can I sue for robocalls I received in Fort Lauderdale?',
@@ -168,7 +168,7 @@ export default function FortLauderdalePage() {
           <p className="text-gray-700 leading-relaxed">
             Broward County residents deal with the same consumer protection issues affecting consumers
             across Florida — persistent debt collector calls, unsolicited robocalls and spam texts, credit
-            report errors that cost jobs or housing, and privacy violations. Federal laws like the FDCPA,
+            report and background check errors that cost jobs or housing. Federal laws like the FDCPA,
             TCPA, and FCRA give Broward consumers the right to sue and recover money, often without any
             out-of-pocket cost.
           </p>

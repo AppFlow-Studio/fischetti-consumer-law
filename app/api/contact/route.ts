@@ -3,7 +3,7 @@ import { Resend } from "resend"
 import { createElement } from "react"
 import { getRequestCountry, isAllowedCountry, shouldBypassGeoBlock } from "@/lib/geo"
 import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
-import type { ContactFormData } from "@/components/forms/contact-schema"
+import { contactSchema, type ContactFormData } from "@/components/forms/contact-schema"
 import { logLead } from "@/lib/logLead"
 import { ClientQualificationEmail } from "@/emails/client-qualification"
 import { OfficeNotificationEmail } from "@/emails/office-notification"
@@ -64,6 +64,7 @@ export async function POST(req: NextRequest) {
                 phone: formDataObj.get("phone") as string,
                 zip: formDataObj.get("zip") as string,
                 caseType: formDataObj.get("caseType") as string,
+                callerIdentification: (formDataObj.get("callerIdentification") as string) || undefined,
                 description: formDataObj.get("description") as string,
                 urgency: formDataObj.get("urgency") as string,
                 gclid: (formDataObj.get("gclid") as string) || undefined,
@@ -77,6 +78,15 @@ export async function POST(req: NextRequest) {
                 form_source: (formDataObj.get("form_source") as string) || undefined,
             }
         }
+
+        const validationResult = contactSchema.safeParse(formData)
+        if (!validationResult.success) {
+            return NextResponse.json(
+                { success: false, message: "Invalid form data. Please check your inputs." },
+                { status: 400 }
+            )
+        }
+        formData = validationResult.data
 
         console.log("Contact form submitted:", {
             name: `${formData.firstName} ${formData.lastName}`,
@@ -123,6 +133,7 @@ export async function POST(req: NextRequest) {
                     phone: formData.phone,
                     zip: formData.zip,
                     caseType: formData.caseType,
+                    callerIdentification: formData.callerIdentification,
                     urgency: formData.urgency,
                     description: formData.description,
                     submittedAt,
@@ -157,6 +168,7 @@ export async function POST(req: NextRequest) {
             phone: formData.phone,
             zip: formData.zip,
             case_type: formData.caseType,
+            caller_identification: formData.callerIdentification,
             description: formData.description,
             urgency: formData.urgency,
             form_source: formData.form_source || "contact-api",

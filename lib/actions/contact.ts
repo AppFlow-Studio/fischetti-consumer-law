@@ -8,7 +8,7 @@ import { PRIMARY_PHONE } from "@/lib/site"
 import { logLead } from "@/lib/logLead"
 import { ClientQualificationEmail } from "@/emails/client-qualification"
 import { OfficeNotificationEmail } from "@/emails/office-notification"
-import { detectLawType, generateCaseRef, calculateDeadline, getLawTypeLabel } from "@/lib/email-utils"
+import { detectLawType, generateCaseRef, calculateDeadline, getLawTypeLabel, type LawType } from "@/lib/email-utils"
 import { createElement } from "react"
 
 const resend = new Resend(process.env.RESEND_API_KEY)
@@ -96,13 +96,22 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactF
         const deadlineDate = calculateDeadline(5)
         const lawLabel = getLawTypeLabel(lawType)
 
+        function getClientEmailSubject(lt: LawType): string {
+            switch (lt) {
+                case "FCRA": return "Your FCRA Case Checklist — Documents to Gather"
+                case "FDCPA": return "Your FDCPA Case Checklist — Evidence to Collect"
+                case "TCPA": return "Your TCPA Case Checklist — What to Save Now"
+                default: return `Your ${lawLabel} Case Checklist`
+            }
+        }
+
         // Send both emails concurrently
         const [clientEmailResult, officeEmailResult] = await Promise.allSettled([
             // Law-specific qualification email — filters serious leads post-submit
             resend.emails.send({
                 from: FROM_EMAIL,
                 to: formData.email,
-                subject: `Action Required — Your ${lawLabel} Case Review`,
+                subject: getClientEmailSubject(lawType),
                 react: createElement(ClientQualificationEmail, {
                     firstName: formData.firstName,
                     lastName: formData.lastName,
@@ -125,6 +134,7 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactF
                     phone: formData.phone,
                     zip: formData.zip,
                     caseType: formData.caseType,
+                    callerIdentification: formData.callerIdentification,
                     urgency: formData.urgency,
                     description: formData.description,
                     submittedAt,
@@ -179,6 +189,7 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactF
             phone: formData.phone,
             zip: formData.zip,
             case_type: formData.caseType,
+            caller_identification: formData.callerIdentification,
             description: formData.description,
             urgency: formData.urgency,
             form_source: formData.form_source || "free-case-review",
@@ -204,4 +215,3 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactF
         }
     }
 }
-

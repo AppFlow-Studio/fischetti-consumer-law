@@ -14,9 +14,9 @@ export type LawType = "FCRA" | "FDCPA" | "TCPA" | "OTHER"
  */
 export function detectLawType(caseType: string): LawType {
     const upper = caseType.toUpperCase().trim()
-    if (upper === "CREDIT REPORT ERROR" || upper === "BACKGROUND CHECK ERROR") return "FCRA"
-    if (upper === "DEBT COLLECTOR HARASSMENT" || upper === "DEBT COLLECTOR THREATS OR ILLEGAL CALLS") return "FDCPA"
-    if (upper === "ROBOCALLS" || upper === "SPAM TEXTS AFTER REPLYING STOP") return "TCPA"
+    if (upper.startsWith("FCRA —")) return "FCRA"
+    if (upper.startsWith("FDCPA —")) return "FDCPA"
+    if (upper.startsWith("TCPA —")) return "TCPA"
     return "OTHER"
 }
 

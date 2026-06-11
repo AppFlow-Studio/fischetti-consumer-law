@@ -1,6 +1,7 @@
 import { unstable_noStore as noStore } from "next/cache"
 import { supabase } from "@/utils/supabase/server"
 import type { BlogPost, BlogPostPreview } from "@/types/blog"
+import { isRetiredTopicPost } from "@/lib/blog-scope"
 
 const BLOG_TABLE =
   process.env.NEXT_PUBLIC_SUPABASE_BLOG_TABLE ?? "posts"
@@ -33,7 +34,7 @@ export async function GetBlogs(): Promise<BlogPostPreview[]> {
       return []
     }
 
-    return (data ?? []) as BlogPostPreview[]
+    return ((data ?? []) as BlogPostPreview[]).filter((post) => !isRetiredTopicPost(post))
   } catch (err) {
     console.error("GetBlogs unexpected error:", err)
     return []
@@ -81,7 +82,7 @@ export async function GetBlogInfo(slug: string): Promise<BlogPost | null> {
       return null
     }
 
-    if (!data) return null
+    if (!data || isRetiredTopicPost(data)) return null
 
     // posts.sections may not exist; use null so UI falls back to content_html
     return { ...data, sections: (data as { sections?: unknown }).sections ?? null } as BlogPost
@@ -100,9 +101,6 @@ export async function GetBlogsPaginated(
 
   const safePage = Number.isFinite(page) && page > 0 ? page : 1
   const safePerPage = Number.isFinite(perPage) && perPage > 0 ? perPage : 12
-  const from = (safePage - 1) * safePerPage
-  const to = from + safePerPage - 1
-
   try {
     let query = supabase
       .from(BLOG_TABLE)
@@ -127,20 +125,24 @@ export async function GetBlogsPaginated(
       query = query.contains("tags", [tag])
     }
 
-    const { data, count, error } = await query
+    const { data, error } = await query
       .order("date_published", { ascending: false })
-      .range(from, to)
 
     if (error) {
       console.error("GetBlogsPaginated error:", error.message, error.code, error.details)
       return { posts: [], total: 0, totalPages: 0 }
     }
 
-    const total = count ?? 0
+    const eligiblePosts = ((data ?? []) as BlogPostPreview[]).filter(
+      (post) => !isRetiredTopicPost(post),
+    )
+    const total = eligiblePosts.length
     const totalPages = total > 0 ? Math.ceil(total / safePerPage) : 0
+    const from = (safePage - 1) * safePerPage
+    const posts = eligiblePosts.slice(from, from + safePerPage)
 
     return {
-      posts: (data ?? []) as BlogPostPreview[],
+      posts,
       total,
       totalPages,
     }
@@ -173,10 +175,13 @@ export async function GetRelatedPosts(
         .neq("slug", currentSlug)
         .contains("tags", [tags[0]])
         .order("date_published", { ascending: false })
-        .limit(limit)
+        .limit(limit * 4)
 
       if (!error && data && data.length > 0) {
-        return data as BlogPostPreview[]
+        const eligiblePosts = (data as BlogPostPreview[]).filter(
+          (post) => !isRetiredTopicPost(post),
+        )
+        if (eligiblePosts.length > 0) return eligiblePosts.slice(0, limit)
       }
     }
 
@@ -187,14 +192,16 @@ export async function GetRelatedPosts(
       .eq("status", "published")
       .neq("slug", currentSlug)
       .order("date_published", { ascending: false })
-      .limit(limit)
+      .limit(limit * 4)
 
     if (error) {
       console.error("GetRelatedPosts error:", error.message, error.code)
       return []
     }
 
-    return (data ?? []) as BlogPostPreview[]
+    return ((data ?? []) as BlogPostPreview[])
+      .filter((post) => !isRetiredTopicPost(post))
+      .slice(0, limit)
   } catch (err) {
     console.error("GetRelatedPosts unexpected error:", err)
     return []
@@ -211,7 +218,7 @@ export async function GetAllBlogSlugs(): Promise<string[]> {
   try {
     const { data, error } = await supabase
       .from(BLOG_TABLE)
-      .select("slug")
+      .select("slug, title, summary, meta_title, meta_description, tags")
       .eq("status", "published")
       .order("date_published", { ascending: false })
 
@@ -220,7 +227,9 @@ export async function GetAllBlogSlugs(): Promise<string[]> {
       return []
     }
 
-    return (data ?? []).map((row) => row.slug as string)
+    return (data ?? [])
+      .filter((post) => !isRetiredTopicPost(post))
+      .map((row) => row.slug as string)
   } catch (err) {
     console.error("GetAllBlogSlugs unexpected error:", err)
     return []
@@ -243,7 +252,7 @@ export async function GetBlogSearchIndex(
   try {
     const { data, error } = await supabase
       .from(BLOG_TABLE)
-      .select("id, slug, title, date_published, updated_at")
+      .select("id, slug, title, summary, meta_title, meta_description, tags, date_published, updated_at")
       .eq("status", "published")
       .order("date_published", { ascending: false })
       .limit(limit)
@@ -253,13 +262,15 @@ export async function GetBlogSearchIndex(
       return []
     }
 
-    return (data ?? []) as Array<{
-      id: string
-      slug: string
-      title: string
-      date_published: string | null
-      updated_at: string | null
-    }>
+    return (data ?? [])
+      .filter((post) => !isRetiredTopicPost(post))
+      .map((post) => ({
+        id: post.id as string,
+        slug: post.slug as string,
+        title: post.title as string,
+        date_published: post.date_published as string | null,
+        updated_at: post.updated_at as string | null,
+      }))
   } catch (err) {
     console.error("GetBlogSearchIndex unexpected error:", err)
     return []
