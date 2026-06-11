@@ -52,7 +52,7 @@ export default async function BlogIndexPage({ searchParams }: BlogIndexPageProps
     url: `${SITE_URL}/blog`,
     name: "Consumer Law Florida Blog",
     description:
-      "Consumer law updates and practical guides on credit reporting errors, debt collection harassment, robocalls, privacy violations, and other consumer rights issues in Florida.",
+      "Practical guides on FCRA credit reporting and background check errors, FDCPA debt collection harassment, and TCPA robocalls and spam texts in Florida.",
     publisher: {
       "@type": "LegalService",
       name: "Consumer Law Florida",

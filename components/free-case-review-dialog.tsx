@@ -22,6 +22,9 @@ import {
     UNLISTED_CASE_TYPE,
     UNLISTED_CASE_NOTICE,
     UNLISTED_CASE_ACKNOWLEDGMENT,
+    CONTACT_SOURCE_OPTIONS,
+    CONTACT_SOURCE_UNKNOWN,
+    requiresContactSource,
 } from "@/components/forms/contact-schema"
 import { submitContactForm } from "@/lib/actions/contact"
 import { Loader2, AlertCircle } from "lucide-react"
@@ -48,9 +51,11 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
     })
 
     const watchedCaseType = form.watch("caseType")
+    const watchedCallerIdentification = form.watch("callerIdentification")
     const outsidePracticeAcknowledged = form.watch("outsidePracticeAcknowledged")
     const guidance = caseTypeGuidanceMap[watchedCaseType] ?? defaultCaseTypeGuidance
     const isUnlistedCaseType = watchedCaseType === UNLISTED_CASE_TYPE
+    const showCallerIdentification = requiresContactSource(watchedCaseType)
     const isSubmitDisabled = isPending || (isUnlistedCaseType && !outsidePracticeAcknowledged)
 
     useEffect(() => {
@@ -136,7 +141,8 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                     page_path: window.location.pathname,
                     method: "web_form",
                     case_type: values.caseType,
-                    urgency: values.urgency
+                    urgency: values.urgency,
+                    contact_source_status: values.callerIdentification || undefined,
                 })
             }
 
@@ -277,6 +283,10 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                                             if (value !== UNLISTED_CASE_TYPE) {
                                                 form.setValue("outsidePracticeAcknowledged", false, { shouldValidate: true })
                                             }
+                                            if (!requiresContactSource(value)) {
+                                                form.setValue("callerIdentification", "", { shouldValidate: false })
+                                                form.clearErrors("callerIdentification")
+                                            }
                                         }}
                                         value={field.value}
                                         disabled={isPending}
@@ -352,10 +362,45 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                             </FormItem>
                         )} />
 
+                        {showCallerIdentification && (
+                            <FormField control={form.control} name="callerIdentification" render={({ field }) => (
+                                <FormItem className="w-full">
+                                    <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">
+                                        Do you know who is calling, texting, or contacting you? *
+                                    </FormLabel>
+                                    <p className="text-[11px] text-slate-500 leading-snug">
+                                        This helps us determine whether there may be a company we can hold accountable. If you are not sure, you can still submit your case.
+                                    </p>
+                                    <FormControl>
+                                        <Select onValueChange={field.onChange} value={field.value || ""} disabled={isPending}>
+                                            <SelectTrigger className="w-full text-sm py-2 sm:py-2.5" aria-label="Caller or company identification">
+                                                <SelectValue placeholder="Select the best answer" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    {CONTACT_SOURCE_OPTIONS.map((option) => (
+                                                        <SelectItem key={option} value={option} className="text-sm">
+                                                            {option}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                    </FormControl>
+                                    {watchedCallerIdentification === CONTACT_SOURCE_UNKNOWN && (
+                                        <p role="note" className="text-[11px] text-slate-500 leading-snug">
+                                            Please include any phone numbers, screenshots, voicemails, company names, or messages you have. These details help us review your case.
+                                        </p>
+                                    )}
+                                    <FormMessage className="text-xs" />
+                                </FormItem>
+                            )} />
+                        )}
+
                         {/* Brief Details — dynamic placeholder + animated helper guidance */}
                         <FormField control={form.control} name="description" render={({ field }) => (
                             <FormItem className="w-full">
-                                <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">Brief details *</FormLabel>
+                                <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">Briefly describe what happened *</FormLabel>
                                 <FormControl>
                                     <Textarea
                                         placeholder={guidance.placeholder}

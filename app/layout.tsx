@@ -205,7 +205,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <li><a href="/blog/how-to-sue-for-robocalls-florida">How to Sue for Robocalls in Florida</a></li>
             <li><a href="/blog/sue-debt-collector-harassment-florida">Sue a Debt Collector for Harassment in Florida</a></li>
             <li><a href="/blog/cash-app-class-action-lawsuit-tcpa-settlement">Cash App Class Action TCPA Settlement</a></li>
-            <li><a href="/blog/at-t-settlement-update-march-2026">AT&amp;T Settlement Update</a></li>
             <li><a href="/faqs">FAQs</a></li>
             <li><a href="/privacy-policy">Privacy Policy</a></li>
             <li><a href="/terms-of-service">Terms of Service</a></li>

@@ -34,7 +34,7 @@ function readLaws(): Law[] {
 
 export const metadata: Metadata = buildMetadata({
     title: "Consumer Law in Florida — FCRA, FDCPA & TCPA",
-    description: `Consumer rights laws in Florida: FCRA, FDCPA, TCPA, and more. Learn your rights under federal consumer protection laws. No fee unless we win.`,
+    description: `Consumer rights laws in Florida: FCRA, FDCPA, and TCPA. Learn your rights involving credit reports, debt collection, robocalls, and spam texts. No fee unless we win.`,
     pathname: "/consumer-law",
     type: "website",
 })

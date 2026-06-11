@@ -7,6 +7,7 @@ interface LeadData {
   phone?: string
   zip?: string
   case_type?: string
+  caller_identification?: string
   description?: string
   urgency?: string
   form_source?: string
@@ -21,6 +22,10 @@ interface LeadData {
 
 export async function logLead(data: LeadData): Promise<void> {
   try {
+    const description = data.caller_identification
+      ? `Caller/company identification: ${data.caller_identification}\n\n${data.description || ''}`.trim()
+      : data.description || null
+
     const { error } = await supabaseServer.from('leads').insert({
       first_name: data.first_name || null,
       last_name: data.last_name || null,
@@ -28,7 +33,7 @@ export async function logLead(data: LeadData): Promise<void> {
       phone: data.phone || null,
       zip: data.zip || null,
       case_type: data.case_type || null,
-      description: data.description || null,
+      description,
       urgency: data.urgency || null,
       form_source: data.form_source || null,
       gclid: data.gclid || null,

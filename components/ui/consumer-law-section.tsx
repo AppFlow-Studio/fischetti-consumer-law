@@ -95,7 +95,7 @@ export default function ConsumerLawSection() {
                                 >
                                     Consumer law safeguards everyday people from unfair, deceptive, or abusive acts by companies and collectors.
                                     These protections come from federal statutes like the FCRA (credit reporting), FDCPA (debt collection), TCPA (robocalls/texts),
-                                    EFTA (electronic payments), TILA (lending disclosures), CROA (credit repair), and FCBA (billing errors). If a business or collector
+                                    EFTA (electronic payments), TILA (lending disclosures), CROA (credit organizations), and FCBA (billing errors). If a business or collector
                                     crossed the line, the law gives you remedies—statutory damages, actual damages, attorneys&apos; fees, and court orders to make it stop.
                                 </motion.p>
                                 <motion.p

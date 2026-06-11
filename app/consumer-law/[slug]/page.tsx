@@ -5,7 +5,7 @@ import { notFound } from "next/navigation"
 import ConsumerLawDetails, { ConsumerLawJsonLd, type ConsumerLawDetailsProps } from "@/components/consumer-law-details"
 import ConsumerLawHero from "@/components/sections/ConsumerLawHero"
 import CaseResults from "@/components/ui/case-results"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, FileText, FileCheck, AlertCircle, FolderOpen, ShieldCheck, Info } from "lucide-react"
 import Link from "next/link"
 
 // Crawlable sub-page links per slug — drives the "Related Guides" nav section.
@@ -124,11 +124,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 function getQualificationItems(slug: string): string[] {
     const content: Record<string, string[]> = {
         fcra: [
-            "Your credit report shows errors that were not corrected after a dispute",
-            "A background check cost you a job, apartment, or promotion",
+            "You were denied a mortgage, loan, or credit card because of a credit report error",
+            "You were denied an apartment or rental due to a background check mistake",
+            "A discharged bankruptcy debt still appears on your credit report",
             "Your credit file was mixed with someone else's information",
-            "Old, inaccurate, or duplicate accounts remain on your report",
-            "You were not properly notified of an adverse decision",
+            "A debt collector or furnisher refuses to correct an error after your dispute",
+            "You lost a job offer because of an inaccurate background check",
+            "An identity theft account is reporting on your credit even after being disputed",
         ],
         fdcpa: [
             "A debt collector calls repeatedly or aggressively",
@@ -466,6 +468,74 @@ export default async function ConsumerLawDetailsPage({ params }: { params: Promi
                     />
                 </div>
             </section>
+
+            {/* FCRA-only: Before Your Free Case Review document checklist */}
+            {resolvedParams.slug === "fcra" && (
+                <section className="w-full max-w-[95%] xl:max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                    <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 sm:p-10">
+                        <div className="flex items-start gap-4 mb-8">
+                            <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center shrink-0">
+                                <FolderOpen className="w-5 h-5 text-white" />
+                            </div>
+                            <div>
+                                <h2 className="text-2xl font-semibold text-slate-900">
+                                    Before Your Free Case Review: Save These Documents
+                                </h2>
+                                <p className="text-slate-500 mt-1 text-sm">
+                                    The more of these you have ready, the faster our attorneys can evaluate your FCRA claim.
+                                </p>
+                            </div>
+                        </div>
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {[
+                                {
+                                    Icon: FileText,
+                                    label: "Credit Reports (All 3 Bureaus)",
+                                    note: "Pull free copies from annualcreditreport.com — highlight the error on each report where it appears.",
+                                },
+                                {
+                                    Icon: FileCheck,
+                                    label: "Dispute Letters You Sent",
+                                    note: "Copies of any written disputes you submitted online, by mail, or via certified letter.",
+                                },
+                                {
+                                    Icon: AlertCircle,
+                                    label: "Bureau or Furnisher Responses",
+                                    note: "Any letter saying the error was \"verified\" or refusing to correct it — this is critical evidence.",
+                                },
+                                {
+                                    Icon: Info,
+                                    label: "Adverse Action Notices",
+                                    note: "Denial letters for a loan, apartment, job, or insurance that reference your credit report.",
+                                },
+                                {
+                                    Icon: ShieldCheck,
+                                    label: "Proof the Information Is Wrong",
+                                    note: "Bank statements, court orders, or ID documents showing the reported item is inaccurate.",
+                                },
+                                {
+                                    Icon: FileCheck,
+                                    label: "Background Check Reports",
+                                    note: "If the error appeared on a background check (job or housing), include a copy of that report.",
+                                },
+                            ].map(({ Icon, label, note }, i) => (
+                                <div key={i} className="flex gap-3 bg-white rounded-xl p-4 border border-blue-100">
+                                    <div className="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center shrink-0">
+                                        <Icon className="w-4 h-4 text-blue-700" aria-hidden="true" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-semibold text-slate-900 leading-tight">{label}</p>
+                                        <p className="text-xs text-slate-500 mt-1 leading-relaxed">{note}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <p className="text-xs text-slate-400 mt-6 text-center">
+                            Don&apos;t have everything yet — that&apos;s okay. Our attorneys will guide you through what&apos;s needed during your free case review.
+                        </p>
+                    </div>
+                </section>
+            )}
 
             <CaseResults />
 
