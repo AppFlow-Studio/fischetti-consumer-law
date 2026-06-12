@@ -318,7 +318,12 @@ export function EmailPreviewClient() {
                         </span>
                     </div>
                     <span style={{ fontSize: "11px", color: "#475569" }}>
-                        Subject: Action Required — Your {activeTab.label} Case Review ({caseRef})
+                        Subject: {
+                            lawType === "FCRA" ? "Your FCRA Case Checklist — Documents to Gather" :
+                            lawType === "FDCPA" ? "Your FDCPA Case Checklist — Evidence to Collect" :
+                            lawType === "TCPA" ? "Your TCPA Case Checklist — What to Save Now" :
+                            "Your Consumer Law Case Checklist"
+                        }
                     </span>
                 </div>
 

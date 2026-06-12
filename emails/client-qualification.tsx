@@ -12,177 +12,145 @@ interface ClientQualificationEmailProps {
 }
 
 // ---------------------------------------------------------------------------
-// Sub-components: Required Information sections (one per law type)
-// Each renders a structured panel of numbered items the lead must reply with.
+// Item type used by all law-specific sections
 // ---------------------------------------------------------------------------
 
-function FcraRequiredInfo({ accent }: { accent: string }) {
-    return (
-        <table role="presentation" width="100%" cellPadding="0" cellSpacing="0">
-            <tbody>
-                <tr>
-                    <td style={{
-                        backgroundColor: "#f8fafc",
-                        border: "1px solid #e2e8f0",
-                        borderRadius: "6px",
-                        padding: "0",
-                        overflow: "hidden",
-                    }}>
-                        {/* Section header */}
-                        <table role="presentation" width="100%" cellPadding="0" cellSpacing="0">
-                            <tbody>
-                                <tr>
-                                    <td style={{
-                                        backgroundColor: "#0f172a",
-                                        padding: "12px 20px",
-                                    }}>
-                                        <p style={{
-                                            margin: 0,
-                                            fontSize: "11px",
-                                            fontWeight: "700",
-                                            color: "#ffffff",
-                                            letterSpacing: "1.5px",
-                                            textTransform: "uppercase" as const,
-                                        }}>
-                                            Required Documents
-                                        </p>
-                                    </td>
-                                </tr>
-                                {/* Item 1 */}
-                                <tr>
-                                    <td style={{ padding: "0 20px" }}>
-                                        <table role="presentation" width="100%" cellPadding="0" cellSpacing="0">
-                                            <tbody>
-                                                <tr>
-                                                    <td style={{
-                                                        padding: "18px 0",
-                                                        borderBottom: "1px solid #e2e8f0",
-                                                        verticalAlign: "top",
-                                                    }}>
-                                                        <table role="presentation" cellPadding="0" cellSpacing="0">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td style={{ verticalAlign: "top", paddingRight: "14px" }}>
-                                                                        <div style={{
-                                                                            width: "26px",
-                                                                            height: "26px",
-                                                                            backgroundColor: '#dc2626',
-                                                                            borderRadius: "4px",
-                                                                            color: "#ffffff",
-                                                                            fontSize: "13px",
-                                                                            fontWeight: "700",
-                                                                            textAlign: "center" as const,
-                                                                            lineHeight: "26px",
-                                                                            flexShrink: 0,
-                                                                        }}>
-                                                                            1
-                                                                        </div>
-                                                                    </td>
-                                                                    <td style={{ verticalAlign: "top" }}>
-                                                                        <p style={{
-                                                                            margin: "0 0 4px 0",
-                                                                            fontSize: "14px",
-                                                                            fontWeight: "600",
-                                                                            color: "#0f172a",
-                                                                            lineHeight: "1.4",
-                                                                        }}>
-                                                                            Your Credit Report (with the error highlighted)
-                                                                        </p>
-                                                                        <p style={{
-                                                                            margin: 0,
-                                                                            fontSize: "13px",
-                                                                            color: "#475569",
-                                                                            lineHeight: "1.5",
-                                                                        }}>
-                                                                            A copy of the credit report from Equifax, Experian, or TransUnion
-                                                                            clearly showing the inaccurate, incomplete, or disputed item.
-                                                                            Free reports are available at annualcreditreport.com.
-                                                                        </p>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                                {/* Item 2 */}
-                                                <tr>
-                                                    <td style={{
-                                                        padding: "18px 0",
-                                                    }}>
-                                                        <table role="presentation" cellPadding="0" cellSpacing="0">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td style={{ verticalAlign: "top", paddingRight: "14px" }}>
-                                                                        <div style={{
-                                                                            width: "26px",
-                                                                            height: "26px",
-                                                                            backgroundColor: '#dc2626',
-                                                                            borderRadius: "4px",
-                                                                            color: "#ffffff",
-                                                                            fontSize: "13px",
-                                                                            fontWeight: "700",
-                                                                            textAlign: "center" as const,
-                                                                            lineHeight: "26px",
-                                                                        }}>
-                                                                            2
-                                                                        </div>
-                                                                    </td>
-                                                                    <td style={{ verticalAlign: "top" }}>
-                                                                        <p style={{
-                                                                            margin: "0 0 4px 0",
-                                                                            fontSize: "14px",
-                                                                            fontWeight: "600",
-                                                                            color: "#0f172a",
-                                                                            lineHeight: "1.4",
-                                                                        }}>
-                                                                            The Credit Bureau&apos;s Response to Your Dispute
-                                                                        </p>
-                                                                        <p style={{
-                                                                            margin: 0,
-                                                                            fontSize: "13px",
-                                                                            color: "#475569",
-                                                                            lineHeight: "1.5",
-                                                                        }}>
-                                                                            A copy of the written response you received after disputing the
-                                                                            error — or, if you have not yet filed a dispute, written
-                                                                            confirmation that you submitted one. If no dispute has been
-                                                                            filed, please note that in your reply.
-                                                                        </p>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    )
+interface ChecklistItem {
+    label: string
+    detail: string
+    required?: boolean
 }
 
-function FdcpaRequiredInfo({ accent }: { accent: string }) {
-    const items = [
-        {
-            label: "Collector or Company Name",
-            detail: "The full name of the debt collection agency, law firm, or individual who contacted you.",
-        },
-        {
-            label: "Phone Number or Contact Method",
-            detail: "The phone number they called or texted from, or the address if contact was by mail.",
-        },
-        {
-            label: "A Brief Description of What Occurred",
-            detail: "One to two sentences describing what happened — for example: repeated calls after being told to stop, calls before 8 AM or after 9 PM, threats of arrest or legal action, or contacting your employer.",
-        },
-    ]
+// ---------------------------------------------------------------------------
+// Law-specific checklists
+// ---------------------------------------------------------------------------
 
+const FCRA_ITEMS: ChecklistItem[] = [
+    {
+        label: "Your Credit Reports (All Three Bureaus)",
+        detail: "Pull free reports from Equifax, Experian, and TransUnion at annualcreditreport.com. Highlight or circle the inaccurate, outdated, or disputed item on each report where it appears.",
+        required: true,
+    },
+    {
+        label: "Dispute Letters You Sent",
+        detail: "Copies of any written disputes you submitted to the credit bureau or furnisher — by mail, online portal, or certified mail. If you have tracking or delivery confirmation, include that too.",
+        required: true,
+    },
+    {
+        label: "Bureau or Furnisher Responses",
+        detail: "The written response(s) you received after disputing the error. If the bureau or furnisher said the item was \"verified\" or refused to remove it, that response is critical for your claim.",
+    },
+    {
+        label: "Adverse Action Notices",
+        detail: "Any denial letters or notices you received for credit, a loan, housing, insurance, or employment that reference your credit report. These establish that the error caused real harm.",
+    },
+    {
+        label: "Background Check Reports (if applicable)",
+        detail: "If the error appeared on a background check rather than a credit report — for example, a criminal record that isn't yours, or an eviction that belongs to someone else — include a copy of that report.",
+    },
+    {
+        label: "Proof the Information Is Wrong",
+        detail: "Documents that show why the reported item is inaccurate — for example: bank statements showing a balance was paid, a court order showing a debt was discharged in bankruptcy, or ID documents showing you are not the person named in the record.",
+    },
+    {
+        label: "Identity Theft Report (if applicable)",
+        detail: "If the inaccuracy stems from identity theft or a mixed file, include your FTC Identity Theft Report from IdentityTheft.gov, any police reports, or written alerts you placed with the bureaus.",
+        required: false,
+    },
+]
+
+const FDCPA_ITEMS: ChecklistItem[] = [
+    {
+        label: "Collector or Company Name",
+        detail: "The full name of the debt collection agency, law firm, or individual who contacted you — exactly as it appears on any letters, voicemails, or caller ID.",
+        required: true,
+    },
+    {
+        label: "Letters, Emails, or Written Notices",
+        detail: "Copies of any correspondence from the collector — collection notices, validation letters, settlement offers, or legal threat letters. Include the date you received each one.",
+    },
+    {
+        label: "Call Logs with Dates, Times, and Numbers",
+        detail: "Screenshots of your call history showing the phone number(s) used, dates, and times of each call. If calls came from multiple numbers, capture all of them.",
+        required: true,
+    },
+    {
+        label: "Voicemail Recordings or Transcripts",
+        detail: "Any recorded voicemails left by the collector. If you cannot export the audio, write down as much of the content as you can remember — including any threats, false statements, or pressure tactics used.",
+    },
+    {
+        label: "Text Message Screenshots",
+        detail: "Screenshots of any text messages from the collector, showing the sender's number, date, time, and full message content.",
+    },
+    {
+        label: "Records of Threats, False Statements, or Harassment",
+        detail: "Written notes describing specific incidents — for example, threats of arrest, claims that you owe more than the actual debt, calls to your employer or family members, or abusive language. Include the date and time of each incident.",
+    },
+    {
+        label: "Cease Communication Request (if sent)",
+        detail: "A copy of any written letter you sent telling the collector to stop contacting you — along with proof of delivery, such as a certified mail receipt or tracking number.",
+    },
+    {
+        label: "Court Documents (if a lawsuit was filed)",
+        detail: "If the collector or a debt buyer filed a lawsuit against you, include the summons, complaint, or any other court filings you received.",
+    },
+]
+
+const TCPA_ITEMS: ChecklistItem[] = [
+    {
+        label: "Screenshots of Spam Texts",
+        detail: "Screenshots showing the sender's phone number, the date and time of each message, and the full message content. Include your STOP reply and any messages that arrived after it.",
+        required: true,
+    },
+    {
+        label: "Call Logs with Dates, Times, and Numbers",
+        detail: "Screenshots of your call history showing the phone number(s) used, dates, and times of repeated calls. If the caller rotated numbers, capture as many as possible.",
+        required: true,
+    },
+    {
+        label: "Voicemail Recordings or Notifications",
+        detail: "Any recorded voicemails left by the caller. If the message was deleted, a screenshot of the voicemail notification is still helpful — it shows a call occurred even without the recording.",
+    },
+    {
+        label: "Proof of Your STOP or Opt-Out Reply",
+        detail: "The date you replied STOP, said \"remove me,\" or otherwise revoked consent — and any contact that happened after that. Post-opt-out calls and texts are the strongest evidence in TCPA cases.",
+        required: true,
+    },
+    {
+        label: "Company Name or Caller Phone Numbers",
+        detail: "The name of the company or organization responsible for the calls or texts, if you were able to identify it. If unknown, provide every phone number that contacted you — even spoofed or unfamiliar numbers.",
+    },
+    {
+        label: "Website, Offer, or Product Mentioned",
+        detail: "Any website URL, product name, insurance plan, or offer that was promoted in the calls or texts. This helps identify the company responsible even when the caller ID is spoofed.",
+    },
+    {
+        label: "Do Not Call Registry Status",
+        detail: "Whether your phone number is currently registered on the National Do Not Call Registry and approximately how long it has been registered. If not registered, you can sign up for free at donotcall.gov — registration must be active for at least 31 days before a DNC-based claim applies.",
+    },
+]
+
+const OTHER_ITEMS: ChecklistItem[] = [
+    {
+        label: "A Clear Description of What Happened",
+        detail: "Describe the situation in plain terms — who contacted you, what they said or did, how they contacted you, and when it began. Include the company name if you know it.",
+        required: true,
+    },
+    {
+        label: "Any Documents, Letters, or Communications",
+        detail: "Copies of any paperwork, letters, emails, or screenshots related to your situation — the more context you can provide, the faster we can evaluate your case.",
+    },
+    {
+        label: "Dates and Any Relevant Deadlines",
+        detail: "Let us know if there is any time sensitivity — for example, a court date, a response deadline, or a statute of limitations concern.",
+    },
+]
+
+// ---------------------------------------------------------------------------
+// Shared required items renderer
+// ---------------------------------------------------------------------------
+
+function RequiredItems({ items, header }: { items: ChecklistItem[]; header: string }) {
     return (
         <table role="presentation" width="100%" cellPadding="0" cellSpacing="0">
             <tbody>
@@ -195,6 +163,7 @@ function FdcpaRequiredInfo({ accent }: { accent: string }) {
                     }}>
                         <table role="presentation" width="100%" cellPadding="0" cellSpacing="0">
                             <tbody>
+                                {/* Header */}
                                 <tr>
                                     <td style={{
                                         backgroundColor: "#0f172a",
@@ -208,10 +177,11 @@ function FdcpaRequiredInfo({ accent }: { accent: string }) {
                                             letterSpacing: "1.5px",
                                             textTransform: "uppercase" as const,
                                         }}>
-                                            Required Information
+                                            {header}
                                         </p>
                                     </td>
                                 </tr>
+                                {/* Items */}
                                 <tr>
                                     <td style={{ padding: "0 20px" }}>
                                         <table role="presentation" width="100%" cellPadding="0" cellSpacing="0">
@@ -219,7 +189,7 @@ function FdcpaRequiredInfo({ accent }: { accent: string }) {
                                                 {items.map((item, idx) => (
                                                     <tr key={idx}>
                                                         <td style={{
-                                                            padding: "18px 0",
+                                                            padding: "16px 0",
                                                             borderBottom: idx < items.length - 1 ? "1px solid #e2e8f0" : "none",
                                                             verticalAlign: "top",
                                                         }}>
@@ -230,13 +200,14 @@ function FdcpaRequiredInfo({ accent }: { accent: string }) {
                                                                             <div style={{
                                                                                 width: "26px",
                                                                                 height: "26px",
-                                                                                backgroundColor: '#dc2626',
+                                                                                backgroundColor: item.required === false ? "#64748b" : "#1265eb",
                                                                                 borderRadius: "4px",
                                                                                 color: "#ffffff",
                                                                                 fontSize: "13px",
                                                                                 fontWeight: "700",
                                                                                 textAlign: "center" as const,
                                                                                 lineHeight: "26px",
+                                                                                flexShrink: 0,
                                                                             }}>
                                                                                 {idx + 1}
                                                                             </div>
@@ -250,6 +221,18 @@ function FdcpaRequiredInfo({ accent }: { accent: string }) {
                                                                                 lineHeight: "1.4",
                                                                             }}>
                                                                                 {item.label}
+                                                                                {item.required === false && (
+                                                                                    <span style={{
+                                                                                        marginLeft: "8px",
+                                                                                        fontSize: "11px",
+                                                                                        fontWeight: "500",
+                                                                                        color: "#94a3b8",
+                                                                                        textTransform: "uppercase" as const,
+                                                                                        letterSpacing: "0.5px",
+                                                                                    }}>
+                                                                                        (if applicable)
+                                                                                    </span>
+                                                                                )}
                                                                             </p>
                                                                             <p style={{
                                                                                 margin: 0,
@@ -279,294 +262,44 @@ function FdcpaRequiredInfo({ accent }: { accent: string }) {
     )
 }
 
-function TcpaRequiredInfo({ accent }: { accent: string }) {
-    return (
-        <>
-            <table role="presentation" width="100%" cellPadding="0" cellSpacing="0">
-                <tbody>
-                    <tr>
-                        <td style={{
-                            backgroundColor: "#f8fafc",
-                            border: "1px solid #e2e8f0",
-                            borderRadius: "6px",
-                            overflow: "hidden",
-                        }}>
-                            <table role="presentation" width="100%" cellPadding="0" cellSpacing="0">
-                                <tbody>
-                                    <tr>
-                                        <td style={{
-                                            backgroundColor: "#0f172a",
-                                            padding: "12px 20px",
-                                        }}>
-                                            <p style={{
-                                                margin: 0,
-                                                fontSize: "11px",
-                                                fontWeight: "700",
-                                                color: "#ffffff",
-                                                letterSpacing: "1.5px",
-                                                textTransform: "uppercase" as const,
-                                            }}>
-                                                Required Information
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style={{ padding: "0 20px" }}>
-                                            <table role="presentation" width="100%" cellPadding="0" cellSpacing="0">
-                                                <tbody>
-                                                    {/* Item 1 */}
-                                                    <tr>
-                                                        <td style={{
-                                                            padding: "18px 0",
-                                                            borderBottom: "1px solid #e2e8f0",
-                                                            verticalAlign: "top",
-                                                        }}>
-                                                            <table role="presentation" cellPadding="0" cellSpacing="0">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td style={{ verticalAlign: "top", paddingRight: "14px" }}>
-                                                                            <div style={{
-                                                                                width: "26px",
-                                                                                height: "26px",
-                                                                                backgroundColor: '#dc2626',
-                                                                                borderRadius: "4px",
-                                                                                color: "#ffffff",
-                                                                                fontSize: "13px",
-                                                                                fontWeight: "700",
-                                                                                textAlign: "center" as const,
-                                                                                lineHeight: "26px",
-                                                                            }}>
-                                                                                1
-                                                                            </div>
-                                                                        </td>
-                                                                        <td style={{ verticalAlign: "top" }}>
-                                                                            <p style={{
-                                                                                margin: "0 0 4px 0",
-                                                                                fontSize: "14px",
-                                                                                fontWeight: "600",
-                                                                                color: "#0f172a",
-                                                                                lineHeight: "1.4",
-                                                                            }}>
-                                                                                Name of the Company or Caller
-                                                                            </p>
-                                                                            <p style={{
-                                                                                margin: 0,
-                                                                                fontSize: "13px",
-                                                                                color: "#475569",
-                                                                                lineHeight: "1.5",
-                                                                            }}>
-                                                                                The full name of the company or organization that called
-                                                                                or texted you, as best you can determine. If unknown,
-                                                                                provide the phone number they used.
-                                                                            </p>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                    {/* Item 2 */}
-                                                    <tr>
-                                                        <td style={{
-                                                            padding: "18px 0",
-                                                        }}>
-                                                            <table role="presentation" cellPadding="0" cellSpacing="0">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td style={{ verticalAlign: "top", paddingRight: "14px" }}>
-                                                                            <div style={{
-                                                                                width: "26px",
-                                                                                height: "26px",
-                                                                                backgroundColor: '#dc2626',
-                                                                                borderRadius: "4px",
-                                                                                color: "#ffffff",
-                                                                                fontSize: "13px",
-                                                                                fontWeight: "700",
-                                                                                textAlign: "center" as const,
-                                                                                lineHeight: "26px",
-                                                                            }}>
-                                                                                2
-                                                                            </div>
-                                                                        </td>
-                                                                        <td style={{ verticalAlign: "top" }}>
-                                                                            <p style={{
-                                                                                margin: "0 0 4px 0",
-                                                                                fontSize: "14px",
-                                                                                fontWeight: "600",
-                                                                                color: "#0f172a",
-                                                                                lineHeight: "1.4",
-                                                                            }}>
-                                                                                Your Do Not Call Registry Status
-                                                                            </p>
-                                                                            <p style={{
-                                                                                margin: 0,
-                                                                                fontSize: "13px",
-                                                                                color: "#475569",
-                                                                                lineHeight: "1.5",
-                                                                            }}>
-                                                                                Confirm whether your phone number is currently registered
-                                                                                on the National Do Not Call Registry, and for approximately
-                                                                                how long it has been registered. Registration must be active
-                                                                                for at least 31 days before a call can give rise to a TCPA
-                                                                                claim.
-                                                                            </p>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+// ---------------------------------------------------------------------------
+// TCPA DNC gate notice (shown below the TCPA checklist)
+// ---------------------------------------------------------------------------
 
-            {/* DNC gate notice — amber procedural box */}
-            <table role="presentation" width="100%" cellPadding="0" cellSpacing="0" style={{ marginTop: "16px" }}>
-                <tbody>
-                    <tr>
-                        <td style={{
-                            backgroundColor: "#fffbeb",
-                            border: "1px solid #fcd34d",
-                            borderLeft: "4px solid #d97706",
-                            borderRadius: "4px",
-                            padding: "16px 20px",
-                        }}>
-                            <p style={{
-                                margin: "0 0 6px 0",
-                                fontSize: "12px",
-                                fontWeight: "700",
-                                color: "#92400e",
-                                letterSpacing: "0.8px",
-                                textTransform: "uppercase" as const,
-                            }}>
-                                Not Yet Registered on the Do Not Call Registry?
-                            </p>
-                            <p style={{
-                                margin: 0,
-                                fontSize: "13px",
-                                color: "#78350f",
-                                lineHeight: "1.6",
-                            }}>
-                                If your number is not yet registered, please visit{" "}
-                                <a href="https://www.donotcall.gov" style={{ color: "#92400e", fontWeight: "600" }}>
-                                    donotcall.gov
-                                </a>{" "}
-                                to register it now. Registration is free and takes less than two minutes. Once registered, your number must remain active on the registry for a minimum of 31 days before a violation can be actionable. Please contact us once that period has elapsed.
-                            </p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </>
-    )
-}
-
-function OtherRequiredInfo({ accent }: { accent: string }) {
+function TcpaDncNotice({ accent }: { accent: string }) {
     return (
-        <table role="presentation" width="100%" cellPadding="0" cellSpacing="0">
+        <table role="presentation" width="100%" cellPadding="0" cellSpacing="0" style={{ marginTop: "16px" }}>
             <tbody>
                 <tr>
                     <td style={{
-                        backgroundColor: "#f8fafc",
-                        border: "1px solid #e2e8f0",
-                        borderRadius: "6px",
-                        overflow: "hidden",
+                        backgroundColor: "#f0f4ff",
+                        border: "1px solid #dde6f9",
+                        borderLeft: `4px solid ${accent}`,
+                        borderRadius: "4px",
+                        padding: "16px 20px",
                     }}>
-                        <table role="presentation" width="100%" cellPadding="0" cellSpacing="0">
-                            <tbody>
-                                <tr>
-                                    <td style={{
-                                        backgroundColor: "#0f172a",
-                                        padding: "12px 20px",
-                                    }}>
-                                        <p style={{
-                                            margin: 0,
-                                            fontSize: "11px",
-                                            fontWeight: "700",
-                                            color: "#ffffff",
-                                            letterSpacing: "1.5px",
-                                            textTransform: "uppercase" as const,
-                                        }}>
-                                            Required Information
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style={{ padding: "0 20px" }}>
-                                        <table role="presentation" width="100%" cellPadding="0" cellSpacing="0">
-                                            <tbody>
-                                                {[
-                                                    {
-                                                        label: "A Clear Description of What Happened",
-                                                        detail: "Describe the situation in plain terms — who contacted you, what they said or did, and when it began.",
-                                                    },
-                                                    {
-                                                        label: "Any Relevant Dates or Deadlines",
-                                                        detail: "Let us know if there is any time sensitivity — for example, a court date, a response deadline, or a statute of limitations concern.",
-                                                    },
-                                                ].map((item, idx) => (
-                                                    <tr key={idx}>
-                                                        <td style={{
-                                                            padding: "18px 0",
-                                                            borderBottom: idx === 0 ? "1px solid #e2e8f0" : "none",
-                                                            verticalAlign: "top",
-                                                        }}>
-                                                            <table role="presentation" cellPadding="0" cellSpacing="0">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td style={{ verticalAlign: "top", paddingRight: "14px" }}>
-                                                                            <div style={{
-                                                                                width: "26px",
-                                                                                height: "26px",
-                                                                                backgroundColor: '#dc2626',
-                                                                                borderRadius: "4px",
-                                                                                color: "#ffffff",
-                                                                                fontSize: "13px",
-                                                                                fontWeight: "700",
-                                                                                textAlign: "center" as const,
-                                                                                lineHeight: "26px",
-                                                                            }}>
-                                                                                {idx + 1}
-                                                                            </div>
-                                                                        </td>
-                                                                        <td style={{ verticalAlign: "top" }}>
-                                                                            <p style={{
-                                                                                margin: "0 0 4px 0",
-                                                                                fontSize: "14px",
-                                                                                fontWeight: "600",
-                                                                                color: "#0f172a",
-                                                                                lineHeight: "1.4",
-                                                                            }}>
-                                                                                {item.label}
-                                                                            </p>
-                                                                            <p style={{
-                                                                                margin: 0,
-                                                                                fontSize: "13px",
-                                                                                color: "#475569",
-                                                                                lineHeight: "1.5",
-                                                                            }}>
-                                                                                {item.detail}
-                                                                            </p>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <p style={{
+                            margin: "0 0 6px 0",
+                            fontSize: "12px",
+                            fontWeight: "700",
+                            color: "#0f172a",
+                            letterSpacing: "0.8px",
+                            textTransform: "uppercase" as const,
+                        }}>
+                            Not on the Do Not Call Registry?
+                        </p>
+                        <p style={{
+                            margin: 0,
+                            fontSize: "13px",
+                            color: "#475569",
+                            lineHeight: "1.6",
+                        }}>
+                            No problem — visit{" "}
+                            <a href="https://www.donotcall.gov" style={{ color: "#1265eb", fontWeight: "600" }}>
+                                donotcall.gov
+                            </a>{" "}
+                            to register your number now. Registration is free and takes under two minutes. Note that DNC registration must be active for at least 31 days before a violation based on that registration can be pursued — but many TCPA claims do not require DNC registration at all, especially if calls were made using an autodialer or prerecorded voice without your consent.
+                        </p>
                     </td>
                 </tr>
             </tbody>
@@ -581,13 +314,26 @@ function OtherRequiredInfo({ accent }: { accent: string }) {
 function getIntroCopy(lawType: LawType): string {
     switch (lawType) {
         case "FCRA":
-            return "We have received your inquiry regarding a potential Fair Credit Reporting Act (FCRA) violation. Before a formal case review can begin, we require specific documentation from you. Without these materials, our attorneys cannot evaluate the viability of your claim."
+            return "We've received your case review request for a potential Fair Credit Reporting Act (FCRA) violation. To evaluate your claim as quickly as possible, please gather the documents listed below. Having these ready before we speak will help our attorneys give you the most accurate assessment of your case."
         case "FDCPA":
-            return "We have received your inquiry regarding a potential Fair Debt Collection Practices Act (FDCPA) violation. Before a formal case review can begin, we need a few specific details from you. Without this information, we cannot determine whether a viable claim exists."
+            return "We've received your case review request for a potential Fair Debt Collection Practices Act (FDCPA) violation. The checklist below covers the evidence our attorneys will want to review. The more of this you have ready, the faster we can determine what happened and what you may be owed."
         case "TCPA":
-            return "We have received your inquiry regarding a potential Telephone Consumer Protection Act (TCPA) violation. Before a formal case review can begin, we require confirmation of two specific facts. TCPA eligibility depends on them, and we cannot proceed without this information on file."
+            return "We've received your case review request for a potential Telephone Consumer Protection Act (TCPA) violation. Before we speak, please gather as much of the evidence listed below as you can. Even partial records can be enough to establish a strong claim."
         default:
-            return "We have received your consumer law inquiry. Before a formal case review can begin, we require additional information from you. Without this, our attorneys cannot evaluate whether a viable claim exists."
+            return "We've received your consumer law inquiry. The checklist below will help you prepare for your case review. Please gather as much of this information as you can before we follow up — the more context you can provide, the faster our attorneys can evaluate your situation."
+    }
+}
+
+function getEmailSubject(lawType: LawType, lawLabel: string): string {
+    switch (lawType) {
+        case "FCRA":
+            return `Your FCRA Case Checklist — Documents to Gather`
+        case "FDCPA":
+            return `Your FDCPA Case Checklist — Evidence to Collect`
+        case "TCPA":
+            return `Your TCPA Case Checklist — What to Save Now`
+        default:
+            return `Your ${lawLabel} Case Checklist`
     }
 }
 
@@ -606,13 +352,23 @@ export function ClientQualificationEmail({
     const accent = getLawTypeAccent(lawType)
     const lawLabel = getLawTypeLabel(lawType)
     const introCopy = getIntroCopy(lawType)
-  
+
+    const checklistItems = lawType === "FCRA" ? FCRA_ITEMS
+        : lawType === "FDCPA" ? FDCPA_ITEMS
+        : lawType === "TCPA" ? TCPA_ITEMS
+        : OTHER_ITEMS
+
+    const checklistHeader = lawType === "FCRA" ? "Documents to Gather"
+        : lawType === "FDCPA" ? "Evidence to Collect"
+        : lawType === "TCPA" ? "Evidence to Save"
+        : "Information to Prepare"
+
     return (
         <html>
             <head>
                 <meta charSet="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <title>{`Action Required — Your ${lawLabel} Case Review`}</title>
+                <title>{getEmailSubject(lawType, lawLabel)}</title>
             </head>
             <body style={{
                 margin: 0,
@@ -684,7 +440,7 @@ export function ClientQualificationEmail({
                                                                                 style={{
                                                                                     width: "3px",
                                                                                     minWidth: "3px",
-                                                                                    backgroundColor: "#dc2626",
+                                                                                    backgroundColor: accent,
                                                                                 }}
                                                                             >
                                                                                 &nbsp;
@@ -698,7 +454,7 @@ export function ClientQualificationEmail({
                                                                                     textTransform: "uppercase" as const,
                                                                                     lineHeight: "1.25",
                                                                                 }}>
-                                                                                    Action Required
+                                                                                    Case Checklist
                                                                                 </span>
                                                                             </td>
                                                                         </tr>
@@ -729,6 +485,13 @@ export function ClientQualificationEmail({
                                                                 }}>
                                                                     {firstName} {lastName}
                                                                 </span>
+                                                                <span style={{
+                                                                    fontSize: "11px",
+                                                                    color: "#475569",
+                                                                    marginLeft: "10px",
+                                                                }}>
+                                                                    Ref: {caseRef}
+                                                                </span>
                                                             </td>
                                                             <td style={{ textAlign: "right" as const }}>
                                                                 <span style={{
@@ -756,7 +519,6 @@ export function ClientQualificationEmail({
                                                     <tbody>
                                                         <tr>
                                                             <td style={{ paddingRight: "10px", verticalAlign: "middle" }}>
-                                                                {/* Accent dot */}
                                                                 <div style={{
                                                                     width: "8px",
                                                                     height: "8px",
@@ -806,7 +568,7 @@ export function ClientQualificationEmail({
                                                     {introCopy}
                                                 </p>
 
-                                                {/* ── KEY CALLOUT: WE CANNOT PROCEED ── */}
+                                                {/* ── HELPFUL CALLOUT ── */}
                                                 <table role="presentation" width="100%" cellPadding="0" cellSpacing="0" style={{ marginBottom: "28px" }}>
                                                     <tbody>
                                                         <tr>
@@ -821,11 +583,11 @@ export function ClientQualificationEmail({
                                                                     fontSize: "13px",
                                                                     fontWeight: "800",
                                                                     color: "#0f172a",
-                                                                    letterSpacing: "1.8px",
+                                                                    letterSpacing: "1.2px",
                                                                     textTransform: "uppercase" as const,
                                                                     lineHeight: "1.5",
                                                                 }}>
-                                                                    We cannot proceed without this information
+                                                                    Here&apos;s your case preparation checklist
                                                                 </p>
                                                                 <p style={{
                                                                     margin: "6px 0 0 0",
@@ -833,14 +595,14 @@ export function ClientQualificationEmail({
                                                                     color: "#475569",
                                                                     lineHeight: "1.5",
                                                                 }}>
-                                                                    Your submission has been logged, but formal review is on hold until the items below are received.
+                                                                    Don&apos;t worry if you don&apos;t have everything — gather what you can and reply with what you have. Our team will let you know if we need anything else.
                                                                 </p>
                                                             </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
 
-                                                {/* ── LAW-SPECIFIC REQUIRED ITEMS ── */}
+                                                {/* ── LAW-SPECIFIC CHECKLIST ── */}
                                                 <p style={{
                                                     margin: "0 0 14px 0",
                                                     fontSize: "13px",
@@ -849,13 +611,12 @@ export function ClientQualificationEmail({
                                                     letterSpacing: "1px",
                                                     textTransform: "uppercase" as const,
                                                 }}>
-                                                    To move your case forward, please provide:
+                                                    What to gather before we speak:
                                                 </p>
 
-                                                {lawType === "FCRA" && <FcraRequiredInfo accent={accent} />}
-                                                {lawType === "FDCPA" && <FdcpaRequiredInfo accent={accent} />}
-                                                {lawType === "TCPA" && <TcpaRequiredInfo accent={accent} />}
-                                                {lawType === "OTHER" && <OtherRequiredInfo accent={accent} />}
+                                                <RequiredItems items={checklistItems} header={checklistHeader} />
+
+                                                {lawType === "TCPA" && <TcpaDncNotice accent={accent} />}
 
                                             </td>
                                         </tr>
@@ -898,7 +659,7 @@ export function ClientQualificationEmail({
                                                                                     textTransform: "uppercase" as const,
                                                                                     lineHeight: "1.4",
                                                                                 }}>
-                                                                                    Response Required By
+                                                                                    Reply By
                                                                                 </p>
                                                                             </td>
                                                                         </tr>
@@ -934,7 +695,7 @@ export function ClientQualificationEmail({
                                                                                     color: "#cbd5e1",
                                                                                     lineHeight: "1.65",
                                                                                 }}>
-                                                                                    5 business days from submission. If we do not receive your information by this date, this intake will be closed without further review.
+                                                                                    5 business days from submission. Reply to this email with whatever you have — even partial records help. We&apos;ll follow up with any questions.
                                                                                 </p>
                                                                             </td>
                                                                         </tr>
@@ -980,7 +741,7 @@ export function ClientQualificationEmail({
                                                                     color: "#ffffff",
                                                                     lineHeight: "1.4",
                                                                 }}>
-                                                                    Reply directly to this email with the information listed above.
+                                                                    Reply directly to this email with the documents or information listed above.
                                                                 </p>
                                                                 <p style={{
                                                                     margin: 0,
@@ -988,7 +749,7 @@ export function ClientQualificationEmail({
                                                                     color: "#94a3b8",
                                                                     lineHeight: "1.6",
                                                                 }}>
-                                                                    Once received, a member of the Fischetti Law Group will review your submission and contact you with next steps. You may also call us directly at{" "}
+                                                                    Once received, a member of the Fischetti Law Group will review your submission and contact you within 24 hours. You may also call us directly at{" "}
                                                                     <a
                                                                         href={`tel:${PRIMARY_PHONE_E164}`}
                                                                         style={{ color: "#93c5fd", textDecoration: "none", fontWeight: "600" }}
@@ -1009,7 +770,7 @@ export function ClientQualificationEmail({
                                                                                 padding: "0",
                                                                             }}>
                                                                                 <a
-                                                                                    href={`mailto:info@consumerlawflorida.com?subject=Re: ${firstName} ${lastName} — ${lawLabel} Case Information`}
+                                                                                    href={`mailto:info@consumerlawflorida.com?subject=Re: ${firstName} ${lastName} — ${lawLabel} Case Documents`}
                                                                                     style={{
                                                                                         display: "inline-block",
                                                                                         padding: "12px 24px",
@@ -1021,7 +782,7 @@ export function ClientQualificationEmail({
                                                                                         borderRadius: "4px",
                                                                                     }}
                                                                                 >
-                                                                                    Reply with Case Information →
+                                                                                    Reply with Documents →
                                                                                 </a>
                                                                             </td>
                                                                         </tr>

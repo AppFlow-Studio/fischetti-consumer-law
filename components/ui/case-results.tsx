@@ -30,11 +30,6 @@ const caseResults: CaseResult[] = [
         amount: "$1.8 MILLION",
         category: "TCPA VIOLATION",
         description: "Telemarketing companies made hundreds of robocalls to our clients' cell phones without consent. Despite being on the Do Not Call Registry, they continued calling multiple times daily, violating federal telecommunications law and causing significant disruption to our clients' lives.",
-    },
-    {
-        amount: "$1.2 MILLION",
-        category: "PRIVACY BREACH",
-        description: "Major retailers' data breaches exposed our clients' personal information, including social security numbers and financial data. The companies failed to implement proper security measures, leading to identity theft and financial fraud that devastated our clients' credit and peace of mind.",
     }
 ]
 

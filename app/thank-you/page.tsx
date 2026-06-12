@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "motion/react"
-import { Phone, Mail, ArrowRight, Check } from "lucide-react"
+import { Phone, Mail, ArrowRight, FileText, MessageSquare, Smartphone, Calendar, Volume2, ShieldCheck, FolderOpen, ClipboardList } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
@@ -18,9 +18,62 @@ const fadeIn = {
     }),
 }
 
+type LawKey = "fcra" | "fdcpa" | "tcpa" | "other"
+
+interface PrepItem {
+    icon: React.ElementType
+    label: string
+    note: string
+}
+
+const PREP_ITEMS: Record<LawKey, { headline: string; items: PrepItem[] }> = {
+    fcra: {
+        headline: "What to gather for your FCRA credit report case",
+        items: [
+            { icon: FileText, label: "Credit reports from all 3 bureaus", note: "Free at annualcreditreport.com — highlight the error on each" },
+            { icon: MessageSquare, label: "Dispute letters you sent", note: "Any written disputes sent to Equifax, Experian, or TransUnion" },
+            { icon: ClipboardList, label: "Bureau responses to your dispute", note: "Letters saying the item was \"verified\" or refusing to remove it" },
+            { icon: FolderOpen, label: "Denial letters (adverse action notices)", note: "For credit, housing, employment, or insurance denials that referenced your report" },
+            { icon: ShieldCheck, label: "Proof the information is wrong", note: "Bank statements, court orders, or ID documents showing the error" },
+        ],
+    },
+    fdcpa: {
+        headline: "What to gather for your debt collector harassment case",
+        items: [
+            { icon: FileText, label: "Collector name and contact method", note: "Full company name and phone number they called or wrote from" },
+            { icon: ClipboardList, label: "Call logs with dates and times", note: "Screenshots showing repeated call history from the collector" },
+            { icon: Volume2, label: "Voicemails or recordings", note: "Any messages left — or written notes of what was said" },
+            { icon: MessageSquare, label: "Letters, texts, or emails", note: "Any written communication from the debt collector" },
+            { icon: ShieldCheck, label: "Records of threats or false statements", note: "Notes on what was threatened — arrest, lawsuits, job loss" },
+        ],
+    },
+    tcpa: {
+        headline: "What to save for your robocall or spam text case",
+        items: [
+            { icon: Smartphone, label: "Text message screenshots", note: "Show the sender number, date, time, and message content" },
+            { icon: ClipboardList, label: "Call logs with dates and phone numbers", note: "Every repeated call — even spoofed or unfamiliar numbers" },
+            { icon: Volume2, label: "Voicemails or recordings", note: "Or a screenshot of the notification if the message was deleted" },
+            { icon: MessageSquare, label: "Your STOP reply (if you sent one)", note: "Screenshot the date you sent it and any contact that followed" },
+            { icon: Calendar, label: "Company name or website mentioned", note: "Any brand, product, or URL promoted in the calls or texts" },
+        ],
+    },
+    other: {
+        headline: "What to prepare before we speak",
+        items: [
+            { icon: FileText, label: "A written summary of what happened", note: "Who contacted you, what they said or did, and when it started" },
+            { icon: ClipboardList, label: "Any documents or communications", note: "Letters, emails, screenshots, or paperwork related to your situation" },
+            { icon: Calendar, label: "Dates and relevant deadlines", note: "Court dates, response deadlines, or statute of limitations concerns" },
+            { icon: ShieldCheck, label: "Company or collector name", note: "The organization's full name as it appears on any letters or caller ID" },
+        ],
+    },
+}
+
 function ThankYouContent() {
     const searchParams = useSearchParams()
     const firstName = searchParams?.get("name") || ""
+    const lawParam = (searchParams?.get("law") || "other") as LawKey
+    const lawKey: LawKey = ["fcra", "fdcpa", "tcpa", "other"].includes(lawParam) ? lawParam : "other"
+    const prep = PREP_ITEMS[lawKey]
 
     return (
         <main className="min-h-screen bg-white">
@@ -56,20 +109,6 @@ function ThankYouContent() {
                         />
                     </motion.div>
 
-                    {/* Success Indicator */}
-                    {/* <motion.div
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{ duration: 0.4, delay: 0.2 }}
-                        className="mb-8"
-                    >
-                        <div className="w-16 h-16 mx-auto rounded-full bg-emerald-500/20 flex items-center justify-center">
-                            <div className="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center">
-                                <Check className="w-6 h-6 text-white" strokeWidth={3} />
-                            </div>
-                        </div>
-                    </motion.div> */}
-
                     {/* Heading */}
                     <motion.h1
                         custom={0.3}
@@ -88,7 +127,7 @@ function ThankYouContent() {
                         variants={fadeIn}
                         className="text-lg text-slate-300 mb-6"
                     >
-                        We've received your information and our team is reviewing your case.
+                        We&apos;ve received your information and our team is reviewing your case.
                     </motion.p>
 
                     <motion.p
@@ -207,6 +246,46 @@ function ThankYouContent() {
                             </div>
                         </motion.div>
                     </div>
+
+                    {/* What to Prepare — law-specific */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.85 }}
+                        className="mt-14 bg-blue-50 border border-blue-100 rounded-2xl p-6 sm:p-8"
+                    >
+                        <div className="flex items-start gap-4 mb-6">
+                            <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center shrink-0">
+                                <FolderOpen className="w-5 h-5 text-white" />
+                            </div>
+                            <div>
+                                <h2 className="text-xl font-semibold text-slate-900">
+                                    {prep.headline}
+                                </h2>
+                                <p className="text-sm text-slate-500 mt-1">
+                                    Check your email — we sent you a full checklist. Here&apos;s a quick summary.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="grid sm:grid-cols-2 gap-3">
+                            {prep.items.map((item, i) => (
+                                <div key={i} className="flex gap-3 bg-white rounded-xl p-4 border border-blue-100">
+                                    <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center shrink-0">
+                                        <item.icon className="w-4 h-4 text-blue-700" aria-hidden="true" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-semibold text-slate-900 leading-tight">{item.label}</p>
+                                        <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{item.note}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <p className="text-xs text-slate-400 mt-5 text-center">
+                            Don&apos;t have everything — that&apos;s okay. Gather what you can and our team will guide you through the rest.
+                        </p>
+                    </motion.div>
 
                     {/* Stats Bar */}
                     <motion.div

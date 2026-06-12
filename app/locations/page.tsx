@@ -105,7 +105,7 @@ export default function LocationsPage() {
                                         Florida Consumer Rights Lawyers
                                     </h1>
                                     <p className="text-lg md:text-xl  text-white/90 leading-relaxed mb-8 text-left">
-                                        {SITE_NAME} represents individuals across the entire state of Florida in consumer protection cases involving credit reporting errors, debt collection harassment, robocalls, privacy violations, and housing discrimination. We handle cases statewide through phone and video consultations, making it easy to get help no matter where you live.
+                                        {SITE_NAME} represents individuals across Florida in FCRA, FDCPA, and TCPA matters involving credit reporting and background check errors, debt collection harassment, robocalls, and spam texts. We handle cases statewide through phone and video consultations, making it easy to get help no matter where you live.
                                     </p>
 
                                     {/* Trust Bullets */}

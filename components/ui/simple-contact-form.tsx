@@ -20,6 +20,9 @@ import {
     UNLISTED_CASE_TYPE,
     UNLISTED_CASE_NOTICE,
     UNLISTED_CASE_ACKNOWLEDGMENT,
+    CONTACT_SOURCE_OPTIONS,
+    CONTACT_SOURCE_UNKNOWN,
+    requiresContactSource,
 } from "@/components/forms/contact-schema"
 import { DescriptionGuidance } from "@/components/forms/description-guidance"
 import { submitContactForm } from "@/lib/actions/contact"
@@ -32,11 +35,19 @@ type SimpleContactFormProps = {
     onSubmitted?: () => void
     useBlueTheme?: boolean // For white background forms that need blue text
     id?: string // Added new id prop
+    initialCaseType?: string
+    formSource?: string
 }
 
 type FormStatus = "idle" | "submitting" | "success" | "error"
 
-export default function SimpleContactForm({ onSubmitted, useBlueTheme = false, id = "case-review-form" }: SimpleContactFormProps) {
+export default function SimpleContactForm({
+    onSubmitted,
+    useBlueTheme = false,
+    id = "case-review-form",
+    initialCaseType = "",
+    formSource = "free-case-review",
+}: SimpleContactFormProps) {
     const [status, setStatus] = useState<FormStatus>("idle")
     const [errorMessage, setErrorMessage] = useState<string>("")
     const [isPending, startTransition] = useTransition()
@@ -46,13 +57,18 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false, i
     const [submitSuccess, setSubmitSuccess] = useState(false)
     const form = useForm<ContactFormData>({ 
         resolver: zodResolver(contactSchema), 
-        defaultValues: defaultContactValues 
+        defaultValues: {
+            ...defaultContactValues,
+            caseType: initialCaseType,
+        },
     })
 
     const watchedCaseType = form.watch("caseType")
+    const watchedCallerIdentification = form.watch("callerIdentification")
     const outsidePracticeAcknowledged = form.watch("outsidePracticeAcknowledged")
     const guidance = caseTypeGuidanceMap[watchedCaseType] ?? defaultCaseTypeGuidance
     const isUnlistedCaseType = watchedCaseType === UNLISTED_CASE_TYPE
+    const showCallerIdentification = requiresContactSource(watchedCaseType)
 
     const isSubmitting = status === "submitting" || isPending
     const isSubmitDisabled = isSubmitting || (isUnlistedCaseType && !outsidePracticeAcknowledged)
@@ -78,7 +94,7 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false, i
                 const result = await submitContactForm({
                     ...values,
                     ...attribution,
-                    form_source: "free-case-review",
+                    form_source: formSource,
                 })
 
                 // Handle geo-blocking redirect
@@ -128,7 +144,8 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false, i
                     page_path: window.location.pathname,
                     method: "web_form",
                     case_type: values.caseType,
-                    urgency: values.urgency
+                    urgency: values.urgency,
+                    contact_source_status: values.callerIdentification || undefined,
                 })
             }
 
@@ -136,8 +153,12 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false, i
                 onSubmitted?.()
                 form.reset()
                 
-                // Redirect to thank you page with optional name personalization
-                router.push(`/thank-you?name=${encodeURIComponent(values.firstName)}`)
+                // Redirect to thank you page with name and case type for law-specific guidance
+                const lawKey = values.caseType.startsWith("FCRA") ? "fcra"
+                    : values.caseType.startsWith("FDCPA") ? "fdcpa"
+                    : values.caseType.startsWith("TCPA") ? "tcpa"
+                    : "other"
+                router.push(`/thank-you?name=${encodeURIComponent(values.firstName)}&law=${lawKey}`)
             } catch (error) {
                 console.error("Form submission error:", error)
                 setStatus("error")
@@ -295,6 +316,10 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false, i
                                             if (value !== UNLISTED_CASE_TYPE) {
                                                 form.setValue("outsidePracticeAcknowledged", false, { shouldValidate: true })
                                             }
+                                            if (!requiresContactSource(value)) {
+                                                form.setValue("callerIdentification", "", { shouldValidate: false })
+                                                form.clearErrors("callerIdentification")
+                                            }
                                         }}
                                         value={field.value}
                                         disabled={isSubmitting}
@@ -379,15 +404,50 @@ export default function SimpleContactForm({ onSubmitted, useBlueTheme = false, i
                         )} />
                     </div>
 
+                    {showCallerIdentification && (
+                        <FormField control={form.control} name="callerIdentification" render={({ field }) => (
+                            <FormItem className="w-full">
+                                <FormLabel className={labelClass}>
+                                    Do you know who is calling, texting, or contacting you? *
+                                </FormLabel>
+                                <p className="text-[11px] text-slate-500 leading-snug">
+                                    This helps us determine whether there may be a company we can hold accountable. If you are not sure, you can still submit your case.
+                                </p>
+                                <FormControl>
+                                    <Select onValueChange={field.onChange} value={field.value || ""} disabled={isSubmitting}>
+                                        <SelectTrigger className={selectTriggerClass} aria-label="Caller or company identification">
+                                            <SelectValue placeholder="Select the best answer" />
+                                        </SelectTrigger>
+                                        <SelectContent className="bg-white">
+                                            <SelectGroup>
+                                                {CONTACT_SOURCE_OPTIONS.map((option) => (
+                                                    <SelectItem key={option} value={option} className="text-sm">
+                                                        {option}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                                {watchedCallerIdentification === CONTACT_SOURCE_UNKNOWN && (
+                                    <p role="note" className="text-[11px] text-slate-500 leading-snug">
+                                        Please include any phone numbers, screenshots, voicemails, company names, or messages you have. These details help us review your case.
+                                    </p>
+                                )}
+                                <FormMessage className={messageClass} />
+                            </FormItem>
+                        )} />
+                    )}
+
                     {/* Brief Details — dynamic placeholder + animated helper guidance */}
                     <FormField control={form.control} name="description" render={({ field }) => (
                         <FormItem className="w-full">
-                            <FormLabel className={labelClass}>Brief details *</FormLabel>
+                            <FormLabel className={labelClass}>Briefly describe what happened *</FormLabel>
                             <FormControl>
                                 <Textarea
                                     placeholder={guidance.placeholder}
                                     className={textareaClass}
-                                    aria-label="Brief details"
+                                    aria-label="Briefly describe what happened"
                                     disabled={isSubmitting}
                                     {...field}
                                 />
