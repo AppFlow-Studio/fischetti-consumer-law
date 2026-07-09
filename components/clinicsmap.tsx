@@ -7,6 +7,7 @@ import { GoogleMap, Libraries, MarkerF, useJsApiLoader } from "@react-google-map
 import { Select, SelectContent, SelectItem, SelectTrigger } from './ui/select';
 import { officeLocations } from '@/data/office-locations';
 import Link from 'next/link';
+import { useConsent } from '@/components/consent/ConsentProvider';
 //Map's styling
 export const defaultMapContainerStyle = {
     width: '100%',
@@ -28,7 +29,49 @@ const defaultMapOptions = {
 
 // Assume icons are defined here or imported. IMPORTANT: Accessing window.google requires the library to be loaded.
 
-export default function OfficeLocationsMap({ startingClinic }: {
+function OfficeLocationsMapFallback({ onEnable }: { onEnable: () => void }) {
+    return (
+        <section className="bg-[#FAFCFF] w-full py-10">
+            <div className="mx-auto max-w-5xl px-4">
+                <div className="rounded-2xl border border-blue-100 bg-white p-6 shadow-sm">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <h2 className="text-xl font-semibold text-slate-900">Florida office locations</h2>
+                            <p className="mt-1 text-sm text-slate-600">
+                                Google Maps is optional. You can still view office details and request directions.
+                            </p>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={onEnable}
+                            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                            Enable Functional Cookies
+                        </button>
+                    </div>
+                    <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                        {officeLocations.map((location) => (
+                            <div key={location.name} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                                <p className="font-semibold text-slate-900">{location.name}</p>
+                                <p className="mt-1 text-sm text-slate-600">{location.address}</p>
+                                <Link
+                                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.address)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="mt-3 inline-flex text-sm font-semibold text-blue-700 hover:underline"
+                                >
+                                    Get directions
+                                </Link>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </section>
+    )
+}
+
+function OfficeLocationsMapInner({ startingClinic }: {
     startingClinic?: { id: number, name: string, lat: number, lng: number, address: string },
 }) {
     // Load Google Maps API
@@ -205,6 +248,28 @@ export default function OfficeLocationsMap({ startingClinic }: {
             </div>
         </section>
     )
+}
+
+export default function OfficeLocationsMap({ startingClinic }: {
+    startingClinic?: { id: number, name: string, lat: number, lng: number, address: string },
+}) {
+    const { preferences, savePreferences } = useConsent()
+
+    if (!preferences?.functional) {
+        return (
+            <OfficeLocationsMapFallback
+                onEnable={() =>
+                    savePreferences({
+                        analytics: preferences?.analytics ?? false,
+                        marketing: preferences?.marketing ?? false,
+                        functional: true,
+                    })
+                }
+            />
+        )
+    }
+
+    return <OfficeLocationsMapInner startingClinic={startingClinic} />
 }
 
 

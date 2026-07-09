@@ -28,10 +28,10 @@ import {
 } from "@/components/forms/contact-schema"
 import { submitContactForm } from "@/lib/actions/contact"
 import { Loader2, AlertCircle } from "lucide-react"
-import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
 import { PRIMARY_PHONE, PRIMARY_PHONE_E164 } from "@/lib/site"
 import { getAttributionData } from "@/lib/gclid"
 import { DescriptionGuidance } from "@/components/forms/description-guidance"
+import { trackLeadFormStart, trackLeadFormSuccess } from "@/components/tracking/tracking-events"
 
 type FreeCaseReviewDialogProps = {
     children?: React.ReactNode
@@ -71,16 +71,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
 
     const onSubmit = async (values: ContactFormData) => {
         setErrorMessage("")
-        // Track form attempt
-        if (typeof window !== 'undefined') {
-            window.dataLayer = window.dataLayer || []
-            window.dataLayer.push({
-                event: "lead_form_attempt",
-                form_name: "free_case_review_dialog",
-                page_path: window.location.pathname,
-                method: "web_form"
-            })
-        }
+        trackLeadFormStart("free_case_review_dialog")
         
         startTransition(async () => {
             try {
@@ -102,49 +93,18 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                     setErrorMessage(result.message)
                     return
                 }
-                // const result = await response.json()
-            
-            // Format user data for enhanced conversions
-            const formattedUserData = formatUserDataForGTM({
-                email: values.email,
-                phone: values.phone,
-                firstName: values.firstName,
-                lastName: values.lastName,
-                zip: values.zip
-            })
-            
-            // Track successful submit with FLAT user keys for GTM DLV compatibility
-            // Plus nested user_data for Google Ads Enhanced Conversions
-            if (typeof window !== 'undefined') {
-                window.dataLayer = window.dataLayer || []
-                
-                // Push lead_form_submit with both flat keys and nested user_data
-                window.dataLayer.push({
-                    event: "lead_form_submit",
-                    form_name: "free_case_review_dialog",
-                    page_path: window.location.pathname,
-                    method: "web_form",
-                    // Flat keys for typical GTM DLV mapping
-                    user_email: formattedUserData.email,
-                    user_phone: formattedUserData.phone_number,
-                    user_first_name: formattedUserData.address.first_name,
-                    user_last_name: formattedUserData.address.last_name,
-                    user_zip: formattedUserData.address.postal_code,
-                    // Nested user_data for Google Ads Enhanced Conversions
-                    user_data: result.enhancedConversionData || formattedUserData
-                })
-                
-                // Push qualify_lead event (GA4-safe, no PII)
-                window.dataLayer.push({
-                    event: "qualify_lead",
-                    form_name: "free_case_review_dialog",
-                    page_path: window.location.pathname,
-                    method: "web_form",
-                    case_type: values.caseType,
+                await trackLeadFormSuccess("free_case_review_dialog", {
+                    caseType: values.caseType,
                     urgency: values.urgency,
-                    contact_source_status: values.callerIdentification || undefined,
+                    contactSourceStatus: values.callerIdentification || undefined,
+                    enhancedConversion: {
+                        email: values.email,
+                        phone: values.phone,
+                        firstName: values.firstName,
+                        lastName: values.lastName,
+                        zip: values.zip,
+                    },
                 })
-            }
 
                 setOpen(false)
                 form.reset()
