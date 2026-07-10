@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server"
 import { Resend } from "resend"
 import { createElement } from "react"
 import { getRequestCountry, isAllowedCountry, shouldBypassGeoBlock } from "@/lib/geo"
-import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
 import { contactSchema, type ContactFormData } from "@/components/forms/contact-schema"
 import { logLead } from "@/lib/logLead"
 import { ClientQualificationEmail } from "@/emails/client-qualification"
@@ -151,15 +150,6 @@ export async function POST(req: NextRequest) {
         const clientSuccess = clientEmailResult.status === "fulfilled" && !clientEmailResult.value.error
         const officeSuccess = officeEmailResult.status === "fulfilled" && !officeEmailResult.value.error
 
-        // Format data for client-side enhanced conversions
-        const enhancedConversionData = formatUserDataForGTM({
-            email: formData.email,
-            phone: formData.phone,
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            zip: formData.zip,
-        })
-
         // Log lead to Supabase — never throws, errors are logged internally
         await logLead({
             first_name: formData.firstName,
@@ -185,7 +175,6 @@ export async function POST(req: NextRequest) {
             {
                 success: true,
                 message: "Form submitted successfully",
-                enhancedConversionData,
             },
             { status: 200 }
         )

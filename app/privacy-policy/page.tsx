@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Shield, Lock, Eye, FileText, Mail } from "lucide-react";
 import { SITE_NAME, SITE_URL, PRIMARY_PHONE, PRIMARY_PHONE_E164 } from "@/lib/site";
 import { buildMetadata } from "@/lib/seo/metadata";
+import CookiePreferencesLink from "@/components/consent/CookiePreferencesLink";
 
 export const metadata: Metadata = buildMetadata({
     title: "Privacy Policy | Consumer Law Florida",
@@ -178,10 +179,23 @@ export default function PrivacyPolicyPage() {
                         <h2 className="text-2xl md:text-3xl font-[var(--font-playfair-display)] text-gray-900 mb-4">
                             Cookies and Tracking Technologies
                         </h2>
-                        <p className="text-gray-700 leading-relaxed">
-                            We use cookies and similar tracking technologies to collect and store information about your preferences
-                            and website activity. You can control cookie preferences through your browser settings, though this may
-                            affect website functionality.
+                        <p className="text-gray-700 leading-relaxed mb-3">
+                            We use cookies and similar technologies for necessary website operation, limited first-party attribution,
+                            analytics, marketing measurement, ad attribution, call tracking, and optional functional tools such as
+                            maps. Analytics and marketing technologies may load when you visit the site unless you have previously
+                            opted out.
+                        </p>
+                        <p className="text-gray-700 leading-relaxed mb-3">
+                            You can update your choices at any time through{" "}
+                            <CookiePreferencesLink className="text-blue-600 hover:underline font-medium" />.
+                            If you opt out, we update supported consent signals and stop sending future non-essential website events
+                            from our site code where technically possible. Necessary cookies and storage support core functions such
+                            as preference storage, routing, security, form submissions, and limited attribution fields used for
+                            internal intake.
+                        </p>
+                        <p className="text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-lg p-3">
+                            Attorney/client review note: this cookie language describes the current implementation and should be
+                            reviewed with privacy counsel before being treated as final legal compliance language.
                         </p>
                     </section>
 
@@ -241,4 +255,3 @@ export default function PrivacyPolicyPage() {
         </main>
     );
 }
-

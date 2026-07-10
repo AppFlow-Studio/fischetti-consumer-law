@@ -16,7 +16,8 @@ This guide provides step-by-step instructions for configuring Google Ads Enhance
 
 ## Data Layer Structure
 
-When a form is submitted, the following data is pushed to `window.dataLayer`:
+When a lead form submission is confirmed successful, the following sanitized data is pushed to `window.dataLayer`.
+This event must not fire on form open, form start, or submit-button click before success.
 
 ```javascript
 {
@@ -25,11 +26,11 @@ When a form is submitted, the following data is pushed to `window.dataLayer`:
   page_path: "/current-path",
   method: "web_form",
   user_data: {
-    email: "user@example.com",           // Lowercased, trimmed
-    phone_number: "+15612647211",        // E.164 format or empty string
+    sha256_email_address: "64-char-sha256-hash",
+    sha256_phone_number: "64-char-sha256-hash",
     address: {
-      first_name: "Jane",                 // Trimmed or empty string
-      last_name: "Doe",                   // Trimmed or empty string
+      sha256_first_name: "64-char-sha256-hash",
+      sha256_last_name: "64-char-sha256-hash",
       postal_code: "12345",              // Trimmed or empty string
       country: "US"                       // Always "US"
     }
@@ -43,24 +44,24 @@ Create the following Data Layer Variables in GTM:
 
 ### Variable Configuration
 
-1. **DLV - user_data.email**
+1. **DLV - user_data.sha256_email_address**
    - Variable Type: Data Layer Variable
-   - Data Layer Variable Name: `user_data.email`
+   - Data Layer Variable Name: `user_data.sha256_email_address`
    - Data Layer Version: Version 2
 
-2. **DLV - user_data.phone_number**
+2. **DLV - user_data.sha256_phone_number**
    - Variable Type: Data Layer Variable
-   - Data Layer Variable Name: `user_data.phone_number`
+   - Data Layer Variable Name: `user_data.sha256_phone_number`
    - Data Layer Version: Version 2
 
-3. **DLV - user_data.address.first_name**
+3. **DLV - user_data.address.sha256_first_name**
    - Variable Type: Data Layer Variable
-   - Data Layer Variable Name: `user_data.address.first_name`
+   - Data Layer Variable Name: `user_data.address.sha256_first_name`
    - Data Layer Version: Version 2
 
-4. **DLV - user_data.address.last_name**
+4. **DLV - user_data.address.sha256_last_name**
    - Variable Type: Data Layer Variable
-   - Data Layer Variable Name: `user_data.address.last_name`
+   - Data Layer Variable Name: `user_data.address.sha256_last_name`
    - Data Layer Version: Version 2
 
 5. **DLV - user_data.address.postal_code**
@@ -93,10 +94,10 @@ Create the following Data Layer Variables in GTM:
 6. Select **"User-provided data"** as the data source
 7. Map the fields using the DLVs created in Step 1:
 
-   - **Email**: `{{DLV - user_data.email}}`
-   - **Phone Number**: `{{DLV - user_data.phone_number}}`
-   - **First Name**: `{{DLV - user_data.address.first_name}}`
-   - **Last Name**: `{{DLV - user_data.address.last_name}}`
+   - **Email**: `{{DLV - user_data.sha256_email_address}}`
+   - **Phone Number**: `{{DLV - user_data.sha256_phone_number}}`
+   - **First Name**: `{{DLV - user_data.address.sha256_first_name}}`
+   - **Last Name**: `{{DLV - user_data.address.sha256_last_name}}`
    - **Postal Code**: `{{DLV - user_data.address.postal_code}}`
    - **Country**: `{{DLV - user_data.address.country}}`
 
@@ -128,10 +129,10 @@ Create the following Data Layer Variables in GTM:
 5. In GTM Preview, check:
    - The `lead_form_submit` event fired
    - All DLVs populate with correct values:
-     - `user_data.email` = "test@example.com"
-     - `user_data.phone_number` = "+15612647211"
-     - `user_data.address.first_name` = "Jane"
-     - `user_data.address.last_name` = "Doe"
+     - `user_data.sha256_email_address` = 64-character SHA-256 hash
+     - `user_data.sha256_phone_number` = 64-character SHA-256 hash
+     - `user_data.address.sha256_first_name` = 64-character SHA-256 hash
+     - `user_data.address.sha256_last_name` = 64-character SHA-256 hash
      - `user_data.address.postal_code` = "12345"
      - `user_data.address.country` = "US"
    - The Google Ads Conversion Tag fired
@@ -183,10 +184,11 @@ Create the following Data Layer Variables in GTM:
 
 ## Notes
 
-- **Data Hashing**: Google/GTM will hash the user data automatically. Do NOT hash in the browser.
+- **Data Hashing**: The site hashes email, phone, first name, and last name in the browser before pushing to `dataLayer`. Do not add legal matter descriptions, message fields, debt details, credit report details, robocall details, harassment details, or uploaded files to `dataLayer`.
 - **Privacy**: Enhanced Conversions complies with Google's data policies and user privacy requirements.
 - **Required Fields**: At least one identifier must be present (email preferred, or full name + postal code + country).
 - **Country**: Always set to "US" automatically, no user input required.
+- **Opt-out**: If the visitor opts out of marketing cookies before a successful submission, the site does not push the enhanced conversion event.
 
 ## Support
 

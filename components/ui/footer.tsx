@@ -8,6 +8,7 @@ import {
 } from "lucide-react"
 import { PRIMARY_PHONE, PRIMARY_PHONE_E164, PRIMARY_EMAIL, SITE_NAME } from "@/lib/site"
 import FooterSocials from "./footer-socials"
+import CookiePreferencesLink from "@/components/consent/CookiePreferencesLink"
 
 export default function Footer() {
     const currentYear = new Date().getFullYear()
@@ -129,6 +130,7 @@ export default function Footer() {
                             <Link href="/privacy-policy" className="text-white/80 hover:text-white transition-colors">
                                 Privacy Policy
                             </Link>
+                            <CookiePreferencesLink className="text-white/80 hover:text-white transition-colors" />
                             <Link href="/legal-disclaimer" className="text-white/80 hover:text-white transition-colors">
                                 Legal Disclaimer
                             </Link>

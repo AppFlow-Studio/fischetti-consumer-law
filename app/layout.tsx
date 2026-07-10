@@ -1,15 +1,12 @@
 import type { Metadata } from "next";
 import { Open_Sans, Playfair_Display } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 import NavbarWrapper from "@/components/navbar-wrapper";
 import Footer from "@/components/ui/footer";
 import FreeCaseReviewFABWrapper from "@/components/free-case-review-fab-wrapper";
-import { MapProvider } from "@/providers/map-provider";
 import { UIStateProvider } from "@/providers/ui-state-provider";
-import { ScrollProgress } from "@/components/ui/scroll-progress";
 import ClickTracking from "@/components/analytics/ClickTracking";
-import { SITE_NAME, SITE_URL, PRIMARY_PHONE, GTM_ID } from "@/lib/site"
+import { SITE_NAME, SITE_URL, PRIMARY_PHONE } from "@/lib/site"
 import {
   organizationSchema,
   personSchema,
@@ -19,7 +16,11 @@ import {
 } from "@/lib/schemas"
 import AutoOpenDialog from "@/components/auto-open-dialog";
 import FreeCaseReviewDialog from "@/components/free-case-review-dialog";
-import GclidCapture from "@/components/GclidCapture";
+import { ConsentProvider } from "@/components/consent/ConsentProvider";
+import CookieConsentBanner from "@/components/consent/CookieConsentBanner";
+import ConsentModeScript from "@/components/tracking/ConsentModeScript";
+import TrackingScripts from "@/components/tracking/TrackingScripts";
+import AttributionCapture from "@/components/tracking/AttributionCapture";
 
 const openSans = Open_Sans({
   variable: "--font-open-sans",
@@ -121,28 +122,7 @@ export default function RootLayout({
         className={`${openSans.variable} ${playfairDisplay.variable} antialiased w-full h-full overflow-x-hidden  flex flex-col`}
         suppressHydrationWarning
       >
-        {/* Google Tag Manager - single source of truth for all tracking */}
-        <Script
-          id="gtm"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','${GTM_ID}');`,
-          }}
-        />
-        {/* NOTE: Direct GA4 gtag.js removed — GA4 is configured via GTM to avoid duplicate pageviews */}
-        {/* Google Tag Manager (noscript) */}
-        <noscript>
-          <iframe
-            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          />
-        </noscript>
+        <ConsentModeScript />
 
         {/* ── Sitewide JSON-LD Entity Graph ── */}
         {/* Schema 1: Organization */}
@@ -174,7 +154,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           />
         ))}
 
-        <GclidCapture />
         {/*
           Static server-rendered nav — guaranteed in first-wave HTML for every page.
           sr-only: invisible to sighted users, fully crawlable by Googlebot without JS.
@@ -211,7 +190,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <li><a href="/legal-disclaimer">Legal Disclaimer</a></li>
           </ul>
         </nav>
-        <MapProvider>
+        <ConsentProvider>
+          <TrackingScripts />
+          <AttributionCapture />
           <UIStateProvider>
             <AutoOpenDialog />
             <FreeCaseReviewDialog respondToOpenRequest={true} />
@@ -221,7 +202,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <FreeCaseReviewFABWrapper />
             <ClickTracking />
           </UIStateProvider>
-        </MapProvider>
+          <CookieConsentBanner />
+        </ConsentProvider>
       </body>
     </html>
   );

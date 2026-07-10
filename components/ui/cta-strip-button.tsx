@@ -1,6 +1,7 @@
 'use client'
 import { cn } from "@/lib/utils"
 import { ArrowRight } from "lucide-react"
+import { trackFreeCaseReviewClick } from "@/components/tracking/tracking-events"
 
 interface CTAStripButtonProps {
   className?: string
@@ -8,6 +9,7 @@ interface CTAStripButtonProps {
 
 export function CTAStripButton({ className }: CTAStripButtonProps) {
   const scrollToForm = () => {
+    trackFreeCaseReviewClick("cta_strip")
     document.getElementById('case-review-form')?.scrollIntoView({ behavior: 'smooth' })
   }
   return (

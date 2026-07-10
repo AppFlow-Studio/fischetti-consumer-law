@@ -3,7 +3,6 @@
 import { Resend } from "resend"
 import { headers } from "next/headers"
 import { contactSchema, type ContactFormData } from "@/components/forms/contact-schema"
-import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
 import { PRIMARY_PHONE } from "@/lib/site"
 import { logLead } from "@/lib/logLead"
 import { ClientQualificationEmail } from "@/emails/client-qualification"
@@ -19,7 +18,6 @@ const OFFICE_EMAIL = "info@consumerlawflorida.com"
 export type ContactFormResult = {
     success: boolean
     message: string
-    enhancedConversionData?: ReturnType<typeof formatUserDataForGTM>
     blocked?: boolean
     redirect?: string
 }
@@ -172,15 +170,6 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactF
             officeEmailSent: officeSuccess,
         })
 
-        // Format data for enhanced conversions
-        const enhancedConversionData = formatUserDataForGTM({
-            email: formData.email,
-            phone: formData.phone,
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            zip: formData.zip,
-        })
-
         // Log lead to Supabase — wrapped in try/catch inside logLead, never throws
         await logLead({
             first_name: formData.firstName,
@@ -205,7 +194,6 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactF
         return {
             success: true,
             message: "Thank you! Your case review request has been submitted successfully.",
-            enhancedConversionData,
         }
     } catch (error) {
         console.error("Error processing contact form:", error)
