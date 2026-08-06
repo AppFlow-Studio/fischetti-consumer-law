@@ -7,10 +7,10 @@ The server validates and normalizes the request, inserts the lead first, and tre
 Before deploying the application changes:
 
 1. Apply `supabase/migrations/202608050001_lead_attribution_idempotency.sql`.
-2. Configure server-only `SOURCE_WEBHOOK_URL` with the HTTPS URL for the separately managed v2 Source Apps Script deployment.
+2. Configure server-only `SOURCE_WEBHOOK_URL` with the HTTPS URL for the separately managed v3 Source Apps Script deployment.
 3. Configure server-only `SOURCE_WEBHOOK_SHARED_SECRET`; the server sends it as top-level JSON field `shared_secret`. Do not expose either value through a `NEXT_PUBLIC_` variable or a query parameter.
 
-The webhook body follows the deployed v2 receiver contract: `{ "type": "INSERT", "record": { ...lead fields }, "shared_secret": "..." }`. The record uses snake_case and includes canonical `public.leads.id` as non-empty `lead_id`, `created_at`, contact fields, ZIP, `practice_area`, detailed `case_type`, source, urgency, case details, `tcpa_company` only when supplied for a TCPA case, all three Google click-ID fields, and all five UTM fields. It deliberately contains no qualification or disposition field. The website never decides that a lead is qualified.
+The webhook body follows the v3 receiver contract: `{ "type": "INSERT", "record": { ...lead fields }, "shared_secret": "..." }`. The record uses snake_case and includes canonical `public.leads.id` as non-empty `lead_id`, `created_at`, contact fields, ZIP, `practice_area`, detailed `case_type`, source, urgency, case details, `caller_identification` for applicable FDCPA/TCPA intake and the separate `tcpa_company` only when supplied for a TCPA case, all three Google click-ID fields, and all five UTM fields. It deliberately contains no qualification or disposition field. The website never decides that a lead is qualified.
 
 ## Separately managed Apps Script change required
 
@@ -49,17 +49,19 @@ Because the current Supabase database webhook does not add `payload.shared_secre
 
 ## Source delivery ownership and cutover
 
-The application webhook is a replacement for the existing Supabase database webhook, not a coexisting delivery mechanism. The application owns delivery attempts, failures, confirmed timestamps, and replay; it cannot observe a successful delivery performed by the Supabase webhook. Enabling both therefore sends the same canonical Lead ID twice.
+The application v3 webhook is a replacement for the existing Supabase v2 database webhook, not a coexisting delivery mechanism. The live v2 receiver historically transforms Source IDs to `CLF-<id>`, while v3 deliberately preserves canonical `public.leads.id`. Those identifiers cannot be assumed to deduplicate, so the two delivery paths must never be intentionally active at the same time.
 
-Keep the existing Supabase webhook enabled until all of these cutover gates pass:
+Use this controlled no-overlap cutover:
 
-1. Apply the additive database migration and deploy the application while leaving the application Source webhook unconfigured; the existing Supabase webhook remains the live delivery owner.
-2. Publish the authenticated Apps Script receiver at a new URL and set its Script Property. Verify that missing/wrong secrets and malformed envelopes are rejected without Source Sheet or Tracker side effects.
-3. Confirm Source deduplication uses `record.lead_id` before every append, notification, Tracker creation/update, or other downstream side effect. Confirm Tracker operations use the same Lead ID as their idempotency key. A duplicate request must exit before side effects or perform a provably idempotent update.
-4. Configure `SOURCE_WEBHOOK_URL` to the new deployment and `SOURCE_WEBHOOK_SHARED_SECRET` in Vercel, then deploy during a monitored cutover window. Keep the Supabase webhook active only for the shortest verification overlap after the deduplication gate above is proven.
-5. Submit one controlled lead and verify one Source row and one set of Tracker side effects for its canonical Lead ID, plus application delivery status `sent`.
-6. Disable the Supabase database webhook only after that verification. From then on, the application is the sole Source delivery owner.
-7. Query the cutover window by canonical Lead ID for duplicate Source rows or Tracker effects. Replay only application records whose delivery status is `failed` or `pending`; never replay records already marked `sent`.
+1. Keep the existing Supabase v2 webhook live while preparing and validating the additive migration, application release, authenticated v3 Apps Script deployment, Script Property, and server-only Vercel variables. Do not activate application Source delivery yet.
+2. Deploy the application code with application Source delivery still unconfigured. The application persists every lead before attempting Source delivery, while the old Supabase webhook remains the live delivery owner.
+3. At the scheduled cutover, record a UTC preparation timestamp and the latest canonical `public.leads.id` observed before changing either delivery path.
+4. Disable the old Supabase webhook and immediately record its UTC disabled timestamp. Confirm it is disabled before activating v3; do not create an overlap window.
+5. Activate the new application delivery by configuring `SOURCE_WEBHOOK_URL` and `SOURCE_WEBHOOK_SHARED_SECRET` for v3 and completing the corresponding application release. Record the UTC activation timestamp.
+6. Submit one controlled lead and verify its canonical numeric Lead ID is preserved in Source, its application delivery status is `sent`, and its downstream Tracker effects occur once.
+7. Audit every persisted lead created between the preparation timestamp and confirmed v3 activation. Compare Supabase, Source, and Tracker using the recorded timestamps and canonical IDs, accounting for the old `CLF-<id>` transformation before cutover.
+8. Replay every persisted post-disable lead whose application Source delivery is `failed` or `pending`, using its original retry-stable `submission_id`. Never replay a delivery already marked `sent`.
+9. Keep the old Supabase webhook disabled after v3 verification. Roll back by disabling v3 before re-enabling v2 so the no-overlap rule remains intact.
 
 Urgency uses exact enum values, not substring matching:
 

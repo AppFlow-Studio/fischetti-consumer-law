@@ -14,6 +14,7 @@ export type SourceWebhookRecord = {
   form_source: string
   urgency: string
   case_details: string
+  caller_identification?: string
   tcpa_company?: string
   gclid?: string
   gbraid?: string
@@ -52,6 +53,7 @@ export function buildSourceWebhookPayload(
       form_source: formData.form_source || "free-case-review",
       urgency: formData.urgency,
       case_details: formData.description,
+      ...(formData.callerIdentification ? { caller_identification: formData.callerIdentification } : {}),
       ...(formData.contactingCompany ? { tcpa_company: formData.contactingCompany } : {}),
       gclid: formData.gclid,
       gbraid: formData.gbraid,
@@ -105,11 +107,19 @@ export async function sendSourceWebhook(payload: SourceWebhookPayload): Promise<
       const responseText = await response.text()
       if (responseText) {
         try {
-          const responseBody = JSON.parse(responseText) as { success?: boolean; ok?: boolean }
+          const responseBody = JSON.parse(responseText) as {
+            success?: boolean
+            ok?: boolean
+            retryable?: boolean
+            error?: string
+          }
           if (responseBody.success === false || responseBody.ok === false) {
-            throw Object.assign(new Error("Source webhook rejected the lead"), {
+            const receiverError = typeof responseBody.error === "string"
+              ? `: ${responseBody.error.slice(0, 120)}`
+              : ""
+            throw Object.assign(new Error(`Source webhook rejected the lead${receiverError}`), {
               httpStatus: response.status,
-              nonRetryable: true,
+              nonRetryable: responseBody.retryable !== true,
             })
           }
         } catch (error) {

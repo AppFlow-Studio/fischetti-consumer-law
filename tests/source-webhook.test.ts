@@ -13,7 +13,7 @@ afterEach(() => {
 })
 
 describe("Source webhook payload", () => {
-  it("includes the canonical Lead ID, click IDs, UTMs, TCPA company, and no qualification", () => {
+  it("keeps TCPA caller identification and company in their separate canonical fields", () => {
     const formData = contactSchema.parse({
       firstName: "Jane",
       lastName: "Doe",
@@ -46,6 +46,7 @@ describe("Source webhook payload", () => {
       lead_id: "4271",
       created_at: "2026-08-05T15:30:00.000Z",
       practice_area: "TCPA",
+      caller_identification: "Yes, I know the company name",
       tcpa_company: "Example Sender LLC",
       gclid: "g-1",
       gbraid: "gb-1",
@@ -57,14 +58,37 @@ describe("Source webhook payload", () => {
       utm_content: "ad-a",
     })
     expect(payload.record.lead_id).not.toBe("")
-    expect(payload.record).not.toHaveProperty("caller_identification")
     expect(payload.record).not.toHaveProperty("contacting_company")
     expect(payload.record).not.toHaveProperty("qualified")
     expect(payload.record).not.toHaveProperty("qualification")
     expect(JSON.stringify(payload)).not.toContain("submission_id")
   })
 
-  it("does not fabricate a TCPA company for a non-TCPA submission", () => {
+  it("sends FDCPA caller identification without fabricating a TCPA company", () => {
+    const formData = contactSchema.parse({
+      firstName: "Jane",
+      lastName: "Doe",
+      email: "jane@example.com",
+      phone: "561-264-7211",
+      zip: "33437",
+      caseType: "FDCPA — Debt Collector Harassment",
+      callerIdentification: "I have a phone number, text screenshots, voicemail, letter, or caller ID",
+      contactingCompany: "Must not escape schema normalization",
+      description: "A debt collector keeps calling my workplace after I told the company in writing to stop.",
+      urgency: "Urgent - Within a week",
+      agreeToTerms: true,
+      outsidePracticeAcknowledged: false,
+    })
+
+    const payload = buildSourceWebhookPayload(formData, canonicalLead)
+
+    expect(payload.record.caller_identification)
+      .toBe("I have a phone number, text screenshots, voicemail, letter, or caller ID")
+    expect(payload.record).not.toHaveProperty("tcpa_company")
+    expect(payload.record).not.toHaveProperty("contacting_company")
+  })
+
+  it("does not fabricate caller identification or a TCPA company when neither applies", () => {
     const formData = contactSchema.parse({
       firstName: "Jane",
       lastName: "Doe",
@@ -155,6 +179,107 @@ describe("Source webhook payload", () => {
       sent: false,
       httpStatus: 200,
       error: expect.stringContaining("Skipped: not INSERT"),
+    })
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+  })
+
+  it("retries an explicitly retryable JSON rejection and can succeed on the second attempt", async () => {
+    vi.stubEnv("SOURCE_WEBHOOK_URL", "https://script.google.com/macros/s/example/exec")
+    vi.stubEnv("SOURCE_WEBHOOK_SHARED_SECRET", "server-only-test-secret")
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        ok: false,
+        retryable: true,
+        error: "temporary_receiver_failure",
+      }), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ ok: true }), { status: 200 }))
+    vi.stubGlobal("fetch", fetchMock)
+    const formData = contactSchema.parse({
+      firstName: "Jane",
+      lastName: "Doe",
+      email: "jane@example.com",
+      phone: "561-264-7211",
+      zip: "33437",
+      caseType: "FCRA — Credit Report Errors",
+      description: "A credit bureau continues reporting an account that is not mine after my written dispute.",
+      urgency: "Moderate - Within a month",
+      agreeToTerms: true,
+      outsidePracticeAcknowledged: false,
+    })
+
+    const result = await sendSourceWebhook(buildSourceWebhookPayload(formData, canonicalLead))
+
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+    expect(result).toMatchObject({ configured: true, sent: true })
+  })
+
+  it("never records repeated retryable JSON rejections as sent", async () => {
+    vi.stubEnv("SOURCE_WEBHOOK_URL", "https://script.google.com/macros/s/example/exec")
+    vi.stubEnv("SOURCE_WEBHOOK_SHARED_SECRET", "server-only-test-secret")
+    const retryableFailure = () => new Response(JSON.stringify({
+      success: false,
+      retryable: true,
+      error: "temporary_receiver_failure",
+    }), { status: 200 })
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(retryableFailure())
+      .mockResolvedValueOnce(retryableFailure())
+    vi.stubGlobal("fetch", fetchMock)
+    const formData = contactSchema.parse({
+      firstName: "Jane",
+      lastName: "Doe",
+      email: "jane@example.com",
+      phone: "561-264-7211",
+      zip: "33437",
+      caseType: "FCRA — Credit Report Errors",
+      description: "A credit bureau continues reporting an account that is not mine after my written dispute.",
+      urgency: "Moderate - Within a month",
+      agreeToTerms: true,
+      outsidePracticeAcknowledged: false,
+    })
+
+    const result = await sendSourceWebhook(buildSourceWebhookPayload(formData, canonicalLead))
+
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+    expect(result).toMatchObject({
+      configured: true,
+      sent: false,
+      httpStatus: 200,
+      error: expect.stringContaining("temporary_receiver_failure"),
+    })
+    expect(result.sentAt).toBeUndefined()
+  })
+
+  it("does not retry a permanent JSON rejection", async () => {
+    vi.stubEnv("SOURCE_WEBHOOK_URL", "https://script.google.com/macros/s/example/exec")
+    vi.stubEnv("SOURCE_WEBHOOK_SHARED_SECRET", "server-only-test-secret")
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify({
+      ok: false,
+      retryable: false,
+      error: "invalid_payload",
+    }), { status: 200 }))
+    vi.stubGlobal("fetch", fetchMock)
+    const formData = contactSchema.parse({
+      firstName: "Jane",
+      lastName: "Doe",
+      email: "jane@example.com",
+      phone: "561-264-7211",
+      zip: "33437",
+      caseType: "FCRA — Credit Report Errors",
+      description: "A credit bureau continues reporting an account that is not mine after my written dispute.",
+      urgency: "Moderate - Within a month",
+      agreeToTerms: true,
+      outsidePracticeAcknowledged: false,
+    })
+
+    const result = await sendSourceWebhook(buildSourceWebhookPayload(formData, canonicalLead))
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(result).toMatchObject({
+      configured: true,
+      sent: false,
+      httpStatus: 200,
+      error: expect.stringContaining("invalid_payload"),
     })
   })
 })
