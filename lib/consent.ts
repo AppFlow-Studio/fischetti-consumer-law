@@ -89,17 +89,17 @@ export function writeStoredConsent(preferences: ConsentPreferences): void {
 
 export function consentToGoogleState(preferences: ConsentPreferences | null): GoogleConsentState {
   return {
-    ad_storage: preferences?.marketing === false ? "denied" : "granted",
-    analytics_storage: preferences?.analytics === false ? "denied" : "granted",
-    ad_user_data: preferences?.marketing === false ? "denied" : "granted",
-    ad_personalization: preferences?.marketing === false ? "denied" : "granted",
-    functionality_storage: preferences?.functional === false ? "denied" : "granted",
-    personalization_storage: preferences?.functional === false ? "denied" : "granted",
+    ad_storage: preferences?.marketing === true ? "granted" : "denied",
+    analytics_storage: preferences?.analytics === true ? "granted" : "denied",
+    ad_user_data: preferences?.marketing === true ? "granted" : "denied",
+    ad_personalization: preferences?.marketing === true ? "granted" : "denied",
+    functionality_storage: preferences?.functional === true ? "granted" : "denied",
+    personalization_storage: preferences?.functional === true ? "granted" : "denied",
     security_storage: "granted",
   }
 }
 
 export function hasConsentFor(category: Exclude<ConsentCategory, "necessary">): boolean {
   const consent = readStoredConsent()
-  return consent?.[category] !== false
+  return consent?.[category] === true
 }

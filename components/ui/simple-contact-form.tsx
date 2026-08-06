@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useTransition } from "react"
+import { useRef, useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -15,6 +15,7 @@ import {
     caseTypes,
     urgencyLevels,
     type ContactFormData,
+    type ValidatedContactFormData,
     caseTypeGuidanceMap,
     defaultCaseTypeGuidance,
     UNLISTED_CASE_TYPE,
@@ -23,6 +24,8 @@ import {
     CONTACT_SOURCE_OPTIONS,
     CONTACT_SOURCE_UNKNOWN,
     requiresContactSource,
+    isTcpaCaseType,
+    getPracticeArea,
 } from "@/components/forms/contact-schema"
 import { DescriptionGuidance } from "@/components/forms/description-guidance"
 import { submitContactForm } from "@/lib/actions/contact"
@@ -30,6 +33,7 @@ import { Loader2, AlertCircle } from "lucide-react"
 import { PRIMARY_PHONE, PRIMARY_PHONE_E164 } from "@/lib/site"
 import { getAttributionData } from "@/lib/gclid"
 import { trackLeadFormStart, trackLeadFormSuccess } from "@/components/tracking/tracking-events"
+import { clearPendingSubmissionId, getOrCreateSubmissionId } from "@/lib/submission-id"
 
 type SimpleContactFormProps = {
     onSubmitted?: () => void
@@ -51,11 +55,9 @@ export default function SimpleContactForm({
     const [status, setStatus] = useState<FormStatus>("idle")
     const [errorMessage, setErrorMessage] = useState<string>("")
     const [isPending, startTransition] = useTransition()
+    const submissionInFlight = useRef(false)
     const router = useRouter()
-    
-    const [submitting, setSubmitting] = useState(false)
-    const [submitSuccess, setSubmitSuccess] = useState(false)
-    const form = useForm<ContactFormData>({ 
+    const form = useForm<ContactFormData, unknown, ValidatedContactFormData>({
         resolver: zodResolver(contactSchema), 
         defaultValues: {
             ...defaultContactValues,
@@ -69,23 +71,28 @@ export default function SimpleContactForm({
     const guidance = caseTypeGuidanceMap[watchedCaseType] ?? defaultCaseTypeGuidance
     const isUnlistedCaseType = watchedCaseType === UNLISTED_CASE_TYPE
     const showCallerIdentification = requiresContactSource(watchedCaseType)
+    const showContactingCompany = isTcpaCaseType(watchedCaseType)
 
     const isSubmitting = status === "submitting" || isPending
     const isSubmitDisabled = isSubmitting || (isUnlistedCaseType && !outsidePracticeAcknowledged)
 
-    async function onSubmit(values: ContactFormData) {
+    async function onSubmit(values: ValidatedContactFormData) {
+        if (submissionInFlight.current) return
+        submissionInFlight.current = true
         setStatus("submitting")
         setErrorMessage("")
-        
+
         trackLeadFormStart("free_case_review")
-        
+
         startTransition(async () => {
+            const submissionId = getOrCreateSubmissionId(formSource)
             try {
                 const attribution = getAttributionData()
                 const result = await submitContactForm({
                     ...values,
                     ...attribution,
                     form_source: formSource,
+                    submission_id: submissionId,
                 })
 
                 // Handle geo-blocking redirect
@@ -95,14 +102,18 @@ export default function SimpleContactForm({
                 }
 
                 if (!result.success) {
+                    submissionInFlight.current = false
                     setStatus("error")
                     setErrorMessage(result.message)
                     return
                 }
+                if (!result.leadId || !result.submissionId) {
+                    throw new Error("Successful submission response omitted persisted identifiers")
+                }
                 await trackLeadFormSuccess("free_case_review", {
-                    caseType: values.caseType,
-                    urgency: values.urgency,
-                    contactSourceStatus: values.callerIdentification || undefined,
+                    leadId: result.leadId,
+                    submissionId: result.submissionId,
+                    practiceArea: getPracticeArea(values.caseType),
                     enhancedConversion: {
                         email: values.email,
                         phone: values.phone,
@@ -112,20 +123,21 @@ export default function SimpleContactForm({
                     },
                 })
 
+                clearPendingSubmissionId(formSource, submissionId)
                 onSubmitted?.()
                 form.reset()
-                
-                // Redirect to thank you page with name and case type for law-specific guidance
+
                 const lawKey = values.caseType.startsWith("FCRA") ? "fcra"
                     : values.caseType.startsWith("FDCPA") ? "fdcpa"
                     : values.caseType.startsWith("TCPA") ? "tcpa"
                     : "other"
-                router.push(`/thank-you?name=${encodeURIComponent(values.firstName)}&law=${lawKey}`)
-            } catch (error) {
-                console.error("Form submission error:", error)
+                router.push(`/thank-you?law=${lawKey}`)
+            } catch {
+                submissionInFlight.current = false
+                console.error("Form submission failed")
                 setStatus("error")
                 setErrorMessage("An unexpected error occurred. Please try again or call us directly.")
-        }
+            }
         })
     }
 
@@ -140,9 +152,9 @@ export default function SimpleContactForm({
 
     const messageClass = "text-xs text-red-600"
 
-    const inputClass = "w-full text-sm bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:bg-white focus:border-blue-600 py-2 sm:py-2.5"
+    const inputClass = "h-11 sm:h-10 w-full text-sm bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:bg-white focus:border-blue-600 py-2 sm:py-2.5"
 
-    const selectTriggerClass = "w-full text-sm bg-white border-gray-300 text-gray-900 focus:bg-white focus:border-blue-600 py-2 sm:py-2.5"
+    const selectTriggerClass = "data-[size=default]:h-11 sm:data-[size=default]:h-10 w-full text-sm bg-white border-gray-300 text-gray-900 focus:bg-white focus:border-blue-600 py-2 sm:py-2.5"
 
     const textareaClass = "min-h-[80px] sm:min-h-[120px] w-full resize-y text-sm bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:bg-white focus:border-blue-600"
 
@@ -278,15 +290,11 @@ export default function SimpleContactForm({
                                             if (value !== UNLISTED_CASE_TYPE) {
                                                 form.setValue("outsidePracticeAcknowledged", false, { shouldValidate: true })
                                             }
-                                            if (!requiresContactSource(value)) {
-                                                form.setValue("callerIdentification", "", { shouldValidate: false })
-                                                form.clearErrors("callerIdentification")
-                                            }
                                         }}
                                         value={field.value}
                                         disabled={isSubmitting}
                                     >
-                                        <SelectTrigger className={selectTriggerClass}>
+                                        <SelectTrigger className={selectTriggerClass} aria-label="Case type">
                                             <SelectValue placeholder="Select case type" />
                                         </SelectTrigger>
                                         <SelectContent className="bg-white">
@@ -349,7 +357,7 @@ export default function SimpleContactForm({
                                 <FormLabel className={labelClass}>Urgency *</FormLabel>
                                 <FormControl>
                                     <Select onValueChange={field.onChange} value={field.value} disabled={isSubmitting}>
-                                        <SelectTrigger className={selectTriggerClass}>
+                                        <SelectTrigger className={selectTriggerClass} aria-label="Urgency">
                                             <SelectValue placeholder="Select urgency" />
                                         </SelectTrigger>
                                         <SelectContent className="bg-white">
@@ -401,6 +409,30 @@ export default function SimpleContactForm({
                         )} />
                     )}
 
+                    {showContactingCompany && (
+                        <FormField control={form.control} name="contactingCompany" render={({ field }) => (
+                            <FormItem className="w-full">
+                                <FormLabel className={labelClass}>Company, caller, or text sender</FormLabel>
+                                <p className="text-[11px] text-slate-500 leading-snug">
+                                    Optional — enter the company or name shown in the call, text, or voicemail if you know it.
+                                </p>
+                                <FormControl>
+                                    <Input
+                                        type="text"
+                                        autoComplete="organization"
+                                        maxLength={200}
+                                        placeholder="Company or sender name (if known)"
+                                        className={inputClass}
+                                        disabled={isSubmitting}
+                                        {...field}
+                                        value={field.value || ""}
+                                    />
+                                </FormControl>
+                                <FormMessage className={messageClass} />
+                            </FormItem>
+                        )} />
+                    )}
+
                     {/* Brief Details — dynamic placeholder + animated helper guidance */}
                     <FormField control={form.control} name="description" render={({ field }) => (
                         <FormItem className="w-full">
@@ -433,7 +465,7 @@ export default function SimpleContactForm({
                 </div>
                 <Button
                     type="submit"
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm sm:text-base py-2.5 sm:py-3 shadow-lg hover:shadow-xl transition-all disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:bg-blue-600 disabled:hover:shadow-lg"
+                    className="h-11 sm:h-12 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm sm:text-base py-2.5 sm:py-3 shadow-lg hover:shadow-xl transition-all disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:bg-blue-600 disabled:hover:shadow-lg"
                     disabled={isSubmitDisabled}
                 >
                     {isSubmitting ? (

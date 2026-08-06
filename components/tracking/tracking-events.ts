@@ -31,38 +31,41 @@ export function trackLeadFormStart(formName: string) {
 
 export async function trackLeadFormSuccess(
   formName: string,
-  options?: {
-    caseType?: string
-    urgency?: string
-    contactSourceStatus?: string
+  options: {
+    leadId: string
+    submissionId: string
+    practiceArea?: string
     enhancedConversion?: EnhancedConversionsData
   },
 ) {
-  if (hasConsentFor("analytics")) {
-    pushDataLayer({
-      event: "form_submit_success",
-      form_name: formName,
-      page_path: pagePath(),
-      method: "web_form",
-    })
+  const marketingAllowed = hasConsentFor("marketing")
 
-    pushDataLayer({
-      event: "qualify_lead",
-      form_name: formName,
-      page_path: pagePath(),
-      method: "web_form",
-    })
+  const dedupeKey = `clf_lead_event_v1:${options.leadId}`
+  try {
+    if (window.sessionStorage.getItem(dedupeKey) === "sent") return
+  } catch {
+    // In-memory execution still remains single-fire in the normal submit flow.
   }
 
-  if (hasConsentFor("marketing") && options?.enhancedConversion) {
-    const userData = await hashEnhancedConversionData(options.enhancedConversion)
-    pushDataLayer({
-      event: "lead_form_submit",
-      form_name: formName,
-      page_path: pagePath(),
-      method: "web_form",
-      user_data: userData,
-    })
+  const userData = marketingAllowed && options.enhancedConversion
+    ? await hashEnhancedConversionData(options.enhancedConversion)
+    : undefined
+
+  pushDataLayer({
+    event: "lead_form_submit",
+    event_id: options.submissionId,
+    lead_id: options.leadId,
+    form_name: formName,
+    page_path: pagePath(),
+    method: "web_form",
+    practice_area: options.practiceArea,
+    ...(userData ? { user_data: userData } : {}),
+  })
+
+  try {
+    window.sessionStorage.setItem(dedupeKey, "sent")
+  } catch {
+    // Analytics dedupe storage is best-effort; no lead data is stored here.
   }
 }
 

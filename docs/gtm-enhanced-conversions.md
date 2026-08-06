@@ -22,9 +22,12 @@ This event must not fire on form open, form start, or submit-button click before
 ```javascript
 {
   event: "lead_form_submit",
+  event_id: "retry-stable submission UUID",
+  lead_id: "canonical Supabase leads.id",
   form_name: "free_case_review" | "contact_form" | "free_case_review_dialog",
   page_path: "/current-path",
   method: "web_form",
+  practice_area: "FCRA" | "FDCPA" | "TCPA" | "OTHER",
   user_data: {
     sha256_email_address: "64-char-sha256-hash",
     sha256_phone_number: "64-char-sha256-hash",

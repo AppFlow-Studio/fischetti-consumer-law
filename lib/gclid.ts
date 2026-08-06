@@ -18,7 +18,7 @@ const ATTRIBUTION_KEYS = [
 
 type AttributionKey = (typeof ATTRIBUTION_KEYS)[number]
 
-type TouchAttribution = Partial<Record<AttributionKey, string>> & {
+export type TouchAttribution = Partial<Record<AttributionKey, string>> & {
   landing_page?: string
   referrer?: string
   captured_at: string
@@ -102,6 +102,8 @@ export function captureGclid(): void {
 
 export function getAttributionData(): {
   gclid: string
+  gbraid: string
+  wbraid: string
   utm_source: string
   utm_medium: string
   utm_campaign: string
@@ -111,6 +113,8 @@ export function getAttributionData(): {
   if (typeof window === 'undefined') {
     return {
       gclid: '',
+      gbraid: '',
+      wbraid: '',
       utm_source: '',
       utm_medium: '',
       utm_campaign: '',
@@ -122,6 +126,8 @@ export function getAttributionData(): {
 
   return {
     gclid: attribution?.gclid || '',
+    gbraid: attribution?.gbraid || '',
+    wbraid: attribution?.wbraid || '',
     utm_source: attribution?.utm_source || '',
     utm_medium: attribution?.utm_medium || '',
     utm_campaign: attribution?.utm_campaign || '',
