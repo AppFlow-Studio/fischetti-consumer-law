@@ -1,6 +1,16 @@
-import { describe, expect, it } from "vitest"
+import { afterEach, describe, expect, it, vi } from "vitest"
 import { contactSchema } from "@/components/forms/contact-schema"
-import { buildSourceWebhookPayload } from "@/lib/source-webhook"
+import { buildSourceWebhookPayload, sendSourceWebhook } from "@/lib/source-webhook"
+
+const canonicalLead = {
+  leadId: "4271",
+  createdAt: "2026-08-05T15:30:00.000Z",
+}
+
+afterEach(() => {
+  vi.unstubAllEnvs()
+  vi.unstubAllGlobals()
+})
 
 describe("Source webhook payload", () => {
   it("includes the canonical Lead ID, click IDs, UTMs, TCPA company, and no qualification", () => {
@@ -29,16 +39,14 @@ describe("Source webhook payload", () => {
       utm_content: "ad-a",
     })
 
-    const payload = buildSourceWebhookPayload(formData, {
-      leadId: "4271",
-      createdAt: "2026-08-05T15:30:00.000Z",
-    })
+    const payload = buildSourceWebhookPayload(formData, canonicalLead)
 
-    expect(payload).toMatchObject({
+    expect(payload.type).toBe("INSERT")
+    expect(payload.record).toMatchObject({
       lead_id: "4271",
       created_at: "2026-08-05T15:30:00.000Z",
       practice_area: "TCPA",
-      contacting_company: "Example Sender LLC",
+      tcpa_company: "Example Sender LLC",
       gclid: "g-1",
       gbraid: "gb-1",
       wbraid: "wb-1",
@@ -48,8 +56,105 @@ describe("Source webhook payload", () => {
       utm_term: "spam texts",
       utm_content: "ad-a",
     })
-    expect(payload).not.toHaveProperty("qualified")
-    expect(payload).not.toHaveProperty("qualification")
+    expect(payload.record.lead_id).not.toBe("")
+    expect(payload.record).not.toHaveProperty("caller_identification")
+    expect(payload.record).not.toHaveProperty("contacting_company")
+    expect(payload.record).not.toHaveProperty("qualified")
+    expect(payload.record).not.toHaveProperty("qualification")
     expect(JSON.stringify(payload)).not.toContain("submission_id")
+  })
+
+  it("does not fabricate a TCPA company for a non-TCPA submission", () => {
+    const formData = contactSchema.parse({
+      firstName: "Jane",
+      lastName: "Doe",
+      email: "jane@example.com",
+      phone: "561-264-7211",
+      zip: "33437",
+      caseType: "FCRA — Credit Report Errors",
+      contactingCompany: "Must not escape schema normalization",
+      description: "A credit bureau continues reporting an account that is not mine after my written dispute.",
+      urgency: "Moderate - Within a month",
+      agreeToTerms: true,
+      outsidePracticeAcknowledged: false,
+    })
+
+    const payload = buildSourceWebhookPayload(formData, canonicalLead)
+
+    expect(payload.record).not.toHaveProperty("tcpa_company")
+    expect(payload.record).not.toHaveProperty("caller_identification")
+    expect(payload.record).not.toHaveProperty("contacting_company")
+  })
+
+  it("rejects an empty canonical Lead ID before delivery", () => {
+    const formData = contactSchema.parse({
+      firstName: "Jane",
+      lastName: "Doe",
+      email: "jane@example.com",
+      phone: "561-264-7211",
+      zip: "33437",
+      caseType: "FCRA — Credit Report Errors",
+      description: "A credit bureau continues reporting an account that is not mine after my written dispute.",
+      urgency: "Moderate - Within a month",
+      agreeToTerms: true,
+      outsidePracticeAcknowledged: false,
+    })
+
+    expect(() => buildSourceWebhookPayload(formData, { ...canonicalLead, leadId: "  " }))
+      .toThrow("canonical Lead ID")
+  })
+
+  it("puts the shared secret in the JSON body and not a custom header", async () => {
+    vi.stubEnv("SOURCE_WEBHOOK_URL", "https://script.google.com/macros/s/example/exec")
+    vi.stubEnv("SOURCE_WEBHOOK_SHARED_SECRET", "server-only-test-secret")
+    const fetchMock = vi.fn().mockResolvedValue(new Response("Accepted", { status: 200 }))
+    vi.stubGlobal("fetch", fetchMock)
+    const formData = contactSchema.parse({
+      firstName: "Jane",
+      lastName: "Doe",
+      email: "jane@example.com",
+      phone: "561-264-7211",
+      zip: "33437",
+      caseType: "FCRA — Credit Report Errors",
+      description: "A credit bureau continues reporting an account that is not mine after my written dispute.",
+      urgency: "Moderate - Within a month",
+      agreeToTerms: true,
+      outsidePracticeAcknowledged: false,
+    })
+    const payload = buildSourceWebhookPayload(formData, canonicalLead)
+
+    await expect(sendSourceWebhook(payload)).resolves.toMatchObject({ configured: true, sent: true })
+    const request = fetchMock.mock.calls[0][1] as RequestInit
+    const body = JSON.parse(String(request.body)) as Record<string, unknown>
+    expect(body).toMatchObject({ type: "INSERT", shared_secret: "server-only-test-secret" })
+    expect(body.record).toMatchObject({ lead_id: "4271" })
+    expect(new Headers(request.headers).has("x-source-webhook-secret")).toBe(false)
+  })
+
+  it("does not treat an HTTP 200 receiver rejection as successful delivery", async () => {
+    vi.stubEnv("SOURCE_WEBHOOK_URL", "https://script.google.com/macros/s/example/exec")
+    vi.stubEnv("SOURCE_WEBHOOK_SHARED_SECRET", "server-only-test-secret")
+    const fetchMock = vi.fn().mockResolvedValue(new Response("Skipped: not INSERT", { status: 200 }))
+    vi.stubGlobal("fetch", fetchMock)
+    const formData = contactSchema.parse({
+      firstName: "Jane",
+      lastName: "Doe",
+      email: "jane@example.com",
+      phone: "561-264-7211",
+      zip: "33437",
+      caseType: "FCRA — Credit Report Errors",
+      description: "A credit bureau continues reporting an account that is not mine after my written dispute.",
+      urgency: "Moderate - Within a month",
+      agreeToTerms: true,
+      outsidePracticeAcknowledged: false,
+    })
+    const payload = buildSourceWebhookPayload(formData, canonicalLead)
+
+    await expect(sendSourceWebhook(payload)).resolves.toMatchObject({
+      configured: true,
+      sent: false,
+      httpStatus: 200,
+      error: expect.stringContaining("Skipped: not INSERT"),
+    })
   })
 })
