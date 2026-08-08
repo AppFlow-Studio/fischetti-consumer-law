@@ -1,71 +1,12 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { useForm } from "react-hook-form"
-import { useRouter } from "next/navigation"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Phone, Mail, MapPin, Clock, Send, CheckCircle, Scale, Trophy, Users, Shield } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { useState } from "react"
-
-import { contactSchema, type ContactFormData, caseTypes, urgencyLevels, defaultContactValues } from "@/components/forms/contact-schema"
-import { ShineBorder } from "./shine-border"
+import { Phone, Mail, MapPin, Clock, CheckCircle, Scale, Trophy, Users, Shield } from "lucide-react"
 import SimpleContactForm from "./simple-contact-form"
 import { BorderBeam } from "./border-beam"
 import { PRIMARY_PHONE, PRIMARY_PHONE_E164, PRIMARY_EMAIL } from "@/lib/site"
 
 export default function ContactFormSection() {
-    const [isSubmitted, setIsSubmitted] = useState(false)
-    const router = useRouter()
-
-    const form = useForm<ContactFormData>({
-        resolver: zodResolver(contactSchema),
-        defaultValues: defaultContactValues
-    })
-
-    const onSubmit = (data: ContactFormData) => {
-        console.log("Form submitted:", data)
-        router.push(`/thank-you?name=${encodeURIComponent(data.firstName)}`)
-    }
-
-    if (isSubmitted) {
-        return (
-            <section className="w-full bg-linear-to-br from-blue-50 to-teal-50 py-20">
-                <div className="max-w-4xl mx-auto px-6">
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.6 }}
-                        className="text-center"
-                    >
-                        <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <CheckCircle className="w-10 h-10 text-green-600" />
-                        </div>
-                        <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                            Thank You for Reaching Out!
-                        </h2>
-                        <p className="text-lg text-gray-600 mb-8">
-                            We&apos;ve received your case details and will contact you within 24 hours.
-                            Our team is reviewing your information to provide the best possible assistance.
-                        </p>
-                        <Button
-                            onClick={() => setIsSubmitted(false)}
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3"
-                        >
-                            Submit Another Case
-                        </Button>
-                    </motion.div>
-                </div>
-            </section>
-        )
-    }
-
     return (
         <section id="case-review-form" className="w-full bg-linear-to-br from-blue-50 to-teal-50 py-20">
             <div className="w-full max-w-[95%] xl:max-w-[1400px] mx-auto px-4 sm:px-6">

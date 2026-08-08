@@ -25,14 +25,12 @@ function loadGtm() {
 }
 
 export default function TrackingScripts() {
-  const { preferences, isReady } = useConsent()
+  const { isReady } = useConsent()
 
   useEffect(() => {
     if (!isReady) return
-    if (!preferences || preferences.analytics || preferences.marketing) {
-      loadGtm()
-    }
-  }, [isReady, preferences])
+    loadGtm()
+  }, [isReady])
 
   return null
 }

@@ -19,7 +19,7 @@ export default function ConsentModeScript() {
   } catch (e) {}
 
   function value(category) {
-    return preferences && preferences[category] === false ? 'denied' : 'granted';
+    return preferences && preferences[category] === true ? 'granted' : 'denied';
   }
 
   window.gtag('consent', 'default', {

@@ -70,7 +70,6 @@ const PREP_ITEMS: Record<LawKey, { headline: string; items: PrepItem[] }> = {
 
 function ThankYouContent() {
     const searchParams = useSearchParams()
-    const firstName = searchParams?.get("name") || ""
     const lawParam = (searchParams?.get("law") || "other") as LawKey
     const lawKey: LawKey = ["fcra", "fdcpa", "tcpa", "other"].includes(lawParam) ? lawParam : "other"
     const prep = PREP_ITEMS[lawKey]
@@ -117,7 +116,7 @@ function ThankYouContent() {
                         variants={fadeIn}
                         className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4"
                     >
-                        {firstName ? `${firstName}, your` : "Your"} case is in good hands.
+                        Your case is in good hands.
                     </motion.h1>
 
                     <motion.p

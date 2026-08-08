@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { X } from "lucide-react"
 import { useConsent } from "@/components/consent/ConsentProvider"
 
@@ -11,9 +11,9 @@ type PreferenceState = {
 }
 
 const defaultPreferenceState: PreferenceState = {
-  analytics: true,
-  marketing: true,
-  functional: true,
+  analytics: false,
+  marketing: false,
+  functional: false,
 }
 
 function ToggleRow({
@@ -52,24 +52,15 @@ function ToggleRow({
   )
 }
 
-function PreferencesModal() {
+function PreferencesModal({ initialPreferences }: { initialPreferences: PreferenceState }) {
   const {
-    preferences,
     preferencesOpen,
     closePreferences,
     savePreferences,
     acceptAll,
     rejectAll,
   } = useConsent()
-  const [draft, setDraft] = useState<PreferenceState>(defaultPreferenceState)
-
-  useEffect(() => {
-    setDraft({
-      analytics: preferences?.analytics ?? true,
-      marketing: preferences?.marketing ?? true,
-      functional: preferences?.functional ?? true,
-    })
-  }, [preferences, preferencesOpen])
+  const [draft, setDraft] = useState<PreferenceState>(initialPreferences)
 
   if (!preferencesOpen) return null
 
@@ -87,7 +78,7 @@ function PreferencesModal() {
               Cookie Preferences
             </h2>
             <p className="mt-1 text-sm leading-relaxed text-slate-600">
-              Tracking is active by default. Turn off any non-essential categories you do not want us to use.
+              Non-essential tracking stays off unless you choose to allow it.
             </p>
           </div>
           <button
@@ -160,7 +151,7 @@ function PreferencesModal() {
 }
 
 export default function CookieConsentBanner() {
-  const { bannerOpen, isReady, acceptAll, rejectAll, openPreferences } = useConsent()
+  const { preferences, bannerOpen, isReady, acceptAll, rejectAll, openPreferences } = useConsent()
 
   if (!isReady) return null
 
@@ -200,7 +191,14 @@ export default function CookieConsentBanner() {
           </div>
         </section>
       )}
-      <PreferencesModal />
+      <PreferencesModal
+        key={preferences?.timestamp || "unset"}
+        initialPreferences={preferences ? {
+          analytics: preferences.analytics,
+          marketing: preferences.marketing,
+          functional: preferences.functional,
+        } : defaultPreferenceState}
+      />
     </>
   )
 }
