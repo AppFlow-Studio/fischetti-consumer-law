@@ -88,6 +88,7 @@ export default function ProfileCard({
                                     src={imageUrl}
                                     alt={imageAlt}
                                     fill
+                                    sizes="(min-width: 1280px) 40vw, 100vw"
                                     className="object-cover rounded-t-2xl xl:rounded-xl"
                                 />
                             </motion.div>

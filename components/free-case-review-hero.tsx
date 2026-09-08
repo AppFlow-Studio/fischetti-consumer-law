@@ -123,7 +123,7 @@ function AttorneyCard({ baseDelay = 0 }: { baseDelay?: number }) {
       className="flex items-center gap-3 bg-white/10 border border-white/15 rounded-xl p-3"
     >
       <div className="relative w-12 h-12 shrink-0 rounded-full overflow-hidden border-2 border-white/30">
-        <Image src="/fischettiheadshot5.png" alt="Michael J. Fischetti" fill className="object-cover object-[50%_15%]" priority />
+        <Image src="/fischettiheadshot5.png" alt="Michael J. Fischetti" fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover object-[50%_15%]" priority />
       </div>
       <div className="flex-1 min-w-0">
         <div className="text-white font-semibold text-xs">Michael J. Fischetti</div>
