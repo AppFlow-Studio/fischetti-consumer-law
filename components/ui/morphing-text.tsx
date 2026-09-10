@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
 
 const morphTime = 2
@@ -103,8 +103,9 @@ interface MorphingTextProps {
 const AnimatedTexts: React.FC<
   Pick<MorphingTextProps, "texts"> & {
     fallbackRef: React.RefObject<HTMLSpanElement | null>
+    onStart: () => void
   }
-> = ({ texts, fallbackRef }) => {
+> = ({ texts, fallbackRef, onStart }) => {
   const { text1Ref, text2Ref } = useMorphingText(texts)
 
   useEffect(() => {
@@ -115,16 +116,17 @@ const AnimatedTexts: React.FC<
       // Remove from accessibility tree too — animation spans carry the content
       fallbackRef.current.setAttribute("aria-hidden", "true")
     }
-  }, [fallbackRef])
+    onStart()
+  }, [fallbackRef, onStart])
 
   return (
     <>
       <span
-        className="absolute inset-x-0 top-0 m-auto inline-block w-full"
+        className="absolute left-0 top-0 inline-block w-auto max-w-full"
         ref={text1Ref}
       />
       <span
-        className="absolute inset-x-0 top-0 m-auto inline-block w-full"
+        className="absolute left-0 top-0 inline-block w-auto max-w-full"
         ref={text2Ref}
       />
     </>
@@ -157,11 +159,20 @@ export const MorphingText: React.FC<MorphingTextProps> = ({
   className,
 }) => {
   const fallbackRef = useRef<HTMLSpanElement>(null)
+  const [animating, setAnimating] = useState(false)
+  const handleStart = useCallback(() => setAnimating(true), [])
 
   return (
     <div
       className={cn(
-        "relative h-12 sm:h-16 w-full max-w-screen-md text-center font-sans leading-none font-bold [filter:url(#threshold)_blur(0.6px)] md:h-24",
+        "relative h-12 sm:h-16 w-full max-w-screen-md text-center font-sans leading-none font-bold md:h-24",
+        // The SVG threshold filter is what fuses the two spans into one gooey
+        // morph — but it also gates first paint: the browser cannot rasterize
+        // this text until the filter graph resolves, which made the headline
+        // the LCP element at ~4.2s on throttled mobile even after the page
+        // dropped to 571 KB. The SSR fallback needs no filter (nothing is
+        // morphing yet), so it is applied only once the animation starts.
+        animating && "[filter:url(#threshold)_blur(0.6px)]",
         className
       )}
     >
@@ -174,11 +185,11 @@ export const MorphingText: React.FC<MorphingTextProps> = ({
       */}
       <span
         ref={fallbackRef}
-        className="absolute inset-x-0 top-0 m-auto inline-block w-full transition-opacity duration-150"
+        className="absolute left-0 top-0 inline-block w-auto max-w-full transition-opacity duration-150"
       >
         {texts[0]}
       </span>
-      <AnimatedTexts texts={texts} fallbackRef={fallbackRef} />
+      <AnimatedTexts texts={texts} fallbackRef={fallbackRef} onStart={handleStart} />
       <SvgFilters />
     </div>
   )
