@@ -183,6 +183,7 @@ export default function Home() {
                       alt="Michael J. Fischetti, Consumer Law Florida Attorney"
                       fill
                       priority
+                      sizes="(min-width: 768px) 50vw, 100vw"
                       className="rounded-xl object-cover object-[50%_25%]"
                     />
 
@@ -209,7 +210,7 @@ export default function Home() {
             </div>
 
             <div className="w-0 lg:w-1/2 px-8 xl:px-20 relative hidden lg:block items-end justify-end ">
-              <Image src="/fischettiheadshot5.png" alt="Michael J. Fischetti, Consumer Protection Lawyer Florida" fill className="rounded-xl object-cover object-[50%_25%]" priority />
+              <Image src="/fischettiheadshot5.png" alt="Michael J. Fischetti, Consumer Protection Lawyer Florida" fill sizes="(min-width: 1024px) 50vw, 1px" className="rounded-xl object-cover object-[50%_25%]" priority />
               {/* <ContactForm backgroundcolor="white" header="Book an Appointment" buttonText="Book an Appointment" /> */}
             </div>
           </section>
