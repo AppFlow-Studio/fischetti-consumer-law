@@ -23,7 +23,7 @@ import { redirect } from "next/navigation"
 import { BorderBeam } from "@/components/ui/border-beam";
 // import { persistEC, pushEC, pushEvent } from "@/utils/enhancedConversions"
 import { formatPhone, validatePhoneNumber, formatPhoneInput } from "@/lib/phone-formatter"
-import { pushEnhancedConversion } from "@/lib/enhanced-conversions"
+import { trackLeadFormStart } from "@/components/tracking/tracking-events"
 
 const formSchema = z.object({
     firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -163,16 +163,7 @@ export function ContactForm({ backgroundcolor = 'white', header = 'Book an Appoi
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setDisabled(true)
         
-        // Track form attempt
-        if (typeof window !== 'undefined') {
-            window.dataLayer = window.dataLayer || []
-            window.dataLayer.push({
-                event: "lead_form_attempt",
-                form_name: "contact_form",
-                page_path: window.location.pathname,
-                method: "web_form"
-            })
-        }
+        trackLeadFormStart("contact_form")
         
         if (values.middleName && values.middleName !== '') {
             setDisabled(false)
@@ -215,15 +206,6 @@ export function ContactForm({ backgroundcolor = 'white', header = 'Book an Appoi
         // persistEC({ email: values.email, phone: values.phone, firstName: values.name, lastName: '' });
         // pushEC({ email: values.email, phone: values.phone, firstName: values.name, lastName: '' });
         // pushEvent('lead_form_submit', { form_name: 'ContactForm' });
-
-        // Track successful submit with enhanced conversions
-        pushEnhancedConversion("contact_form", {
-            email: values.email,
-            phone: values.phone,
-            firstName: values.firstName,
-            lastName: values.lastName,
-            zip: values.zip
-        })
 
         setDisabled(false)
         // if (data) {

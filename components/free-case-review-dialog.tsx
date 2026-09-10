@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useTransition } from "react"
+import { useRef, useState, useEffect, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { useUIState } from "@/providers/ui-state-provider"
@@ -17,6 +17,7 @@ import {
     caseTypes,
     urgencyLevels,
     type ContactFormData,
+    type ValidatedContactFormData,
     caseTypeGuidanceMap,
     defaultCaseTypeGuidance,
     UNLISTED_CASE_TYPE,
@@ -25,13 +26,16 @@ import {
     CONTACT_SOURCE_OPTIONS,
     CONTACT_SOURCE_UNKNOWN,
     requiresContactSource,
+    isTcpaCaseType,
+    getPracticeArea,
 } from "@/components/forms/contact-schema"
 import { submitContactForm } from "@/lib/actions/contact"
 import { Loader2, AlertCircle } from "lucide-react"
-import { formatUserDataForGTM } from "@/lib/enhanced-conversions"
 import { PRIMARY_PHONE, PRIMARY_PHONE_E164 } from "@/lib/site"
 import { getAttributionData } from "@/lib/gclid"
 import { DescriptionGuidance } from "@/components/forms/description-guidance"
+import { trackLeadFormStart, trackLeadFormSuccess } from "@/components/tracking/tracking-events"
+import { clearPendingSubmissionId, getOrCreateSubmissionId } from "@/lib/submission-id"
 
 type FreeCaseReviewDialogProps = {
     children?: React.ReactNode
@@ -43,9 +47,10 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
     const [open, setOpen] = useState(defaultOpen)
     const [errorMessage, setErrorMessage] = useState("")
     const [isPending, startTransition] = useTransition()
+    const submissionInFlight = useRef(false)
     const { setIsDialogOpen, openDialogRequest, setOpenDialogRequest } = useUIState()
     const router = useRouter()
-    const form = useForm<ContactFormData>({
+    const form = useForm<ContactFormData, unknown, ValidatedContactFormData>({
         resolver: zodResolver(contactSchema),
         defaultValues: defaultContactValues
     })
@@ -56,6 +61,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
     const guidance = caseTypeGuidanceMap[watchedCaseType] ?? defaultCaseTypeGuidance
     const isUnlistedCaseType = watchedCaseType === UNLISTED_CASE_TYPE
     const showCallerIdentification = requiresContactSource(watchedCaseType)
+    const showContactingCompany = isTcpaCaseType(watchedCaseType)
     const isSubmitDisabled = isPending || (isUnlistedCaseType && !outsidePracticeAcknowledged)
 
     useEffect(() => {
@@ -69,26 +75,22 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
         }
     }, [respondToOpenRequest, openDialogRequest, setOpenDialogRequest])
 
-    const onSubmit = async (values: ContactFormData) => {
+    const onSubmit = async (values: ValidatedContactFormData) => {
+        if (submissionInFlight.current) return
+        submissionInFlight.current = true
         setErrorMessage("")
-        // Track form attempt
-        if (typeof window !== 'undefined') {
-            window.dataLayer = window.dataLayer || []
-            window.dataLayer.push({
-                event: "lead_form_attempt",
-                form_name: "free_case_review_dialog",
-                page_path: window.location.pathname,
-                method: "web_form"
-            })
-        }
-        
+        trackLeadFormStart("free_case_review_dialog")
+
         startTransition(async () => {
+            const submissionScope = "free-case-review-dialog"
+            const submissionId = getOrCreateSubmissionId(submissionScope)
             try {
                 const attribution = getAttributionData()
                 const result = await submitContactForm({
                     ...values,
                     ...attribution,
-                    form_source: "free-case-review-dialog",
+                    form_source: submissionScope,
+                    submission_id: submissionId,
                 })
 
                 // Handle geo-blocking redirect
@@ -99,61 +101,40 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                 }
 
                 if (!result.success) {
+                    submissionInFlight.current = false
                     setErrorMessage(result.message)
                     return
                 }
-                // const result = await response.json()
-            
-            // Format user data for enhanced conversions
-            const formattedUserData = formatUserDataForGTM({
-                email: values.email,
-                phone: values.phone,
-                firstName: values.firstName,
-                lastName: values.lastName,
-                zip: values.zip
-            })
-            
-            // Track successful submit with FLAT user keys for GTM DLV compatibility
-            // Plus nested user_data for Google Ads Enhanced Conversions
-            if (typeof window !== 'undefined') {
-                window.dataLayer = window.dataLayer || []
-                
-                // Push lead_form_submit with both flat keys and nested user_data
-                window.dataLayer.push({
-                    event: "lead_form_submit",
-                    form_name: "free_case_review_dialog",
-                    page_path: window.location.pathname,
-                    method: "web_form",
-                    // Flat keys for typical GTM DLV mapping
-                    user_email: formattedUserData.email,
-                    user_phone: formattedUserData.phone_number,
-                    user_first_name: formattedUserData.address.first_name,
-                    user_last_name: formattedUserData.address.last_name,
-                    user_zip: formattedUserData.address.postal_code,
-                    // Nested user_data for Google Ads Enhanced Conversions
-                    user_data: result.enhancedConversionData || formattedUserData
+                if (!result.leadId || !result.submissionId) {
+                    throw new Error("Successful submission response omitted persisted identifiers")
+                }
+                await trackLeadFormSuccess("free_case_review_dialog", {
+                    leadId: result.leadId,
+                    submissionId: result.submissionId,
+                    practiceArea: getPracticeArea(values.caseType),
+                    enhancedConversion: {
+                        email: values.email,
+                        phone: values.phone,
+                        firstName: values.firstName,
+                        lastName: values.lastName,
+                        zip: values.zip,
+                    },
                 })
-                
-                // Push qualify_lead event (GA4-safe, no PII)
-                window.dataLayer.push({
-                    event: "qualify_lead",
-                    form_name: "free_case_review_dialog",
-                    page_path: window.location.pathname,
-                    method: "web_form",
-                    case_type: values.caseType,
-                    urgency: values.urgency,
-                    contact_source_status: values.callerIdentification || undefined,
-                })
-            }
 
+                clearPendingSubmissionId(submissionScope, submissionId)
                 setOpen(false)
                 form.reset()
-                
-                // Redirect to thank you page
-                router.push(`/thank-you?name=${encodeURIComponent(values.firstName)}`)
-            } catch (error) {
-                console.error("Form submission error:", error)
-                setErrorMessage("An unexpected error occurred. Please try again or call us directly.")}
+
+                const lawKey = values.caseType.startsWith("FCRA") ? "fcra"
+                    : values.caseType.startsWith("FDCPA") ? "fdcpa"
+                    : values.caseType.startsWith("TCPA") ? "tcpa"
+                    : "other"
+                router.push(`/thank-you?law=${lawKey}`)
+            } catch {
+                submissionInFlight.current = false
+                console.error("Form submission failed")
+                setErrorMessage("An unexpected error occurred. Please try again or call us directly.")
+            }
         })
     }
 
@@ -195,7 +176,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                                     <FormControl>
                                         <Input 
                                             placeholder="Jane" 
-                                            className="w-full text-sm py-2 sm:py-2.5" 
+                                            className="h-11 sm:h-10 w-full text-sm py-2 sm:py-2.5"
                                             disabled={isPending}
                                             {...field} 
                                         />
@@ -209,7 +190,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                                     <FormControl>
                                         <Input 
                                             placeholder="Doe" 
-                                            className="w-full text-sm py-2 sm:py-2.5" 
+                                            className="h-11 sm:h-10 w-full text-sm py-2 sm:py-2.5"
                                             disabled={isPending}
                                             {...field} 
                                         />
@@ -227,7 +208,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                                     <Input 
                                         type="email" 
                                         placeholder="jane@example.com" 
-                                        className="w-full text-sm py-2 sm:py-2.5" 
+                                        className="h-11 sm:h-10 w-full text-sm py-2 sm:py-2.5"
                                         disabled={isPending}
                                         {...field} 
                                     />
@@ -245,7 +226,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                                         <Input 
                                             type="tel" 
                                             placeholder={PRIMARY_PHONE} 
-                                            className="w-full text-sm py-2 sm:py-2.5" 
+                                            className="h-11 sm:h-10 w-full text-sm py-2 sm:py-2.5"
                                             disabled={isPending}
                                             {...field} 
                                         />
@@ -261,7 +242,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                                             type="text"
                                             inputMode="numeric"
                                             placeholder="12345 or 12345-6789"
-                                            className="w-full text-sm py-2 sm:py-2.5"
+                                            className="h-11 sm:h-10 w-full text-sm py-2 sm:py-2.5"
                                             maxLength={10}
                                             disabled={isPending}
                                             {...field}
@@ -283,15 +264,11 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                                             if (value !== UNLISTED_CASE_TYPE) {
                                                 form.setValue("outsidePracticeAcknowledged", false, { shouldValidate: true })
                                             }
-                                            if (!requiresContactSource(value)) {
-                                                form.setValue("callerIdentification", "", { shouldValidate: false })
-                                                form.clearErrors("callerIdentification")
-                                            }
                                         }}
                                         value={field.value}
                                         disabled={isPending}
                                     >
-                                        <SelectTrigger className="w-full text-sm py-2 sm:py-2.5"><SelectValue placeholder="Select case type" /></SelectTrigger>
+                                        <SelectTrigger className="data-[size=default]:h-11 sm:data-[size=default]:h-10 w-full text-sm py-2 sm:py-2.5" aria-label="Case type"><SelectValue placeholder="Select case type" /></SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
                                                 {caseTypes.map(ct => (<SelectItem key={ct} value={ct} className="text-sm">{ct}</SelectItem>))}
@@ -350,7 +327,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                                 <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">Urgency *</FormLabel>
                                 <FormControl>
                                     <Select onValueChange={field.onChange} value={field.value} disabled={isPending}>
-                                        <SelectTrigger className="w-full text-sm py-2 sm:py-2.5"><SelectValue placeholder="Select urgency" /></SelectTrigger>
+                                        <SelectTrigger className="data-[size=default]:h-11 sm:data-[size=default]:h-10 w-full text-sm py-2 sm:py-2.5" aria-label="Urgency"><SelectValue placeholder="Select urgency" /></SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
                                                 {urgencyLevels.map(u => (<SelectItem key={u} value={u} className="text-sm">{u}</SelectItem>))}
@@ -373,7 +350,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                                     </p>
                                     <FormControl>
                                         <Select onValueChange={field.onChange} value={field.value || ""} disabled={isPending}>
-                                            <SelectTrigger className="w-full text-sm py-2 sm:py-2.5" aria-label="Caller or company identification">
+                                            <SelectTrigger className="data-[size=default]:h-11 sm:data-[size=default]:h-10 w-full text-sm py-2 sm:py-2.5" aria-label="Caller or company identification">
                                                 <SelectValue placeholder="Select the best answer" />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -392,6 +369,32 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                                             Please include any phone numbers, screenshots, voicemails, company names, or messages you have. These details help us review your case.
                                         </p>
                                     )}
+                                    <FormMessage className="text-xs" />
+                                </FormItem>
+                            )} />
+                        )}
+
+                        {showContactingCompany && (
+                            <FormField control={form.control} name="contactingCompany" render={({ field }) => (
+                                <FormItem className="w-full">
+                                    <FormLabel className="text-xs sm:text-sm text-gray-700 font-medium">
+                                        Company, caller, or text sender
+                                    </FormLabel>
+                                    <p className="text-[11px] text-slate-500 leading-snug">
+                                        Optional — enter the company or name shown in the call, text, or voicemail if you know it.
+                                    </p>
+                                    <FormControl>
+                                        <Input
+                                            type="text"
+                                            autoComplete="organization"
+                                            maxLength={200}
+                                            placeholder="Company or sender name (if known)"
+                                            className="h-11 sm:h-10 w-full text-sm py-2 sm:py-2.5"
+                                            disabled={isPending}
+                                            {...field}
+                                            value={field.value || ""}
+                                        />
+                                    </FormControl>
                                     <FormMessage className="text-xs" />
                                 </FormItem>
                             )} />
@@ -430,7 +433,7 @@ export default function FreeCaseReviewDialog({ children, defaultOpen = false, re
                             </Button>
                             <Button
                                 type="submit"
-                                className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto order-1 sm:order-2 disabled:cursor-not-allowed disabled:hover:bg-blue-600"
+                                className="h-11 bg-blue-600 hover:bg-blue-700 w-full sm:w-auto order-1 sm:order-2 disabled:cursor-not-allowed disabled:hover:bg-blue-600"
                                 disabled={isSubmitDisabled}
                             >
                                 {isPending ? (

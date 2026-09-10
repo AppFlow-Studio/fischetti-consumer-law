@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
+import { trackPhoneClick } from "@/components/tracking/tracking-events"
 
 /**
  * Phone click tracking component
@@ -9,24 +10,12 @@ import { useEffect } from "react"
  */
 export default function ClickTracking() {
     useEffect(() => {
-        // Initialize dataLayer if it doesn't exist
-        if (typeof window !== "undefined") {
-            window.dataLayer = window.dataLayer || []
-        }
-
         const handleClick = (event: MouseEvent) => {
             const target = event.target as HTMLElement
             const telLink = target.closest('a[href^="tel:"]') as HTMLAnchorElement | null
 
             if (telLink && telLink.href) {
-                // Push event to dataLayer
-                if (typeof window !== "undefined" && window.dataLayer) {
-                    window.dataLayer.push({
-                        event: "tel_click",
-                        tel_number: telLink.href.replace("tel:", ""),
-                        page_path: window.location.pathname,
-                    })
-                }
+                trackPhoneClick(telLink.dataset.trackingLocation, telLink.href.replace("tel:", ""))
             }
         }
 

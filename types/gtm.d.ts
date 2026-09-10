@@ -9,7 +9,10 @@ interface DataLayerEvent {
 
 declare global {
     interface Window {
-        dataLayer: DataLayerEvent[]
+        dataLayer: Array<DataLayerEvent | IArguments | unknown[]>
+        gtag?: (...args: unknown[]) => void
+        __clfConsent?: unknown
+        __clfGtmLoaded?: boolean
     }
 }
 

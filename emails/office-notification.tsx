@@ -8,22 +8,24 @@ interface OfficeNotificationEmailProps {
     zip: string
     caseType: string
     callerIdentification?: string
+    contactingCompany?: string
     urgency: string
     description: string
     submittedAt: string
 }
 
-function getUrgencyColor(urgency: string): { bg: string; text: string; label: string } {
-    if (urgency.toLowerCase().includes("immediate")) {
-        return { bg: "#fef2f2", text: "#991b1b", label: "IMMEDIATE" }
+export function getUrgencyColor(urgency: string): { bg: string; text: string; label: string } {
+    switch (urgency) {
+        case "Immediate - Need help now":
+            return { bg: "#fef2f2", text: "#991b1b", label: "IMMEDIATE" }
+        case "Urgent - Within a week":
+            return { bg: "#fff7ed", text: "#9a3412", label: "URGENT" }
+        case "Moderate - Within a month":
+            return { bg: "#fefce8", text: "#854d0e", label: "MODERATE" }
+        case "Not urgent - Just exploring options":
+        default:
+            return { bg: "#f0fdf4", text: "#166534", label: "STANDARD" }
     }
-    if (urgency.toLowerCase().includes("urgent")) {
-        return { bg: "#fff7ed", text: "#9a3412", label: "URGENT" }
-    }
-    if (urgency.toLowerCase().includes("moderate")) {
-        return { bg: "#fefce8", text: "#854d0e", label: "MODERATE" }
-    }
-    return { bg: "#f0fdf4", text: "#166534", label: "STANDARD" }
 }
 
 export function OfficeNotificationEmail({
@@ -34,12 +36,13 @@ export function OfficeNotificationEmail({
     zip,
     caseType,
     callerIdentification,
+    contactingCompany,
     urgency,
     description,
     submittedAt,
 }: OfficeNotificationEmailProps) {
     const urgencyStyle = getUrgencyColor(urgency)
-    const isHighPriority = urgency.toLowerCase().includes("immediate") || urgency.toLowerCase().includes("urgent")
+    const isHighPriority = urgency === "Immediate - Need help now" || urgency === "Urgent - Within a week"
 
     return (
         <html>
@@ -337,6 +340,14 @@ export function OfficeNotificationEmail({
                                                                 </span>
                                                             </td>
                                                         </tr>
+                                                        {contactingCompany && (
+                                                            <tr>
+                                                                <td style={{ padding: "10px 0", borderBottom: "1px solid #e2e8f0" }}>
+                                                                    <span style={{ fontSize: "12px", fontWeight: "600", color: "#64748b", textTransform: "uppercase" as const }}>Company, caller, or text sender</span>
+                                                                    <p style={{ margin: "4px 0 0", fontSize: "14px", color: "#0f172a" }}>{contactingCompany}</p>
+                                                                </td>
+                                                            </tr>
+                                                        )}
                                                         {callerIdentification && (
                                                             <tr>
                                                                 <td style={{ padding: "12px 0", color: "#64748b", fontSize: "14px", borderTop: "1px solid #f1f5f9", verticalAlign: "top" }}>

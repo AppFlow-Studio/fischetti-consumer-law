@@ -4,6 +4,7 @@ import { Phone, FileText } from 'lucide-react'
 import { PRIMARY_PHONE, PRIMARY_PHONE_E164 } from '@/lib/site'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import { trackFreeCaseReviewClick } from '@/components/tracking/tracking-events'
 
 export function MobileStickyBar() {
   const [isVisible, setIsVisible] = useState(false)
@@ -18,6 +19,7 @@ export function MobileStickyBar() {
   }, [])
 
   const scrollToForm = () => {
+    trackFreeCaseReviewClick('mobile_sticky_bar')
     const element = document.getElementById('case-review-form')
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' })

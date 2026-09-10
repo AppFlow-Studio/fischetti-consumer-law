@@ -1,7 +1,6 @@
 import { unstable_noStore as noStore } from "next/cache"
 import { supabase } from "@/utils/supabase/server"
 import type { BlogPost, BlogPostPreview } from "@/types/blog"
-import { isRetiredTopicPost } from "@/lib/blog-scope"
 
 const BLOG_TABLE =
   process.env.NEXT_PUBLIC_SUPABASE_BLOG_TABLE ?? "posts"
@@ -34,7 +33,7 @@ export async function GetBlogs(): Promise<BlogPostPreview[]> {
       return []
     }
 
-    return ((data ?? []) as BlogPostPreview[]).filter((post) => !isRetiredTopicPost(post))
+    return (data ?? []) as BlogPostPreview[]
   } catch (err) {
     console.error("GetBlogs unexpected error:", err)
     return []
@@ -82,7 +81,7 @@ export async function GetBlogInfo(slug: string): Promise<BlogPost | null> {
       return null
     }
 
-    if (!data || isRetiredTopicPost(data)) return null
+    if (!data) return null
 
     // posts.sections may not exist; use null so UI falls back to content_html
     return { ...data, sections: (data as { sections?: unknown }).sections ?? null } as BlogPost
@@ -133,9 +132,7 @@ export async function GetBlogsPaginated(
       return { posts: [], total: 0, totalPages: 0 }
     }
 
-    const eligiblePosts = ((data ?? []) as BlogPostPreview[]).filter(
-      (post) => !isRetiredTopicPost(post),
-    )
+    const eligiblePosts = (data ?? []) as BlogPostPreview[]
     const total = eligiblePosts.length
     const totalPages = total > 0 ? Math.ceil(total / safePerPage) : 0
     const from = (safePage - 1) * safePerPage
@@ -178,10 +175,7 @@ export async function GetRelatedPosts(
         .limit(limit * 4)
 
       if (!error && data && data.length > 0) {
-        const eligiblePosts = (data as BlogPostPreview[]).filter(
-          (post) => !isRetiredTopicPost(post),
-        )
-        if (eligiblePosts.length > 0) return eligiblePosts.slice(0, limit)
+        return (data as BlogPostPreview[]).slice(0, limit)
       }
     }
 
@@ -199,9 +193,7 @@ export async function GetRelatedPosts(
       return []
     }
 
-    return ((data ?? []) as BlogPostPreview[])
-      .filter((post) => !isRetiredTopicPost(post))
-      .slice(0, limit)
+    return ((data ?? []) as BlogPostPreview[]).slice(0, limit)
   } catch (err) {
     console.error("GetRelatedPosts unexpected error:", err)
     return []
@@ -227,9 +219,7 @@ export async function GetAllBlogSlugs(): Promise<string[]> {
       return []
     }
 
-    return (data ?? [])
-      .filter((post) => !isRetiredTopicPost(post))
-      .map((row) => row.slug as string)
+    return (data ?? []).map((row) => row.slug as string)
   } catch (err) {
     console.error("GetAllBlogSlugs unexpected error:", err)
     return []
@@ -263,7 +253,6 @@ export async function GetBlogSearchIndex(
     }
 
     return (data ?? [])
-      .filter((post) => !isRetiredTopicPost(post))
       .map((post) => ({
         id: post.id as string,
         slug: post.slug as string,

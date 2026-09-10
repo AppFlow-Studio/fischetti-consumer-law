@@ -5,6 +5,7 @@ import { Button, type ButtonProps } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { BorderBeam } from "./ui/border-beam"
+import { trackFreeCaseReviewClick } from "@/components/tracking/tracking-events"
 
 type FreeCaseReviewProps = ButtonProps & {
   iconSize?: number
@@ -19,6 +20,7 @@ const FreeCaseReview = React.forwardRef<HTMLButtonElement, FreeCaseReviewProps>(
       children = "Free Case Review",
       iconSize = 16,
       iconStrokeWidth = 2,
+      onClick,
       ...restProps
     } = props
 
@@ -28,6 +30,10 @@ const FreeCaseReview = React.forwardRef<HTMLButtonElement, FreeCaseReviewProps>(
         size={size}
         variant="default"
         className={cn("group relative overflow-hidden", className)}
+        onClick={(event) => {
+          trackFreeCaseReviewClick("button")
+          onClick?.(event)
+        }}
         {...restProps}
       >
         <BorderBeam colorFrom="blue" colorTo="blue-500" />
