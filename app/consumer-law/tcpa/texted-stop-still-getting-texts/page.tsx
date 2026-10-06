@@ -1,7 +1,7 @@
 // /app/consumer-law/tcpa/texted-stop-still-getting-texts/page.tsx (SERVER COMPONENT)
 import type { Metadata } from "next"
 import Link from "next/link"
-import { CheckCircle, Phone, Camera, Smartphone, X, Handshake } from "lucide-react"
+import { CheckCircle, Phone, Camera, Smartphone, X, Handshake, Car, Sun, Sparkles } from "lucide-react"
 import SimpleContactForm from "@/components/ui/simple-contact-form"
 import { Card } from "@/components/ui/card"
 import { JsonLd } from "@/components/seo/json-ld"
@@ -23,6 +23,9 @@ export const metadata: Metadata = buildPageMeta({
     "revoked consent spam texts florida",
     "opted out still getting texts florida",
     "tcpa opt out violation florida attorney",
+    "car dealership keeps texting after stop",
+    "solar company keeps calling after i said stop",
+    "med spa keeps texting after unsubscribe",
   ],
 })
 
@@ -50,6 +53,14 @@ const faqs = [
   {
     question: "What if the company sends a final text confirming my opt-out, then continues texting?",
     answer: "A confirmation text acknowledging your opt-out is allowed by the FCC (one message only). But if texts continue after that confirmation, every subsequent text is a clear violation — especially since they confirmed they received your STOP.",
+  },
+  {
+    question: "A car dealership keeps texting me after I replied STOP. Can I do anything?",
+    answer: "Possibly. The STOP rules apply to dealerships the same way they apply to any business sending marketing texts. Save the thread that shows your STOP reply and every text after it, and note how the dealership got your number, such as a test drive, an online quote or a service visit. We review these for free.",
+  },
+  {
+    question: "I gave a solar company or med spa my number for a quote. Can they keep contacting me after I opt out?",
+    answer: "Giving your number may have allowed some messages at first, but you can take that permission back. Once you reply STOP or ask them to stop, marketing texts or calls that keep coming may be a violation. How and when you opted out matters, so keep proof of it.",
   },
 ]
 
@@ -206,6 +217,84 @@ export default function TextedStopStillGettingTextsPage() {
               </div>
             ))}
           </div>
+        </section>
+
+        {/* Who keeps texting: industries (TCPA plan 2026-10, post opt-out focus) */}
+        <section id="who-keeps-texting">
+          <h2 className="text-2xl md:text-3xl font-bold text-[#002b60] font-[var(--font-playfair-display)] mb-4">
+            Car Dealers, Solar Companies and Med Spas: The Texts That Don&apos;t Stop
+          </h2>
+          <p className="text-gray-700 leading-relaxed mb-6">
+            Some of the reports we hear most often come from three kinds of businesses. Many people gave their number once, for a quote, a test drive or a consultation, then replied STOP and kept getting marketing texts and calls. If that sounds familiar, you may have a claim, and the details below are what we look at first.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {[
+              {
+                icon: Car,
+                title: "Car Dealerships",
+                body: "Sale alerts, trade-in offers and \"your car is ready to upgrade\" texts that keep coming after you replied STOP or told a salesperson to take you off the list.",
+                save: "The dealership's name, the salesperson if you know it, and the date you first gave your number (test drive, online quote, service visit).",
+              },
+              {
+                icon: Sun,
+                title: "Solar Companies",
+                body: "Repeated calls and texts about free solar quotes, rebates or a \"home assessment\", often from different numbers, even after you asked them to stop.",
+                save: "Every number that contacted you, the company names they used, and any appointment or quote they referred to.",
+              },
+              {
+                icon: Sparkles,
+                title: "Med Spas",
+                body: "Promotions for treatments, memberships and \"limited time\" specials that continue after you unsubscribed or replied STOP.",
+                save: "The spa's name, any visit or booking that gave them your number, and the unsubscribe or STOP message you sent.",
+              },
+            ].map((item) => (
+              <Card key={item.title} className="p-5 rounded-2xl border border-gray-200 shadow-sm">
+                <div className="flex items-center gap-3 mb-3">
+                  <item.icon className="w-6 h-6 text-blue-600" aria-hidden="true" />
+                  <h3 className="text-lg font-bold text-gray-900">{item.title}</h3>
+                </div>
+                <p className="text-gray-700 text-sm leading-relaxed mb-3">{item.body}</p>
+                <p className="text-sm text-gray-600"><span className="font-semibold text-gray-800">What to save: </span>{item.save}</p>
+              </Card>
+            ))}
+          </div>
+          <p className="text-gray-600 text-sm mt-4">
+            Not one of these? The same rules apply to any business that kept marketing to you after you opted out. Whether you have a claim depends on the facts, such as how they got your number and what the messages were about, so send us what you have and we will review it for free.
+          </p>
+        </section>
+
+        {/* Calls too */}
+        <section className="bg-blue-50 border border-blue-200 rounded-2xl p-6">
+          <h2 className="text-xl font-bold text-[#002b60] mb-3 flex items-center gap-3">
+            <Phone className="w-6 h-6 text-blue-600" aria-hidden="true" />
+            Still Getting Calls After You Asked Them to Stop?
+          </h2>
+          <p className="text-gray-700 leading-relaxed">
+            Asking a caller to stop, telling a live agent to take you off their list, or pressing the opt-out option on a recorded call can also count as revoking consent. If the marketing calls kept coming, keep a record of each one. Read more on our{" "}
+            <Link href="/consumer-law/tcpa/robocall-lawsuit-florida" className="text-blue-600 font-semibold hover:underline">robocall page</Link>.
+          </p>
+        </section>
+
+        {/* What to preserve beyond screenshots */}
+        <section>
+          <h2 className="text-2xl font-bold text-[#002b60] font-[var(--font-playfair-display)] mb-4">
+            What Else to Keep Besides Screenshots
+          </h2>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {[
+              "Your call log, showing the date and time of every call after you asked them to stop",
+              "Voicemails they left, saved or recorded before they are deleted",
+              "Any email or letter where you asked them to stop contacting you",
+              "Notes of phone calls where you asked a person to remove you: the date, and their name if they gave it",
+              "How the company first got your number, if you know (a form, a visit, a quote)",
+              "A rough count of how many texts and calls arrived after you opted out",
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-3 p-4 rounded-xl border bg-gray-50 border-gray-200">
+                <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-gray-400" aria-hidden="true" />
+                <span className="text-gray-800 text-sm">{item}</span>
+              </li>
+            ))}
+          </ul>
         </section>
 
         {/* Damages */}
