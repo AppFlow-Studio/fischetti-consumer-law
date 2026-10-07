@@ -56,7 +56,7 @@ const faqs = [
   },
   {
     question: "A car dealership keeps texting me after I replied STOP. Can I do anything?",
-    answer: "Possibly. The STOP rules apply to dealerships the same way they apply to any business sending marketing texts. Save the thread that shows your STOP reply and every text after it, and note how the dealership got your number, such as a test drive, an online quote or a service visit. We review these for free.",
+    answer: "Possibly. Dealerships that send marketing texts are covered by the same opt-out rules as other businesses. Save the thread that shows your STOP reply and every text after it, and note how the dealership got your number, such as a test drive, an online quote or a service visit. We review these for free.",
   },
   {
     question: "I gave a solar company or med spa my number for a quote. Can they keep contacting me after I opt out?",
@@ -221,13 +221,13 @@ export default function TextedStopStillGettingTextsPage() {
 
         {/* Who keeps texting: industries (TCPA plan 2026-10, post opt-out focus) */}
         <section id="who-keeps-texting">
-          <h2 className="text-2xl md:text-3xl font-bold text-[#002b60] font-[var(--font-playfair-display)] mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-[#002b60] font-[var(--font-playfair-display)] mb-6">
             Car Dealers, Solar Companies and Med Spas: The Texts That Don&apos;t Stop
           </h2>
           <p className="text-gray-700 leading-relaxed mb-6">
-            Some of the reports we hear most often come from three kinds of businesses. Many people gave their number once, for a quote, a test drive or a consultation, then replied STOP and kept getting marketing texts and calls. If that sounds familiar, you may have a claim, and the details below are what we look at first.
+            Some of the reports we hear most often come from three kinds of businesses. You may have given your number once, for a quote, a test drive or a consultation, then replied STOP and kept getting marketing texts and calls. If that sounds familiar, you may have a claim, and the details below are what we look at first.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
               {
                 icon: Car,
@@ -238,7 +238,7 @@ export default function TextedStopStillGettingTextsPage() {
               {
                 icon: Sun,
                 title: "Solar Companies",
-                body: "Repeated calls and texts about free solar quotes, rebates or a \"home assessment\", often from different numbers, even after you asked them to stop.",
+                body: "Repeated calls and texts about free solar quotes, rebates or a \"home assessment\", even after you asked them to stop.",
                 save: "Every number that contacted you, the company names they used, and any appointment or quote they referred to.",
               },
               {
@@ -248,24 +248,22 @@ export default function TextedStopStillGettingTextsPage() {
                 save: "The spa's name, any visit or booking that gave them your number, and the unsubscribe or STOP message you sent.",
               },
             ].map((item) => (
-              <Card key={item.title} className="p-5 rounded-2xl border border-gray-200 shadow-sm">
-                <div className="flex items-center gap-3 mb-3">
-                  <item.icon className="w-6 h-6 text-blue-600" aria-hidden="true" />
-                  <h3 className="text-lg font-bold text-gray-900">{item.title}</h3>
-                </div>
-                <p className="text-gray-700 text-sm leading-relaxed mb-3">{item.body}</p>
-                <p className="text-sm text-gray-600"><span className="font-semibold text-gray-800">What to save: </span>{item.save}</p>
-              </Card>
+              <div key={item.title} className="bg-blue-50 border border-blue-200 rounded-xl p-5">
+                <item.icon className="w-7 h-7 text-blue-600 mb-3" aria-hidden="true" />
+                <h3 className="font-bold text-gray-900 mb-2 text-sm">{item.title}</h3>
+                <p className="text-gray-600 text-xs leading-relaxed mb-3">{item.body}</p>
+                <p className="text-gray-600 text-xs leading-relaxed"><span className="font-semibold text-gray-900">What to save: </span>{item.save}</p>
+              </div>
             ))}
           </div>
           <p className="text-gray-600 text-sm mt-4">
-            Not one of these? The same rules apply to any business that kept marketing to you after you opted out. Whether you have a claim depends on the facts, such as how they got your number and what the messages were about, so send us what you have and we will review it for free.
+            Not one of these? Similar rules can apply to other businesses that kept marketing to you after you opted out. Whether you have a claim depends on the facts, such as how they got your number and what the messages were about, so send us what you have and we will review it for free.
           </p>
         </section>
 
         {/* Calls too */}
         <section className="bg-blue-50 border border-blue-200 rounded-2xl p-6">
-          <h2 className="text-xl font-bold text-[#002b60] mb-3 flex items-center gap-3">
+          <h2 className="text-xl font-bold text-[#002b60] mb-4 flex items-center gap-3">
             <Phone className="w-6 h-6 text-blue-600" aria-hidden="true" />
             Still Getting Calls After You Asked Them to Stop?
           </h2>
@@ -277,7 +275,7 @@ export default function TextedStopStillGettingTextsPage() {
 
         {/* What to preserve beyond screenshots */}
         <section>
-          <h2 className="text-2xl font-bold text-[#002b60] font-[var(--font-playfair-display)] mb-4">
+          <h2 className="text-2xl font-bold text-[#002b60] font-[var(--font-playfair-display)] mb-6">
             What Else to Keep Besides Screenshots
           </h2>
           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
