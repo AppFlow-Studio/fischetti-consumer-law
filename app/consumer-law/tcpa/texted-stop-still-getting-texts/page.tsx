@@ -1,7 +1,7 @@
 // /app/consumer-law/tcpa/texted-stop-still-getting-texts/page.tsx (SERVER COMPONENT)
 import type { Metadata } from "next"
 import Link from "next/link"
-import { CheckCircle, Phone, Camera, Smartphone, X, Handshake, Car, Sun, Sparkles } from "lucide-react"
+import { CheckCircle, Phone, Camera, Smartphone, X, Handshake, Car, Sun, Sparkles, Scissors } from "lucide-react"
 import SimpleContactForm from "@/components/ui/simple-contact-form"
 import { Card } from "@/components/ui/card"
 import { JsonLd } from "@/components/seo/json-ld"
@@ -26,17 +26,19 @@ export const metadata: Metadata = buildPageMeta({
     "car dealership keeps texting after stop",
     "solar company keeps calling after i said stop",
     "med spa keeps texting after unsubscribe",
+    "nail salon keeps texting after stop",
+    "florida telephone solicitation act texts",
   ],
 })
 
 const faqs = [
   {
     question: "Is texting STOP a legally recognized opt-out?",
-    answer: "Yes — texting STOP is one of the clearest, most recognized methods of revoking consent under the TCPA. The FCC has confirmed that consumers may revoke consent through any reasonable means, and STOP is specifically recognized as an unambiguous opt-out signal. A company that continues texting after receiving STOP has violated the TCPA.",
+    answer: "Yes. Texting STOP is one of the clearest ways to revoke consent under the TCPA. The FCC has confirmed that consumers may revoke consent through any reasonable means, and replying STOP is one of them. A company that keeps sending marketing texts after the time it has to process your STOP may be violating the TCPA.",
   },
   {
     question: "How long does a company have to process my STOP request?",
-    answer: "The FCC has said that opt-out requests should be honored within a reasonable timeframe — which for text campaigns generally means immediately or within one to two business days at most. A text received a week after you sent STOP is almost certainly a violation.",
+    answer: "Under federal rules, a company must honor your request within a reasonable time, and no later than 10 business days after it receives it. Florida's telemarketing law gives a company 15 days to stop sending marketing texts after you reply STOP. Marketing texts that keep coming after those deadlines may be violations, so write down the date you sent STOP and keep every text that arrived after it.",
   },
   {
     question: "What if the company says my STOP message wasn't received?",
@@ -52,7 +54,7 @@ const faqs = [
   },
   {
     question: "What if the company sends a final text confirming my opt-out, then continues texting?",
-    answer: "A confirmation text acknowledging your opt-out is allowed by the FCC (one message only). But if texts continue after that confirmation, every subsequent text is a clear violation — especially since they confirmed they received your STOP.",
+    answer: "Federal rules allow one text confirming your opt-out, as long as it contains no marketing. Florida law allows the same. A confirmation is also proof that the company received your STOP, so keep it. Marketing texts that keep coming after the deadlines to process your request may be violations.",
   },
   {
     question: "A car dealership keeps texting me after I replied STOP. Can I do anything?",
@@ -156,15 +158,33 @@ export default function TextedStopStillGettingTextsPage() {
             What Federal Law Says About STOP Requests
           </h2>
           <p className="text-gray-700 leading-relaxed mb-6">
-            When you text STOP, the company is legally required to honor it immediately. The Federal Communications Commission (FCC) has confirmed that consumers may revoke consent at any time through any reasonable means — and texting STOP is the most explicit, unambiguous opt-out possible.
+            When you text STOP, the company is legally required to honor it, and federal rules give it no more than 10 business days to do so. The Federal Communications Commission (FCC) has confirmed that consumers may revoke consent at any time through any reasonable means — and texting STOP is the most explicit, unambiguous opt-out possible.
           </p>
           <StatuteCallout
             citation="FCC Declaratory Ruling, CG Docket No. 02-278 (2015)"
-            text="Consumers have the right to revoke their prior express consent at any time and through any reasonable means. A consumer may orally revoke consent during a call, send a letter, use a standard opt-out mechanism such as 'STOP', or use any other reasonable means. Companies must honor opt-out requests immediately."
+            text="Consumers have the right to revoke their prior express consent at any time and through any reasonable means. A consumer may orally revoke consent during a call, send a letter, use a standard opt-out mechanism such as 'STOP', or use any other reasonable means."
             label="FCC Ruling"
           />
           <p className="text-gray-700 leading-relaxed mt-6">
             Companies that run compliant SMS programs must have opt-out systems that work reliably. &ldquo;Our system had a glitch&rdquo; is not a valid legal defense when you sent STOP and continued receiving texts.
+          </p>
+        </section>
+
+        {/* Florida law: FTSA, s. 501.059(10)(c), added by Laws of Florida ch. 2023-150 */}
+        <section id="florida-telephone-solicitation-act">
+          <h2 className="text-2xl md:text-3xl font-bold text-[#002b60] font-[var(--font-playfair-display)] mb-6">
+            Florida Law Protects You Too: The Florida Telephone Solicitation Act
+          </h2>
+          <p className="text-gray-700 leading-relaxed mb-6">
+            Florida has its own telemarketing law, the Florida Telephone Solicitation Act (FTSA). For marketing texts, it sets out exactly what a company must do once you reply STOP: stop sending text solicitations within 15 days. It may send you one text confirming it got your request, and nothing after that.
+          </p>
+          <StatuteCallout
+            citation="Fla. Stat. § 501.059(10)(c)"
+            text="A called party may bring an action under this section only if the called party does not consent to receive text messages from the telephone solicitor and the telephone solicitor continues to send text messages to the called party 15 days after the called party provided notice to the telephone solicitor to cease such text messages."
+            label="Florida Statute"
+          />
+          <p className="text-gray-700 leading-relaxed mt-6">
+            That is why your STOP reply and its date matter so much. If a company kept sending marketing texts more than 15 days after you replied STOP, you may have a claim under Florida law as well as federal law. Keep the full thread so the dates are easy to see.
           </p>
         </section>
 
@@ -222,12 +242,12 @@ export default function TextedStopStillGettingTextsPage() {
         {/* Who keeps texting: industries (TCPA plan 2026-10, post opt-out focus) */}
         <section id="who-keeps-texting">
           <h2 className="text-2xl md:text-3xl font-bold text-[#002b60] font-[var(--font-playfair-display)] mb-6">
-            Car Dealers, Solar Companies and Med Spas: The Texts That Don&apos;t Stop
+            Car Dealers, Solar Companies, Med Spas and Salons: The Texts That Don&apos;t Stop
           </h2>
           <p className="text-gray-700 leading-relaxed mb-6">
-            Some of the reports we hear most often come from three kinds of businesses. You may have given your number once, for a quote, a test drive or a consultation, then replied STOP and kept getting marketing texts and calls. If that sounds familiar, you may have a claim, and the details below are what we look at first.
+            Some of the reports we hear most often come from a few kinds of businesses. You may have given your number once, for a quote, a test drive, a consultation or an appointment, then replied STOP and kept getting marketing texts and calls. If that sounds familiar, you may have a claim, and the details below are what we look at first.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
               {
                 icon: Car,
@@ -246,6 +266,12 @@ export default function TextedStopStillGettingTextsPage() {
                 title: "Med Spas",
                 body: "Promotions for treatments, memberships and \"limited time\" specials that continue after you unsubscribed or replied STOP.",
                 save: "The spa's name, any visit or booking that gave them your number, and the unsubscribe or STOP message you sent.",
+              },
+              {
+                icon: Scissors,
+                title: "Nail and Beauty Salons",
+                body: "Appointment deals, \"we miss you\" offers and holiday promotions that keep arriving after you replied STOP.",
+                save: "The salon's name, any appointment or sign-up that gave them your number, and your STOP reply with its date.",
               },
             ].map((item) => (
               <div key={item.title} className="bg-blue-50 border border-blue-200 rounded-xl p-5">
