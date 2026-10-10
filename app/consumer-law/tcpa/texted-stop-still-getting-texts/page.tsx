@@ -1,7 +1,7 @@
 // /app/consumer-law/tcpa/texted-stop-still-getting-texts/page.tsx (SERVER COMPONENT)
 import type { Metadata } from "next"
 import Link from "next/link"
-import { CheckCircle, Phone, Camera, Smartphone, X, Handshake, Car, Sun, Sparkles } from "lucide-react"
+import { CheckCircle, Phone, Camera, Smartphone, X, Handshake, Car, Sun, Sparkles, Scissors } from "lucide-react"
 import SimpleContactForm from "@/components/ui/simple-contact-form"
 import { Card } from "@/components/ui/card"
 import { JsonLd } from "@/components/seo/json-ld"
@@ -26,6 +26,8 @@ export const metadata: Metadata = buildPageMeta({
     "car dealership keeps texting after stop",
     "solar company keeps calling after i said stop",
     "med spa keeps texting after unsubscribe",
+    "nail salon keeps texting after stop",
+    "florida telephone solicitation act texts",
   ],
 })
 
@@ -168,6 +170,24 @@ export default function TextedStopStillGettingTextsPage() {
           </p>
         </section>
 
+        {/* Florida law: FTSA, s. 501.059(10)(c), added by Laws of Florida ch. 2023-150 */}
+        <section id="florida-telephone-solicitation-act">
+          <h2 className="text-2xl md:text-3xl font-bold text-[#002b60] font-[var(--font-playfair-display)] mb-6">
+            Florida Law Protects You Too: The Florida Telephone Solicitation Act
+          </h2>
+          <p className="text-gray-700 leading-relaxed mb-6">
+            Florida has its own telemarketing law, the Florida Telephone Solicitation Act (FTSA). For marketing texts, it sets out exactly what a company must do once you reply STOP: stop sending text solicitations within 15 days. It may send you one text confirming it got your request, and nothing after that.
+          </p>
+          <StatuteCallout
+            citation="Fla. Stat. § 501.059(10)(c)"
+            text="A called party may bring an action under this section only if the called party does not consent to receive text messages from the telephone solicitor and the telephone solicitor continues to send text messages to the called party 15 days after the called party provided notice to the telephone solicitor to cease such text messages."
+            label="Florida Statute"
+          />
+          <p className="text-gray-700 leading-relaxed mt-6">
+            That is why your STOP reply and its date matter so much. If a company kept sending marketing texts more than 15 days after you replied STOP, you may have a claim under Florida law as well as federal law. Keep the full thread so the dates are easy to see.
+          </p>
+        </section>
+
         {/* Every text after STOP */}
         <section className="bg-[#252932] border border-white/10 rounded-2xl p-6">
           <h2 className="text-xl font-bold text-white mb-4">Every Text After STOP Is a Separate Federal Violation</h2>
@@ -222,12 +242,12 @@ export default function TextedStopStillGettingTextsPage() {
         {/* Who keeps texting: industries (TCPA plan 2026-10, post opt-out focus) */}
         <section id="who-keeps-texting">
           <h2 className="text-2xl md:text-3xl font-bold text-[#002b60] font-[var(--font-playfair-display)] mb-6">
-            Car Dealers, Solar Companies and Med Spas: The Texts That Don&apos;t Stop
+            Car Dealers, Solar Companies, Med Spas and Salons: The Texts That Don&apos;t Stop
           </h2>
           <p className="text-gray-700 leading-relaxed mb-6">
-            Some of the reports we hear most often come from three kinds of businesses. You may have given your number once, for a quote, a test drive or a consultation, then replied STOP and kept getting marketing texts and calls. If that sounds familiar, you may have a claim, and the details below are what we look at first.
+            Some of the reports we hear most often come from a few kinds of businesses. You may have given your number once, for a quote, a test drive, a consultation or an appointment, then replied STOP and kept getting marketing texts and calls. If that sounds familiar, you may have a claim, and the details below are what we look at first.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
               {
                 icon: Car,
@@ -246,6 +266,12 @@ export default function TextedStopStillGettingTextsPage() {
                 title: "Med Spas",
                 body: "Promotions for treatments, memberships and \"limited time\" specials that continue after you unsubscribed or replied STOP.",
                 save: "The spa's name, any visit or booking that gave them your number, and the unsubscribe or STOP message you sent.",
+              },
+              {
+                icon: Scissors,
+                title: "Nail and Beauty Salons",
+                body: "Appointment deals, \"we miss you\" offers and holiday promotions that keep arriving after you replied STOP.",
+                save: "The salon's name, any appointment or sign-up that gave them your number, and your STOP reply with its date.",
               },
             ].map((item) => (
               <div key={item.title} className="bg-blue-50 border border-blue-200 rounded-xl p-5">
