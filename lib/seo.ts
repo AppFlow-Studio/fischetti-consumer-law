@@ -4,8 +4,8 @@ export const SITE_CONFIG = {
   name: 'Consumer Law Florida',
   firmName: 'Fischetti Law Group',
   attorney: 'Michael J. Fischetti',
-  phone: '(561) 264-7211',
-  phoneHref: 'tel:+15612647211',
+  phone: '(833) 645-3247',
+  phoneHref: 'tel:+18336453247',
   email: 'info@consumerlawflorida.com',
   url: 'https://www.consumerlawflorida.com',
   primaryOffice: {

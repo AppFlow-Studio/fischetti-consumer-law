@@ -14,7 +14,7 @@ import { BreadcrumbNav } from "@/components/seo/breadcrumb-nav"
 
 export const metadata: Metadata = buildPageMeta({
   title: "Robocall Lawsuit Florida — TCPA Attorney",
-  description: "Illegal robocalls in Florida? File a TCPA lawsuit. Up to $1,500 per call. Free case review. TCPA attorney with no fees unless we win. (561) 264-7211.",
+  description: "Illegal robocalls in Florida? File a TCPA lawsuit. Up to $1,500 per call. Free case review. TCPA attorney with no fees unless we win. (833) 645-3247.",
   canonical: "https://www.consumerlawflorida.com/consumer-law/tcpa/robocall-lawsuit-florida",
   keywords: [
     "robocall lawsuit florida",

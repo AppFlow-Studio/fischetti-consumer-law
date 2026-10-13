@@ -13,7 +13,7 @@ const PAGE_URL = `${SITE_URL}/locations/fort-lauderdale`
 export const metadata: Metadata = buildPageMeta({
   title: 'Consumer Law Lawyer Serving Fort Lauderdale FL — FDCPA, TCPA & FCRA Attorney | Consumer Law Florida',
   description:
-    'Consumer Law Florida serves Fort Lauderdale and Broward County consumers remotely. Debt harassment, robocalls, credit errors. Free case review. (561) 264-7211.',
+    'Consumer Law Florida serves Fort Lauderdale and Broward County consumers remotely. Debt harassment, robocalls, credit errors. Free case review. (833) 645-3247.',
   canonical: PAGE_URL,
   keywords: [
     'consumer lawyer fort lauderdale',
@@ -51,7 +51,7 @@ const faqs = [
   {
     question: 'How do I get started?',
     answer:
-      'Call (561) 264-7211 or fill out the form on this page. We respond within 24 hours and all consultations are free.',
+      'Call (833) 645-3247 or fill out the form on this page. We respond within 24 hours and all consultations are free.',
   },
 ]
 

@@ -13,7 +13,7 @@ const PAGE_URL = `${SITE_URL}/locations/tampa`
 export const metadata: Metadata = buildPageMeta({
   title: 'Tampa Consumer Rights Lawyer — FDCPA, TCPA & FCRA Attorney',
   description:
-    'Consumer Law Florida serves Tampa consumers remotely. FDCPA, TCPA, FCRA attorney. Free case review. No fees unless we win. (561) 264-7211.',
+    'Consumer Law Florida serves Tampa consumers remotely. FDCPA, TCPA, FCRA attorney. Free case review. No fees unless we win. (833) 645-3247.',
   canonical: PAGE_URL,
   keywords: [
     'consumer lawyer tampa florida',
@@ -50,7 +50,7 @@ const faqs = [
   },
   {
     question: 'How quickly can a Tampa consumer get a case review?',
-    answer: 'We respond within 24 hours. Call (561) 264-7211 or use the form on this page.',
+    answer: 'We respond within 24 hours. Call (833) 645-3247 or use the form on this page.',
   },
 ]
 
