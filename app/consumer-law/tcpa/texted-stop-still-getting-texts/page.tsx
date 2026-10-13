@@ -14,7 +14,7 @@ import { BreadcrumbNav } from "@/components/seo/breadcrumb-nav"
 
 export const metadata: Metadata = buildPageMeta({
   title: "Texted STOP Still Getting Texts? TCPA Claim Florida",
-  description: "Texted STOP and the company kept texting you in Florida? Each text after STOP may be worth $500–$1,500 under the TCPA. Free case review. (561) 264-7211.",
+  description: "Texted STOP and the company kept texting you in Florida? Each text after STOP may be worth $500–$1,500 under the TCPA. Free case review. (833) 645-3247.",
   canonical: "https://www.consumerlawflorida.com/consumer-law/tcpa/texted-stop-still-getting-texts",
   keywords: [
     "texted stop still getting texts florida",

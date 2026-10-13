@@ -13,7 +13,7 @@ import { BreadcrumbNav } from "@/components/seo/breadcrumb-nav"
 
 export const metadata: Metadata = buildPageMeta({
   title: "Debt Collector Made Illegal Threats — FDCPA Florida",
-  description: "Debt collector threatened jail, arrest, or lawsuit in Florida? Under the FDCPA, these threats may be illegal. Free case review. (561) 264-7211.",
+  description: "Debt collector threatened jail, arrest, or lawsuit in Florida? Under the FDCPA, these threats may be illegal. Free case review. (833) 645-3247.",
   canonical: "https://www.consumerlawflorida.com/consumer-law/fdcpa/debt-collector-threatened-me",
   keywords: [
     "debt collector threatened me florida",

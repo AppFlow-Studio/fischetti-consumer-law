@@ -13,7 +13,7 @@ const PAGE_URL = `${SITE_URL}/locations/miami`
 export const metadata: Metadata = buildPageMeta({
   title: 'Miami Consumer Rights Lawyer — FDCPA, TCPA & FCRA Attorney',
   description:
-    'Consumer Law Florida represents Miami consumers for debt collection harassment, robocalls, spam texts, and credit report errors. Free case review. (561) 264-7211.',
+    'Consumer Law Florida represents Miami consumers for debt collection harassment, robocalls, spam texts, and credit report errors. Free case review. (833) 645-3247.',
   canonical: PAGE_URL,
   keywords: [
     'consumer lawyer miami florida',
@@ -46,7 +46,7 @@ const faqs = [
   {
     question: 'How quickly can I get a case review if I am in Miami?',
     answer:
-      'We respond to case review requests within 24 hours. Call (561) 264-7211 or submit the form on this page.',
+      'We respond to case review requests within 24 hours. Call (833) 645-3247 or submit the form on this page.',
   },
   {
     question: 'Can Miami consumers sue for robocalls they received?',

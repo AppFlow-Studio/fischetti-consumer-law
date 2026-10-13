@@ -307,7 +307,7 @@ export default function DebtCollectorKeepsCallingPage() {
         {/* Mid-page CTA */}
         <div className="bg-[#002b60] rounded-2xl p-8 text-center">
           <p className="text-2xl font-bold text-white mb-3">Ready to Make Them Stop — and Get Paid?</p>
-          <p className="text-blue-200 mb-6">Free case review. No fees unless we win. (561) 264-7211.</p>
+          <p className="text-blue-200 mb-6">Free case review. No fees unless we win. (833) 645-3247.</p>
           <a
             href="#case-review-form"
             className="inline-flex items-center justify-center gap-2 bg-[#007BFF] hover:bg-blue-500 text-white font-bold px-8 py-4 rounded-xl text-lg transition-colors shadow-lg"
